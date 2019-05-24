@@ -1,5 +1,6 @@
 package com.mei.financial.ui.scenes;
 
+import com.mei.financial.R;
 import com.meis.base.mei.base.BaseActivity;
 
 /**
@@ -21,6 +22,6 @@ public class MeetActivity extends BaseActivity {
 
     @Override
     protected int layoutResId() {
-        return 0;
+        return R.layout.meet_activity;
     }
 }
