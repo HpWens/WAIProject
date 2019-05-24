@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">FinancialProject</string>
+    <string name="app_name" translatable="false">FinancialProject</string>
+    <string name="app_id" translatable="false">5ce634a4</string>
 </resources>

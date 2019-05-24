@@ -17,7 +17,20 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    // 加载 .so
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ["libs"]
+        }
+    }
 }
+
+// 保证引用jar包最新，建议使用
+// configurations.all {
+//     resolutionStrategy.cacheDynamicVersionsFor 0, 'seconds'
+//     resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+// }
 
 dependencies {
     implementation project(':base_library')

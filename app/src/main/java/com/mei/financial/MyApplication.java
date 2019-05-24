@@ -2,6 +2,8 @@ package com.mei.financial;
 
 import android.app.Application;
 
+import com.iflytek.cloud.SpeechUtility;
+
 /**
  * @author wenshi
  * @github
@@ -10,4 +12,9 @@ import android.app.Application;
  */
 public class MyApplication extends Application {
 
+    @Override
+    public void onCreate() {
+        SpeechUtility.createUtility(MyApplication.this, "appid=" + getString(R.string.app_id));
+        super.onCreate();
+    }
 }
