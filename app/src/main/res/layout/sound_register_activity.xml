@@ -142,12 +142,13 @@
         app:layout_constraintTop_toBottomOf="@+id/btn_verify"/>
 
     <LinearLayout
+        android:id="@+id/layout_sound"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
         android:background="#FFFFFF"
         android:orientation="vertical"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
