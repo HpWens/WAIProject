@@ -1,7 +1,10 @@
 package com.mei.financial.ui;
 
 import android.content.Intent;
+import android.support.v7.widget.CardView;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.mei.financial.R;
 import com.mei.financial.ui.scenes.ScenesMainActivity;
@@ -9,6 +12,7 @@ import com.mei.financial.ui.sound.SoundRegisterActivity;
 import com.mei.financial.ui.sound.SoundVerifyActivity;
 import com.meis.base.mei.base.BaseActivity;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -19,6 +23,21 @@ import butterknife.OnClick;
  * @since 2019/5/23
  */
 public class HomeActivity extends BaseActivity {
+    @BindView(R.id.iv_header)
+    ImageView mIvHeader;
+    @BindView(R.id.tv_name)
+    TextView mTvName;
+    @BindView(R.id.cv_personal)
+    CardView mCvPersonal;
+    @BindView(R.id.cv_sound_register)
+    CardView mCvSoundRegister;
+    @BindView(R.id.cv_sound_verify)
+    CardView mCvSoundVerify;
+    @BindView(R.id.cv_credit)
+    CardView mCvCredit;
+    @BindView(R.id.cv_scenes)
+    CardView mCvScenes;
+
     @Override
     protected void initView() {
         ButterKnife.bind(this);
