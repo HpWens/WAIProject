@@ -117,7 +117,7 @@ public class RxCaptcha2 {
 
     // variables
     // 保存生成的验证码
-    private String code;
+    private String code = "";
     private int paddingLeft, paddingTop;
     private Random random = new Random();
 

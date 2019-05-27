@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 
+apply plugin: 'com.mob.sdk'
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -16,6 +18,15 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+}
+
+MobSDK {
+    appKey "2b3c024b1cf92"
+    appSecret "896f8c2c5a5f6e4827d9dc10272bae85"
+    SMSSDK {
+        // 若使用GUI的自动填充验证码功能，需打开此设置
+        // autoSMS true
     }
 }
 
@@ -60,4 +71,7 @@ dependencies {
 
     // edit text
     implementation 'com.rengwuxian.materialedittext:library:2.1.4'
+
+    // rx http
+    implementation 'com.zhouyou:rxeasyhttp:2.1.5'
 }
