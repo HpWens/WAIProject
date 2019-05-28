@@ -155,6 +155,8 @@ public class MeiCompatActivity extends AppCompatActivity implements IMeiCompatAc
         return mDelegate.getToolbarView();
     }
 
+
+
     /**
      * @param layoutResId
      */

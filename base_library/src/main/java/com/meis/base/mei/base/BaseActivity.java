@@ -1,13 +1,21 @@
 package com.meis.base.mei.base;
 
+import android.graphics.Color;
+import android.graphics.LinearGradient;
+import android.graphics.Shader;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.MotionEvent;
+import android.view.View;
+import android.widget.TextView;
 
+import com.meis.base.R;
 import com.meis.base.mei.MeiCompatActivity;
 import com.meis.base.mei.dialog.MeiCompatDialog;
+
+import org.w3c.dom.Text;
 
 import me.yokeyword.fragmentation.ExtraTransaction;
 import me.yokeyword.fragmentation.ISupportActivity;
@@ -292,6 +300,31 @@ public abstract class BaseActivity extends MeiCompatActivity implements ISupport
     public void showDialog(MeiCompatDialog baseDialog) {
         getSupportFragmentManager().beginTransaction().add(baseDialog, "dialog_" + baseDialog.getClass
                 ().getSimpleName()).commitAllowingStateLoss();
+    }
+
+    public void setTextViewGradient(TextView textView, int startColor, int endColor) {
+        LinearGradient mLinearGradient = new LinearGradient(0, 0, 0, textView.getPaint().getTextSize(),
+                startColor, endColor, Shader.TileMode.CLAMP);
+        textView.getPaint().setShader(mLinearGradient);
+        textView.invalidate();
+    }
+
+    public void setToolBarCenterTitle(String title) {
+        View centerTitle = getToolbarView().findViewById(R.id.tv_center_title);
+        if (null != centerTitle && centerTitle instanceof TextView) {
+            centerTitle.setVisibility(View.VISIBLE);
+            ((TextView) centerTitle).setText(title);
+        }
+    }
+
+    public void autoFillToolBarLeftIcon() {
+        getToolbarView().setNavigationIcon(R.mipmap.ic_white_back);
+        getToolbarView().setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     /**

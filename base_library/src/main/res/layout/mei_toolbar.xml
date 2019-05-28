@@ -20,7 +20,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:singleLine="true"
-            android:textSize="20sp"
+            android:lines="1"
+            android:maxLength="16"
+            android:textColor="#FFFFFF"
+            android:textSize="17sp"
             android:visibility="gone" />
 
     </android.support.v7.widget.Toolbar>

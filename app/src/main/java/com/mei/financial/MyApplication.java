@@ -2,6 +2,7 @@ package com.mei.financial;
 
 import android.app.Application;
 
+import com.bumptech.glide.Glide;
 import com.iflytek.cloud.SpeechUtility;
 import com.vondear.rxtool.RxTool;
 import com.zhouyou.http.EasyHttp;

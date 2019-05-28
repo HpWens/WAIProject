@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.animation.Animation;
+import android.widget.TextView;
 
 import com.meis.base.R;
 import com.meis.base.mei.MeiCompatActivity;
@@ -470,6 +471,24 @@ public abstract class BaseFragment extends MeiCompatFragment implements ISupport
      */
     public <T extends ISupportFragment> T findChildFragment(Class<T> fragmentClass) {
         return SupportHelper.findFragment(getChildFragmentManager(), fragmentClass);
+    }
+
+    public void setToolBarCenterTitle(String title) {
+        View centerTitle = getToolbarView().findViewById(R.id.tv_center_title);
+        if (null != centerTitle && centerTitle instanceof TextView) {
+            centerTitle.setVisibility(View.VISIBLE);
+            ((TextView) centerTitle).setText(title);
+        }
+    }
+
+    public void autoFillToolBarLeftIcon() {
+        getToolbarView().setNavigationIcon(R.mipmap.ic_white_back);
+        getToolbarView().setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pop();
+            }
+        });
     }
 
     @Override
