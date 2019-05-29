@@ -3,11 +3,12 @@ package com.mei.financial.ui.sound;
 import android.Manifest;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.Space;
 import android.widget.TextView;
 
 import com.iflytek.cloud.ErrorCode;
@@ -23,6 +24,7 @@ import com.iflytek.cloud.ui.RecognizerDialogListener;
 import com.mei.financial.R;
 import com.mei.financial.utils.JsonParser;
 import com.meis.base.mei.base.BaseActivity;
+import com.meis.base.mei.utils.Eyes;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.vondear.rxtool.view.RxToast;
 
@@ -41,34 +43,37 @@ import io.reactivex.functions.Consumer;
  * @since 2019/5/23
  */
 public class SoundRegisterActivity extends BaseActivity {
+
     @BindView(R.id.iv_header)
     ImageView mIvHeader;
+    @BindView(R.id.fl_header)
+    FrameLayout mFlHeader;
     @BindView(R.id.tv_title)
     TextView mTvTitle;
+    @BindView(R.id.fl_title)
+    FrameLayout mFlTitle;
     @BindView(R.id.tv_description)
     TextView mTvDescription;
-    @BindView(R.id.tv_guide)
-    TextView mTvGuide;
     @BindView(R.id.tv_sound_content)
     TextView mTvSoundContent;
-    @BindView(R.id.iv_play)
-    ImageView mIvPlay;
-    @BindView(R.id.tv_dynamic_number)
-    TextView mTvDynamicNumber;
     @BindView(R.id.tv_count)
     TextView mTvCount;
-    @BindView(R.id.cv_sound)
-    CardView mCvSound;
-    @BindView(R.id.btn_verify)
-    TextView mBtnVerify;
-    @BindView(R.id.tv_about)
-    TextView mTvAbout;
-    @BindView(R.id.tv_record)
-    TextView mTvRecord;
+    @BindView(R.id.layout_content)
+    RelativeLayout mLayoutContent;
     @BindView(R.id.iv_record)
     ImageView mIvRecord;
-    @BindView(R.id.layout_sound)
-    LinearLayout mLayoutSound;
+    @BindView(R.id.iv_play)
+    ImageView mIvPlay;
+    @BindView(R.id.tv_text)
+    TextView mTvText;
+    @BindView(R.id.space_view)
+    Space mSpaceView;
+    @BindView(R.id.btn_confirm)
+    Button mBtnConfirm;
+    @BindView(R.id.btn_cancel)
+    Button mBtnCancel;
+    @BindView(R.id.tv_hint)
+    TextView mTvHint;
 
     @Override
     protected void initView() {
@@ -77,6 +82,10 @@ public class SoundRegisterActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        Eyes.setStatusBarColor(mContext, getResources().getColor(R.color.color_163DC1));
+        autoFillToolBarLeftIcon();
+        setToolBarCenterTitle("声纹注册");
+
         new RxPermissions(mContext).request(new String[]
                 {Manifest.permission.WRITE_EXTERNAL_STORAGE,
                         Manifest.permission.LOCATION_HARDWARE, Manifest.permission.READ_PHONE_STATE,
@@ -86,7 +95,7 @@ public class SoundRegisterActivity extends BaseActivity {
                     @Override
                     public void accept(Boolean granted) throws Exception {
                         if (granted) {
-                            Log.e("SoundRegisterActivity", "initData--------dddd");
+
                         }
                     }
                 });
@@ -168,7 +177,7 @@ public class SoundRegisterActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.iv_play, R.id.btn_verify, R.id.iv_record})
+    @OnClick({R.id.iv_play, R.id.iv_record})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_play:
@@ -219,9 +228,6 @@ public class SoundRegisterActivity extends BaseActivity {
                 if (code != ErrorCode.SUCCESS) {
                     RxToast.error("语音合成失败,错误码: " + code + ",请点击网址https://www.xfyun.cn/document/error-code查询解决方案");
                 }
-                break;
-            case R.id.btn_verify:
-                mLayoutSound.setVisibility(View.VISIBLE);
                 break;
             case R.id.iv_record:
                 if (null == mIat) {
@@ -291,4 +297,5 @@ public class SoundRegisterActivity extends BaseActivity {
             mIat.destroy();
         }
     }
+
 }

@@ -1,176 +1,217 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/color_0A0B29">
 
-    <ImageView
-        android:id="@+id/iv_header"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="16dp"
-        android:src="@color/blue_baby"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <TextView
-        android:id="@+id/tv_title"
+    <FrameLayout
+        android:id="@+id/fl_header"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:paddingLeft="16dp"
-        android:paddingTop="24dp"
-        android:paddingBottom="24dp"
-        android:text="声 纹 信 息 安 全 验 证"
-        android:textColor="#333333"
-        android:textSize="32sp"
+        android:layout_marginTop="30dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_header"/>
-
-    <TextView
-        android:id="@+id/tv_description"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:paddingLeft="16dp"
-        android:paddingTop="24dp"
-        android:paddingBottom="24dp"
-        android:text="为使用审核通过，请务必保障说话足够清晰"
-        android:textColor="#333333"
-        android:textSize="18sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title"/>
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/cv_sound"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:foreground="?attr/selectableItemBackground"
-        app:cardBackgroundColor="@android:color/white"
-        app:cardPreventCornerOverlap="false"
-        app:cardUseCompatPadding="true"
-        app:layout_constraintTop_toBottomOf="@+id/tv_description">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="16dp">
-
-            <TextView
-                android:id="@+id/tv_guide"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:text="请大声读出下面数字"
-                android:textSize="16sp"/>
-
-            <TextView
-                android:id="@+id/tv_sound_content"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_guide"
-                android:layout_centerHorizontal="true"
-                android:text="2408\n9735"
-                android:textColor="#333333"
-                android:textSize="48sp"/>
-
-            <ImageView
-                android:id="@+id/iv_play"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_below="@+id/tv_sound_content"
-                android:layout_centerHorizontal="true"
-                android:src="@color/chocolate"/>
-
-            <TextView
-                android:id="@+id/tv_dynamic_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/iv_play"
-                android:layout_alignBottom="@+id/iv_play"
-                android:layout_alignParentRight="true"
-                android:gravity="center_vertical"
-                android:text="/动态数字"
-                android:textSize="16sp"/>
-
-            <TextView
-                android:id="@+id/tv_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/iv_play"
-                android:layout_alignBottom="@+id/iv_play"
-                android:layout_toLeftOf="@+id/tv_dynamic_number"
-                android:gravity="center_vertical"
-                android:text="第1次"
-                android:textColor="@color/chocolate"
-                android:textSize="14sp"/>
-
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
-
-    <TextView
-        android:id="@+id/btn_verify"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginTop="21dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/bg_btn_login_selected"
-        android:gravity="center"
-        android:text="验证"
-        android:textColor="@color/white"
-        android:textSize="18dp"
-        app:layout_constraintTop_toBottomOf="@+id/cv_sound"/>
-
-    <TextView
-        android:id="@+id/tv_about"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:gravity="center_vertical"
-        android:text="温馨提示\n请先注册（需要三次）\n之后即可"
-        android:textSize="16sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_verify"/>
-
-    <LinearLayout
-        android:id="@+id/layout_sound"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        android:background="#FFFFFF"
-        android:orientation="vertical"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cv_sound">
-
-        <TextView
-            android:id="@+id/tv_record"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp"
-            android:text="点击开始录音，录完后再点击"
-            android:textSize="16sp"/>
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/iv_record"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp"
-            android:src="@color/chocolate"/>
+            android:id="@+id/iv_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:scaleType="centerInside"
+            android:src="@mipmap/user_header_bg" />
 
-    </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="金融声纹认证系统"
+            android:textColor="@color/color_83DBFF"
+            android:textSize="17sp" />
+
+    </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="42dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="42dp"
+        android:background="@mipmap/sound_register_bg"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fl_header">
+
+        <FrameLayout
+            android:id="@+id/fl_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:scaleType="centerInside"
+                android:src="@mipmap/sound_register_title_bg" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/sound_register_sound_ic" />
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginRight="7dp"
+                    android:text="声纹注册"
+                    android:textColor="@color/color_83DBFF"
+                    android:textSize="18sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/sound_register_sound_ic" />
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+
+        <TextView
+            android:id="@+id/tv_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fl_title"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="28dp"
+            android:text="动态数字"
+            android:textColor="@color/color_1E82AA"
+            android:textSize="15sp" />
+
+
+        <TextView
+            android:id="@+id/tv_sound_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_description"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="18dp"
+            android:text="2408  9735"
+            android:textColor="@color/color_83DBFF"
+            android:textSize="30sp" />
+
+
+        <ImageView
+            android:id="@+id/iv_play"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_below="@+id/tv_sound_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="68dp"
+            android:layout_marginBottom="14dp"
+            android:src="@mipmap/sound_register_play_ic" />
+
+        <TextView
+            android:id="@+id/tv_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/iv_play"
+            android:layout_alignBottom="@+id/iv_play"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/iv_play"
+            android:gravity="center_vertical"
+            android:text="(第1次)"
+            android:textColor="@color/color_7BCDF1"
+            android:textSize="14sp" />
+
+
+        <TextView
+            android:id="@+id/tv_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_description"
+            android:layout_marginLeft="26dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginRight="26dp"
+            android:text="久未放晴的天空，依旧留着你的笑容哭过却无法掩埋歉疚。风筝在阴天搁浅想念还在"
+            android:textColor="@color/color_83DBFF"
+            android:textSize="17sp" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/iv_record"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:scaleType="centerInside"
+        android:src="@mipmap/sound_register_record_ic"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_content" />
+
+    <Space
+        android:id="@+id/space_view"
+        android:layout_width="1px"
+        android:layout_height="1px"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="39dp"
+        android:layout_marginRight="4dp"
+        android:background="@mipmap/sound_register_confirm_ic"
+        android:text="确定"
+        android:textColor="@color/color_4BC9FC"
+        android:textSize="18sp"
+        app:layout_constraintRight_toLeftOf="@+id/space_view"
+        app:layout_constraintTop_toBottomOf="@+id/layout_content" />
+
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="39dp"
+        android:background="@mipmap/sound_register_cancel_ic"
+        android:text="退出"
+        android:textColor="@color/color_4BC9FC"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toRightOf="@+id/space_view"
+        app:layout_constraintTop_toBottomOf="@+id/layout_content" />
+
+    <TextView
+        android:id="@+id/tv_hint"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="22dp"
+        android:layout_marginRight="22dp"
+        android:layout_marginBottom="25dp"
+        android:text="温馨提示：请先注册声纹(需要录三次动态数字，两次文本无关)之后即可进行个人声纹验证。"
+        android:textColor="@color/color_1e82aa"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
 
 </android.support.constraint.ConstraintLayout>

@@ -1,6 +1,7 @@
 package com.mei.financial.ui;
 
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
 import android.text.Editable;
 import android.text.InputType;
@@ -19,6 +20,10 @@ import android.widget.Toast;
 import com.mei.financial.R;
 import com.mei.financial.common.Constant;
 import com.mei.financial.common.UrlApi;
+import com.mei.financial.entity.ApiResult;
+import com.mei.financial.entity.UserInfo;
+import com.mei.financial.ui.dialog.RegisterSuccessDialog;
+import com.mei.financial.utils.ACache;
 import com.mei.financial.utils.StringUtils;
 import com.mei.financial.view.RxCaptcha2;
 import com.meis.base.mei.base.BaseActivity;
@@ -29,6 +34,9 @@ import com.vondear.rxtool.RxRegTool;
 import com.vondear.rxtool.RxSPTool;
 import com.vondear.rxtool.view.RxToast;
 import com.zhouyou.http.EasyHttp;
+import com.zhouyou.http.cache.RxCache;
+import com.zhouyou.http.callback.SimpleCallBack;
+import com.zhouyou.http.exception.ApiException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,7 +66,7 @@ public class LoginActivity extends BaseActivity {
     @BindView(R.id.btn_login)
     Button mBtnLogin;
     @BindView(R.id.register)
-    TextView mRegist;
+    TextView mRegister;
     @BindView(R.id.forget_password)
     TextView mForgetPassword;
     @BindView(R.id.content)
@@ -77,6 +85,8 @@ public class LoginActivity extends BaseActivity {
     CheckBox mCbAccount;
     @BindView(R.id.cb_password)
     CheckBox mCbPassword;
+
+    private static final int REGISTER_REQUEST_CODE = 0X03;
 
     @Override
     protected void initView() {
@@ -137,6 +147,10 @@ public class LoginActivity extends BaseActivity {
 
         getVerifyCode();
 
+        fillMobilePasswordData();
+    }
+
+    private void fillMobilePasswordData() {
         String account = RxSPTool.getString(mContext, Constant.LOGIN_SAVE_ACCOUNT);
         if (!RxDataTool.isEmpty(account)) {
             mEtMobile.setText(account);
@@ -215,16 +229,38 @@ public class LoginActivity extends BaseActivity {
                 RxSPTool.putString(mContext, Constant.LOGIN_SAVE_PASSWORD,
                         mCbPassword.isChecked() ? RxEncodeTool.base64Encode2String(password.getBytes()) : "");
                 // 发起网络请求
-                EasyHttp.post(UrlApi.Login.PATH);
+                EasyHttp.post(UrlApi.USER_LOGIN)
+                        .params("account", mobile)
+                        .params("password", password)
+                        .execute(new SimpleCallBack<ApiResult<UserInfo>>() {
+
+                            @Override
+                            public void onError(ApiException e) {
+
+                            }
+
+                            @Override
+                            public void onSuccess(ApiResult<UserInfo> userInfoApiResult) {
+                                ACache.get(mContext).put(Constant.USER_INFO, userInfoApiResult.getData());
+                            }
+                        });
 
                 startActivity(new Intent(mContext, HomeActivity.class));
                 break;
             case R.id.register:
-                startActivity(new Intent(mContext, RegisterActivity.class));
+                startActivityForResult(new Intent(mContext, RegisterActivity.class), REGISTER_REQUEST_CODE);
                 break;
             case R.id.forget_password:
                 startActivity(new Intent(mContext, ForgetPasswordActivity.class));
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REGISTER_REQUEST_CODE && resultCode == Constant.RESULT_OK) {
+            fillMobilePasswordData();
         }
     }
 

@@ -2,13 +2,18 @@ package com.mei.financial;
 
 import android.app.Application;
 
-import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 import com.iflytek.cloud.SpeechUtility;
+import com.mei.financial.common.Constant;
+import com.mei.financial.utils.StringUtils;
+import com.vondear.rxtool.RxSPTool;
 import com.vondear.rxtool.RxTool;
 import com.zhouyou.http.EasyHttp;
 import com.zhouyou.http.cache.converter.SerializableDiskConverter;
 import com.zhouyou.http.model.HttpHeaders;
 import com.zhouyou.http.model.HttpParams;
+
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * @author wenshi
@@ -18,7 +23,7 @@ import com.zhouyou.http.model.HttpParams;
  */
 public class MyApplication extends Application {
 
-    String urlHeader = "http://www.mei.com";
+    String urlHeader = "http://119.3.70.106:8030";
 
     @Override
     public void onCreate() {
@@ -29,10 +34,14 @@ public class MyApplication extends Application {
         EasyHttp.init(this);
         //设置请求头
         HttpHeaders headers = new HttpHeaders();
-        headers.put("User-Agent", "com.mei.financial");
+        // headers.put("User-Agent", "mei");
+        String token = RxSPTool.getString(this, Constant.GLOBAL_TOKEN);
+        if (!StringUtils.isEmpty(token)) {
+            headers.put("Authorization", "Bearer " + token);
+        }
         //设置请求参数
         HttpParams params = new HttpParams();
-        params.put("appId", "10010");
+        // params.put("appId", "10010");
         EasyHttp.getInstance()
                 .debug("RxEasyHttp", BuildConfig.DEBUG)
                 .setReadTimeOut(60 * 1000)
@@ -46,6 +55,7 @@ public class MyApplication extends Application {
                 .setCacheMaxSize(50 * 1024 * 1024) // 设置缓存大小为50M
                 .setCacheVersion(1) // 缓存版本为1
                 .setCertificates() // 信任所有证书
+                .addConverterFactory(GsonConverterFactory.create(new Gson()))
                 .addCommonHeaders(headers) // 设置全局公共头
                 .addCommonParams(params); // 设置全局公共参数
 

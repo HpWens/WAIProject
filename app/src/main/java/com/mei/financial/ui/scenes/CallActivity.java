@@ -4,7 +4,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mei.financial.R;
+import com.mei.financial.common.UrlApi;
 import com.meis.base.mei.base.BaseActivity;
+import com.zhouyou.http.EasyHttp;
+import com.zhouyou.http.callback.SimpleCallBack;
+import com.zhouyou.http.exception.ApiException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -16,6 +20,7 @@ import butterknife.ButterKnife;
  * @since 2019/5/23
  */
 public class CallActivity extends BaseActivity {
+
     @BindView(R.id.iv_call)
     ImageView mIvCall;
     @BindView(R.id.tv_call_name)
@@ -35,6 +40,18 @@ public class CallActivity extends BaseActivity {
     @Override
     protected void initData() {
 
+        EasyHttp.get(UrlApi.SCENES_CALL)
+                .execute(new SimpleCallBack<String>() {
+                    @Override
+                    public void onError(ApiException e) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(String s) {
+
+                    }
+                });
     }
 
     @Override

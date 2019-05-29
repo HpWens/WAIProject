@@ -2,146 +2,229 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/color_0A0B29">
+
+    <FrameLayout
+        android:id="@+id/fl_header"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:scaleType="centerInside"
+            android:src="@mipmap/user_header_bg" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="金融声纹认证系统"
+            android:textColor="@color/color_83DBFF"
+            android:textSize="17sp" />
+
+    </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="42dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="42dp"
+        android:background="@mipmap/sound_register_bg"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fl_header">
+
+        <FrameLayout
+            android:id="@+id/fl_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:scaleType="centerInside"
+                android:src="@mipmap/sound_register_title_bg" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/sound_register_sound_ic" />
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginRight="7dp"
+                    android:text="声纹验证"
+                    android:textColor="@color/color_83DBFF"
+                    android:textSize="18sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/sound_register_sound_ic" />
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+
+        <TextView
+            android:id="@+id/tv_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fl_title"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="28dp"
+            android:text="动态数字"
+            android:textColor="@color/color_1E82AA"
+            android:textSize="15sp" />
+
+
+        <TextView
+            android:id="@+id/tv_sound_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_description"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="18dp"
+            android:text="2408  9735"
+            android:textColor="@color/color_83DBFF"
+            android:textSize="30sp" />
+
+
+        <ImageView
+            android:id="@+id/iv_play"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_below="@+id/tv_sound_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="68dp"
+            android:layout_marginBottom="14dp"
+            android:src="@mipmap/sound_register_play_ic" />
+
+    </RelativeLayout>
 
     <ImageView
-        android:id="@+id/iv_header"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="16dp"
-        android:src="@color/blue_baby"
+        android:id="@+id/iv_record"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:scaleType="centerInside"
+        android:src="@mipmap/sound_register_record_ic"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_content" />
+
+
+    <TextView
+        android:id="@+id/tv_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="11dp"
+        android:text="温馨提示：请按住说话，读完后松开。"
+        android:textColor="@color/color_1E82AA"
+        android:textSize="14sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_record" />
+
+    <TextView
+        android:id="@+id/tv_verify_success"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="46dp"
+        android:text="恭喜您的声纹验证成功!"
+        android:textColor="@color/color_2ef386"
+        android:textSize="17sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_content" />
+
+
+    <Button
+        android:id="@+id/btn_exit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="42dp"
+        android:background="@mipmap/sound_register_confirm_ic"
+        android:text="退出"
+        android:textColor="@color/color_4BC9FC"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_verify_success" />
+
+
+    <TextView
+        android:id="@+id/tv_verify_failure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="46dp"
+        android:gravity="center"
+        android:text="对不起，您的声纹验证失败！\n 请重新验证！"
+        android:textColor="@color/color_FF3333"
+        android:textSize="17sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_content" />
+
+
+    <Space
+        android:id="@+id/space_view"
+        android:layout_width="1px"
+        android:layout_height="1px"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_title"
-        android:layout_width="0dp"
+    <Button
+        android:id="@+id/btn_restart_verify"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:paddingLeft="16dp"
-        android:paddingTop="24dp"
-        android:paddingBottom="24dp"
-        android:text="声 纹 信 息 安 全 验 证"
-        android:textColor="#333333"
-        android:textSize="32sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_header" />
-
-    <TextView
-        android:id="@+id/tv_description"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:paddingLeft="16dp"
-        android:paddingTop="24dp"
-        android:paddingBottom="24dp"
-        android:text="为使用审核通过，请务必保障说话足够清晰"
-        android:textColor="#333333"
+        android:layout_marginTop="32dp"
+        android:layout_marginRight="4dp"
+        android:background="@mipmap/sound_register_confirm_ic"
+        android:text="重新验证"
+        android:textColor="@color/color_4BC9FC"
         android:textSize="18sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+        app:layout_constraintRight_toLeftOf="@+id/space_view"
+        app:layout_constraintTop_toBottomOf="@+id/tv_verify_failure" />
 
-
-    <TextView
-        android:id="@+id/tv_sound_verify"
-        android:layout_width="0dp"
+    <Button
+        android:id="@+id/btn_failure_exit"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingLeft="16dp"
-        android:paddingTop="24dp"
-        android:paddingBottom="24dp"
-        android:text="声纹验证"
-        android:textColor="#333333"
-        android:textSize="24sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_description" />
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="32dp"
+        android:background="@mipmap/sound_register_cancel_ic"
+        android:text="退出"
+        android:textColor="@color/color_4BC9FC"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toRightOf="@+id/space_view"
+        app:layout_constraintTop_toBottomOf="@+id/tv_verify_failure" />
 
-
-    <LinearLayout
-        android:id="@+id/layout_verify"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_sound_verify">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingLeft="16dp"
-            android:paddingTop="24dp"
-            android:paddingBottom="24dp"
-            android:text="动态数字："
-            android:textColor="#333333"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/tv_verify_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingTop="24dp"
-            android:paddingBottom="24dp"
-            android:text="12345678"
-            android:textColor="#333333"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginLeft="16dp"
-            android:background="@color/aliceblue" />
-
-    </LinearLayout>
-
-    <ImageView
-        android:id="@+id/iv_play"
-        android:layout_width="0dp"
-        android:layout_height="64dp"
-        android:background="@color/bisque"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_verify" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        android:background="#FFFFFF"
-        android:orientation="vertical"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_play">
-
-        <ImageView
-            android:id="@+id/iv_record"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp"
-            android:src="@color/chocolate" />
-
-        <TextView
-            android:id="@+id/tv_record"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp"
-            android:text="温馨提示"
-            android:textSize="16sp" />
-
-    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

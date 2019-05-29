@@ -8,8 +8,18 @@ package com.mei.financial.common;
  */
 public class Constant {
 
+    public static final int RESULT_OK = 0X04;
+
+    // token
+    public static String GLOBAL_TOKEN = "global_token";
+
     // 登录页面
     public static String LOGIN_SAVE_ACCOUNT = "login_save_account";
     public static String LOGIN_SAVE_PASSWORD = "login_save_password";
+
+
+    // 保存用户数据
+    public static String USER_INFO = "user_info";
+
 
 }
