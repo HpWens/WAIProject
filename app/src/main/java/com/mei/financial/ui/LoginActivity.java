@@ -1,6 +1,7 @@
 package com.mei.financial.ui;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
 import android.text.Editable;
@@ -29,6 +30,7 @@ import com.mei.financial.utils.StringUtils;
 import com.mei.financial.view.RxCaptcha2;
 import com.meis.base.mei.base.BaseActivity;
 import com.meis.base.mei.entity.Result;
+import com.meis.base.mei.utils.Eyes;
 import com.scwang.smartrefresh.layout.util.DensityUtil;
 import com.vondear.rxtool.RxDataTool;
 import com.vondear.rxtool.RxEncodeTool;
@@ -93,8 +95,6 @@ public class LoginActivity extends BaseActivity {
     private static final int REGISTER_REQUEST_CODE = 0X03;
     @BindView(R.id.layout_verify)
     LinearLayout mLayoutVerify;
-    @BindView(R.id.line_verify)
-    View mLineVerify;
 
     @Override
     protected void initView() {
@@ -103,6 +103,8 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        Eyes.translucentStatusBar(mContext, true);
+
         mEtMobile.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -156,6 +158,9 @@ public class LoginActivity extends BaseActivity {
         getVerifyCode();
 
         fillMobilePasswordData();
+
+        mRegister.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); // 下划线
+        mRegister.getPaint().setAntiAlias(true); // 抗锯齿
     }
 
     private void fillMobilePasswordData() {
@@ -280,7 +285,6 @@ public class LoginActivity extends BaseActivity {
                                             if (null != userInfoResult.getData()) {
                                                 if (userInfoResult.getData().need_verify) {
                                                     mLayoutVerify.setVisibility(View.VISIBLE);
-                                                    mLineVerify.setVisibility(View.VISIBLE);
                                                 }
                                             }
                                         }
@@ -308,12 +312,12 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void getVerifyCode() {
-        int width = DensityUtil.dp2px(100);
-        int height = DensityUtil.dp2px(35);
+        int width = DensityUtil.dp2px(68);
+        int height = DensityUtil.dp2px(26);
         RxCaptcha2.build()
                 .backColor(0xffffff)
-                .codeLength(5)
-                .fontSize(48)
+                .codeLength(4)
+                .fontSize(36)
                 .lineNumber(0)
                 .size(width, height)
                 .type(RxCaptcha2.TYPE.CHARS)

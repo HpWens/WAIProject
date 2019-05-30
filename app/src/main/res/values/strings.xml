@@ -14,4 +14,5 @@
     <string name="account_no_empty" translatable="false">账号不能为空</string>
     <string name="net_connection_error" translatable="false">请检测网络连接</string>
     <string name="calling" translatable="false">对方铃声响起... </string>
+    <string name="login_forget_password">忘记密码？</string>
 </resources>
