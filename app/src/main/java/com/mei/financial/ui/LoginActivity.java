@@ -17,30 +17,34 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.mei.financial.MyApplication;
 import com.mei.financial.R;
 import com.mei.financial.common.Constant;
 import com.mei.financial.common.UrlApi;
-import com.mei.financial.entity.ApiResult;
+import com.mei.financial.entity.ParameterizedTypeImpl;
 import com.mei.financial.entity.UserInfo;
-import com.mei.financial.ui.dialog.RegisterSuccessDialog;
-import com.mei.financial.utils.ACache;
+import com.mei.financial.entity.UserService;
 import com.mei.financial.utils.StringUtils;
 import com.mei.financial.view.RxCaptcha2;
 import com.meis.base.mei.base.BaseActivity;
+import com.meis.base.mei.entity.Result;
 import com.scwang.smartrefresh.layout.util.DensityUtil;
 import com.vondear.rxtool.RxDataTool;
 import com.vondear.rxtool.RxEncodeTool;
-import com.vondear.rxtool.RxRegTool;
+import com.vondear.rxtool.RxNetTool;
 import com.vondear.rxtool.RxSPTool;
 import com.vondear.rxtool.view.RxToast;
 import com.zhouyou.http.EasyHttp;
-import com.zhouyou.http.cache.RxCache;
 import com.zhouyou.http.callback.SimpleCallBack;
 import com.zhouyou.http.exception.ApiException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 /**
  * @author wenshi
@@ -87,6 +91,10 @@ public class LoginActivity extends BaseActivity {
     CheckBox mCbPassword;
 
     private static final int REGISTER_REQUEST_CODE = 0X03;
+    @BindView(R.id.layout_verify)
+    LinearLayout mLayoutVerify;
+    @BindView(R.id.line_verify)
+    View mLineVerify;
 
     @Override
     protected void initView() {
@@ -202,52 +210,87 @@ public class LoginActivity extends BaseActivity {
                     RxToast.error(getString(R.string.account_password_no_empty));
                     return;
                 }
-                if (!RxRegTool.isMobile(mobile)) {
-                    RxToast.error(getString(R.string.correct_phone_number));
-                    return;
-                }
+
+                // if (!RxRegTool.isMobile(mobile)) {
+                //     RxToast.error(getString(R.string.correct_phone_number));
+                //     return;
+                // }
+
                 if (password.length() < 6 || password.length() > 16) {
                     RxToast.error(getString(R.string.input_password_6_16));
                     return;
                 }
 
-                String code = mEtVerifyCode.getText().toString();
-                if (StringUtils.isEmpty(code)) {
-                    RxToast.error(getString(R.string.verify_code_no_empty));
+                if (mLayoutVerify.getVisibility() == View.VISIBLE) {
+                    String code = mEtVerifyCode.getText().toString();
+                    if (StringUtils.isEmpty(code)) {
+                        RxToast.error(getString(R.string.verify_code_no_empty));
+                        return;
+                    }
+
+                    if (!RxCaptcha2.build().getCode().equals(code.toLowerCase())) {
+                        getVerifyCode();
+                        RxToast.error(getString(R.string.verify_code_input_error));
+                        return;
+                    }
+                }
+
+                if (!RxNetTool.isAvailable(mContext)) {
+                    RxToast.error(getString(R.string.net_connection_error));
                     return;
                 }
 
-                if (!RxCaptcha2.build().getCode().equals(code.toLowerCase())) {
-                    getVerifyCode();
-                    RxToast.error(getString(R.string.verify_code_input_error));
-                    return;
-                }
+                final String passwordEncode = RxEncodeTool.base64Encode2String(password.getBytes());
 
                 // RxEncodeTool.base64Encode2String
                 RxSPTool.putString(mContext, Constant.LOGIN_SAVE_ACCOUNT, mCbAccount.isChecked() ? mobile : "");
 
                 RxSPTool.putString(mContext, Constant.LOGIN_SAVE_PASSWORD,
-                        mCbPassword.isChecked() ? RxEncodeTool.base64Encode2String(password.getBytes()) : "");
+                        mCbPassword.isChecked() ? passwordEncode : "");
+
                 // 发起网络请求
                 EasyHttp.post(UrlApi.USER_LOGIN)
                         .params("account", mobile)
-                        .params("password", password)
-                        .execute(new SimpleCallBack<ApiResult<UserInfo>>() {
-
+                        .params("password", passwordEncode)
+                        .execute(new SimpleCallBack<String>() {
                             @Override
                             public void onError(ApiException e) {
-
+                                RxToast.error(e.getMessage());
                             }
 
                             @Override
-                            public void onSuccess(ApiResult<UserInfo> userInfoApiResult) {
-                                ACache.get(mContext).put(Constant.USER_INFO, userInfoApiResult.getData());
+                            public void onSuccess(String s) {
+                                Observable.just(s).map(new Function<String, Result<UserInfo>>() {
+                                    @Override
+                                    public Result<UserInfo> apply(String s) throws Exception {
+                                        return new Gson().fromJson(s, new ParameterizedTypeImpl(Result.class, new Class[]{UserInfo.class}));
+                                    }
+                                }).subscribe(new Consumer<Result<UserInfo>>() {
+                                    @Override
+                                    public void accept(Result<UserInfo> userInfoResult) throws Exception {
+                                        if (userInfoResult.isOk()) {
+                                            if (getApplication() instanceof MyApplication) {
+                                                ((MyApplication) getApplication()).addEasyTokenHeader();
+                                            }
+                                            UserService.getInstance().saveUser(userInfoResult.data);
+                                            startActivity(new Intent(mContext, HomeActivity.class));
+                                            finish();
+                                        } else {
+                                            RxToast.error(userInfoResult.getMsg());
+                                            if (null != userInfoResult.getData()) {
+                                                if (userInfoResult.getData().need_verify) {
+                                                    mLayoutVerify.setVisibility(View.VISIBLE);
+                                                    mLineVerify.setVisibility(View.VISIBLE);
+                                                }
+                                            }
+                                        }
+                                    }
+                                });
                             }
                         });
-
-                startActivity(new Intent(mContext, HomeActivity.class));
                 break;
             case R.id.register:
+
                 startActivityForResult(new Intent(mContext, RegisterActivity.class), REGISTER_REQUEST_CODE);
                 break;
             case R.id.forget_password:

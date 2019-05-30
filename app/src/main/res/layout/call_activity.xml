@@ -3,16 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000">
+    android:background="@color/color_0A0B29">
 
     <ImageView
         android:id="@+id/iv_call"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="16dp"
-        android:src="@color/blue_baby"
+        android:layout_width="97dp"
+        android:layout_height="97dp"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/default_avatar_bg"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,13 +20,11 @@
         android:id="@+id/tv_call_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
         android:gravity="center_vertical"
-        android:paddingLeft="16dp"
-        android:paddingTop="24dp"
-        android:paddingBottom="24dp"
         android:text="信用卡中心"
         android:textColor="#FFF"
-        android:textSize="24sp"
+        android:textSize="19sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_call" />
@@ -37,35 +33,34 @@
         android:id="@+id/tv_calling"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:gravity="center_vertical"
-        android:text="对方铃声响起..."
-        android:textColor="#FFF"
-        android:textSize="16sp"
+        android:text="手机"
+        android:textColor="@color/color_cecece"
+        android:textSize="14sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_call_name" />
 
-    <TextView
-        android:id="@+id/tv_hang_up"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginLeft="100dp"
-        android:layout_marginBottom="100dp"
-        android:background="@drawable/bg_btn_login_selected"
-        android:textColor="@color/white"
-        android:textSize="18dp"
+    <ImageView
+        android:id="@+id/iv_hang_up"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginLeft="61dp"
+        android:layout_marginBottom="96dp"
+        android:scaleType="centerInside"
+        android:src="@mipmap/call_hang_up_ic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_answer"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginRight="100dp"
-        android:layout_marginBottom="100dp"
-        android:background="@drawable/bg_btn_login_selected"
-        android:textColor="@color/white"
-        android:textSize="18dp"
+    <ImageView
+        android:id="@+id/iv_answer"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginRight="61dp"
+        android:layout_marginBottom="96dp"
+        android:scaleType="centerInside"
+        android:src="@mipmap/call_answer_ic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 

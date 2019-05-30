@@ -2,78 +2,118 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/color_0A0B29">
 
-    <ImageView
-        android:id="@+id/iv_header"
+    <View
+        android:id="@+id/view_banner"
         android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="16dp"
-        android:src="@color/blue_baby"
+        android:layout_height="181dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginRight="12dp"
+        android:background="@mipmap/credit_banner_ic"
+        android:scaleType="centerCrop"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 
     <TextView
-        android:id="@+id/tv_default"
+        android:id="@+id/tv_break_contract_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="20dp"
+        android:text="违约中心"
+        android:textColor="@color/color_83DBFF"
+        android:textSize="15sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_banner" />
+
+    <RelativeLayout
+        android:id="@+id/layout_break_contract"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:paddingLeft="16dp"
-        android:paddingTop="24dp"
-        android:paddingBottom="24dp"
-        android:text="违约中心"
-        android:textColor="#333333"
-        android:textSize="24sp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="12dp"
+        android:background="@mipmap/scenes_bg"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_header" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_break_contract_hint">
 
-    <Button
-        android:id="@+id/btn_default"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginTop="21dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/bg_btn_login_selected"
-        android:text="@string/login"
-        android:textColor="@color/white"
-        android:textSize="18dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_default" />
+        <Button
+            android:id="@+id/btn_break_contract"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/credit_button_selector"
+            android:text="违约信用"
+            android:textColor="@drawable/credit_btn_text"
+            android:textSize="18sp" />
 
+
+        <TextView
+            android:id="@+id/tv_break_contract_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/btn_break_contract"
+            android:layout_centerHorizontal="true"
+            android:text="-25"
+            android:textColor="#ffff3333"
+            android:textSize="17sp"
+            android:visibility="gone" />
+
+
+    </RelativeLayout>
 
     <TextView
-        android:id="@+id/tv_promise"
+        android:id="@+id/tv_promise_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="20dp"
+        android:text="守约中心"
+        android:textColor="@color/color_83DBFF"
+        android:textSize="15sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_break_contract" />
+
+    <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:paddingLeft="16dp"
-        android:paddingTop="24dp"
-        android:paddingBottom="24dp"
-        android:text="守约中心"
-        android:textColor="#333333"
-        android:textSize="24sp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="12dp"
+        android:background="@mipmap/scenes_bg"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_default" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_promise_hint">
 
-    <Button
-        android:id="@+id/btn_promise"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginTop="21dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/bg_btn_login_selected"
-        android:text="@string/login"
-        android:textColor="@color/white"
-        android:textSize="18dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_promise" />
+        <Button
+            android:id="@+id/btn_promise"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/credit_button_selector"
+            android:text="守约信用"
+            android:textColor="@drawable/credit_btn_text"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_promise_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/btn_promise"
+            android:layout_centerHorizontal="true"
+            android:text="+25"
+            android:textColor="#2EF386"
+            android:textSize="17sp"
+            android:visibility="gone" />
+
+
+    </RelativeLayout>
+
 
 </android.support.constraint.ConstraintLayout>

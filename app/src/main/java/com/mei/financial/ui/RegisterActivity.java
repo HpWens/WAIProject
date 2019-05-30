@@ -1,6 +1,7 @@
 package com.mei.financial.ui;
 
 import android.support.v4.widget.NestedScrollView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -9,10 +10,11 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.mei.financial.R;
 import com.mei.financial.common.Constant;
 import com.mei.financial.common.UrlApi;
-import com.mei.financial.entity.ApiResult;
 import com.mei.financial.utils.StringUtils;
 import com.meis.base.mei.base.BaseActivity;
 import com.vondear.rxtool.RxEncodeTool;
@@ -23,6 +25,7 @@ import com.vondear.rxtool.view.RxToast;
 import com.zhouyou.http.EasyHttp;
 import com.zhouyou.http.callback.SimpleCallBack;
 import com.zhouyou.http.exception.ApiException;
+import com.zhouyou.http.model.ApiResult;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -135,26 +138,29 @@ public class RegisterActivity extends BaseActivity {
                         .params("phone_number", phone)
                         .params("sex", sex)
                         .params("name", name)
-                        .execute(new SimpleCallBack<ApiResult>() {
+                        .execute(new SimpleCallBack<String>() {
                             @Override
                             public void onError(ApiException e) {
-                                RxToast.error(e.toString());
+                                RxToast.error(e.getMessage());
                             }
 
                             @Override
-                            public void onSuccess(ApiResult apiResult) {
-                                if (apiResult.isSuccess()) {
-                                    // 保存账号密码
-                                    RxSPTool.putString(mContext, Constant.LOGIN_SAVE_ACCOUNT, phone);
-                                    RxSPTool.putString(mContext, Constant.LOGIN_SAVE_PASSWORD, encodePassword);
+                            public void onSuccess(String s) {
+                                if (!StringUtils.isEmpty(s)) {
+                                    ApiResult apiResult = new Gson().fromJson(s, new TypeToken<ApiResult>() {
+                                    }.getType());
+                                    if (apiResult.isOk()) {
+                                        // 保存账号密码
+                                        RxSPTool.putString(mContext, Constant.LOGIN_SAVE_ACCOUNT, account);
+                                        RxSPTool.putString(mContext, Constant.LOGIN_SAVE_PASSWORD, encodePassword);
 
-                                    setResult(Constant.RESULT_OK);
-                                    finish();
-                                } else {
-                                    RxToast.error(apiResult.msg);
+                                        setResult(Constant.RESULT_OK);
+                                        finish();
+                                    } else {
+                                        RxToast.error(apiResult.getMsg());
+                                    }
                                 }
                             }
-
                         });
 
                 break;

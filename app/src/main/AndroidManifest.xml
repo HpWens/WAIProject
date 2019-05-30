@@ -67,6 +67,7 @@
         <activity
             android:name=".ui.CreditActivity"
             android:windowSoftInputMode="adjustPan"></activity>
+
         <activity
             android:name=".ui.scenes.ScenesMainActivity"
             android:windowSoftInputMode="adjustPan"></activity>

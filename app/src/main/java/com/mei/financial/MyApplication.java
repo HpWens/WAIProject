@@ -4,9 +4,9 @@ import android.app.Application;
 
 import com.google.gson.Gson;
 import com.iflytek.cloud.SpeechUtility;
-import com.mei.financial.common.Constant;
+import com.mei.financial.entity.UserInfo;
+import com.mei.financial.entity.UserService;
 import com.mei.financial.utils.StringUtils;
-import com.vondear.rxtool.RxSPTool;
 import com.vondear.rxtool.RxTool;
 import com.zhouyou.http.EasyHttp;
 import com.zhouyou.http.cache.converter.SerializableDiskConverter;
@@ -30,14 +30,17 @@ public class MyApplication extends Application {
         SpeechUtility.createUtility(MyApplication.this, "appid=" + getString(R.string.app_id));
         RxTool.init(this);
 
+        UserService.init(this);
+
         // 初始化网络框架
         EasyHttp.init(this);
         //设置请求头
         HttpHeaders headers = new HttpHeaders();
         // headers.put("User-Agent", "mei");
-        String token = RxSPTool.getString(this, Constant.GLOBAL_TOKEN);
-        if (!StringUtils.isEmpty(token)) {
-            headers.put("Authorization", "Bearer " + token);
+        // String token = RxSPTool.getString(this, Constant.GLOBAL_TOKEN);
+        UserInfo userInfo = UserService.getInstance().getUserInfo();
+        if (null != userInfo && !StringUtils.isEmpty(userInfo.token)) {
+            headers.put("Authorization", "Bearer " + userInfo.token);
         }
         //设置请求参数
         HttpParams params = new HttpParams();
@@ -60,5 +63,14 @@ public class MyApplication extends Application {
                 .addCommonParams(params); // 设置全局公共参数
 
         super.onCreate();
+    }
+
+    public void addEasyTokenHeader() {
+        HttpHeaders headers = new HttpHeaders();
+        UserInfo userInfo = UserService.getInstance().getUserInfo();
+        if (null != userInfo && !StringUtils.isEmpty(userInfo.token)) {
+            headers.put("Authorization", "Bearer " + userInfo.token);
+        }
+        EasyHttp.getInstance().addCommonHeaders(headers);
     }
 }

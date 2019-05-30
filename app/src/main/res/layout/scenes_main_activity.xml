@@ -2,16 +2,18 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/color_0A0B29">
 
-    <ImageView
-        android:id="@+id/iv_header"
+    <View
+        android:id="@+id/view_banner"
         android:layout_width="0dp"
-        android:layout_height="148dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="16dp"
-        android:src="@color/blue_baby"
+        android:layout_height="181dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginRight="12dp"
+        android:background="@mipmap/scenes_banner_ic"
+        android:scaleType="centerCrop"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -19,45 +21,50 @@
 
     <TextView
         android:id="@+id/tv_scenes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="30dp"
+        android:text="体验场景"
+        android:textColor="@color/color_83DBFF"
+        android:textSize="15sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_banner" />
+
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:paddingLeft="16dp"
-        android:paddingTop="24dp"
-        android:paddingBottom="24dp"
-        android:text="体验场景"
-        android:textColor="#333333"
-        android:textSize="24sp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="12dp"
+        android:background="@mipmap/scenes_bg"
+        android:gravity="center"
+        android:orientation="vertical"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_header" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_scenes">
 
-    <Button
-        android:id="@+id/btn_call"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginTop="21dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/bg_btn_login_selected"
-        android:text="智能呼入"
-        android:textColor="@color/white"
-        android:textSize="18dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_scenes" />
+        <Button
+            android:id="@+id/btn_call"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/scenes_button_bg"
+            android:text="智能呼入"
+            android:textColor="@color/color_4BC9FC"
+            android:textSize="18sp" />
 
-    <Button
-        android:id="@+id/btn_promise"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginTop="21dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/bg_btn_login_selected"
-        android:text="智能会见系统"
-        android:textColor="@color/white"
-        android:textSize="18dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_call" />
+        <Button
+            android:id="@+id/btn_promise"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@mipmap/scenes_button_bg"
+            android:text="智能会见系统"
+            android:textColor="@color/color_4BC9FC"
+            android:textSize="18sp" />
+
+
+    </LinearLayout>
+
 
 </android.support.constraint.ConstraintLayout>

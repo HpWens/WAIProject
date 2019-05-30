@@ -6,6 +6,7 @@ import android.widget.TextView;
 import com.mei.financial.R;
 import com.mei.financial.common.UrlApi;
 import com.meis.base.mei.base.BaseActivity;
+import com.meis.base.mei.utils.Eyes;
 import com.zhouyou.http.EasyHttp;
 import com.zhouyou.http.callback.SimpleCallBack;
 import com.zhouyou.http.exception.ApiException;
@@ -27,10 +28,10 @@ public class CallActivity extends BaseActivity {
     TextView mTvCallName;
     @BindView(R.id.tv_calling)
     TextView mTvCalling;
-    @BindView(R.id.tv_hang_up)
-    TextView mTvHangUp;
-    @BindView(R.id.tv_answer)
-    TextView mTvAnswer;
+    @BindView(R.id.iv_hang_up)
+    ImageView mIvHangUp;
+    @BindView(R.id.iv_answer)
+    ImageView mIvAnswer;
 
     @Override
     protected void initView() {
@@ -39,6 +40,9 @@ public class CallActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        Eyes.setStatusBarColor(mContext, getResources().getColor(R.color.color_163DC1));
+        autoFillToolBarLeftIcon();
+        setToolBarCenterTitle("金融信用审核");
 
         EasyHttp.get(UrlApi.SCENES_CALL)
                 .execute(new SimpleCallBack<String>() {

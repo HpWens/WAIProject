@@ -25,6 +25,16 @@ public class UserInfo implements Serializable {
     // 时候在黑名单 1:白  2:黑
     public int is_black_list;
 
+    public boolean need_verify;
+
+    public boolean isNeed_verify() {
+        return need_verify;
+    }
+
+    public void setNeed_verify(boolean need_verify) {
+        this.need_verify = need_verify;
+    }
+
     public String getToken() {
         return token;
     }

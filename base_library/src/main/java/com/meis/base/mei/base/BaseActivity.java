@@ -1,6 +1,5 @@
 package com.meis.base.mei.base;
 
-import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
 import android.os.Bundle;
@@ -15,7 +14,8 @@ import com.meis.base.R;
 import com.meis.base.mei.MeiCompatActivity;
 import com.meis.base.mei.dialog.MeiCompatDialog;
 
-import org.w3c.dom.Text;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 import me.yokeyword.fragmentation.ExtraTransaction;
 import me.yokeyword.fragmentation.ISupportActivity;

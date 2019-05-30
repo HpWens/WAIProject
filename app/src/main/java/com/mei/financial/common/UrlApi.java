@@ -16,7 +16,7 @@ public class UrlApi {
 
     // 信用值 /api/v1/app/credit_value/:value
     // :value 为目标值
-    public static String CREDIT_URL = "/api/v1/app/credit_value/:";
+    public static String CREDIT_URL = "/api/v1/app/credit_value/";
 
     // 呼入
     public final static String SCENES_CALL = "/api/v1/app/call";

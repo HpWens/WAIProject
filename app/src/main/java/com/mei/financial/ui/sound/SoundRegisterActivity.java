@@ -94,7 +94,7 @@ public class SoundRegisterActivity extends BaseActivity {
                 .subscribe(new Consumer<Boolean>() {
                     @Override
                     public void accept(Boolean granted) throws Exception {
-                        if (granted) {
+                        if (!granted) {
 
                         }
                     }

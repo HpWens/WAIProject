@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.mei.financial.R;
 import com.meis.base.mei.base.BaseActivity;
+import com.meis.base.mei.utils.Eyes;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,8 +21,6 @@ import butterknife.OnClick;
  * @since 2019/5/23
  */
 public class ScenesMainActivity extends BaseActivity {
-    @BindView(R.id.iv_header)
-    ImageView mIvHeader;
     @BindView(R.id.tv_scenes)
     TextView mTvScenes;
     @BindView(R.id.btn_call)
@@ -36,6 +35,9 @@ public class ScenesMainActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        Eyes.setStatusBarColor(mContext, getResources().getColor(R.color.color_163DC1));
+        autoFillToolBarLeftIcon();
+        setToolBarCenterTitle("场景体验");
 
     }
 
