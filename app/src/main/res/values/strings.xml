@@ -12,5 +12,6 @@
     <string name="name_limit_hint" translatable="false">请输入2-10位姓名</string>
     <string name="hook_note_item" translatable="false">请勾选注册并同意事项</string>
     <string name="account_no_empty" translatable="false">账号不能为空</string>
-    <string name="net_connection_error"  translatable="false">请检测网络连接</string>
+    <string name="net_connection_error" translatable="false">请检测网络连接</string>
+    <string name="calling" translatable="false">对方铃声响起... </string>
 </resources>

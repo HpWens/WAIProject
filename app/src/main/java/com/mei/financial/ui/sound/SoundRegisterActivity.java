@@ -22,11 +22,15 @@ import com.iflytek.cloud.SynthesizerListener;
 import com.iflytek.cloud.ui.RecognizerDialog;
 import com.iflytek.cloud.ui.RecognizerDialogListener;
 import com.mei.financial.R;
+import com.mei.financial.common.UrlApi;
 import com.mei.financial.utils.JsonParser;
 import com.meis.base.mei.base.BaseActivity;
 import com.meis.base.mei.utils.Eyes;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.vondear.rxtool.view.RxToast;
+import com.zhouyou.http.EasyHttp;
+import com.zhouyou.http.callback.SimpleCallBack;
+import com.zhouyou.http.exception.ApiException;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -126,6 +130,18 @@ public class SoundRegisterActivity extends BaseActivity {
                 }
             }
         });
+
+        EasyHttp.get(UrlApi.SOUND_REGISTER_TEXT)
+                .execute(new SimpleCallBack<String>() {
+                    @Override
+                    public void onError(ApiException e) {
+                        RxToast.error(e.getMessage());
+                    }
+
+                    @Override
+                    public void onSuccess(String s) {
+                    }
+                });
     }
 
     @Override

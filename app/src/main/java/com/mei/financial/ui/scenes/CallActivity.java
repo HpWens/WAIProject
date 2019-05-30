@@ -1,18 +1,27 @@
 package com.mei.financial.ui.scenes;
 
+import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.mei.financial.R;
 import com.mei.financial.common.UrlApi;
+import com.mei.financial.entity.UserService;
+import com.mei.financial.utils.StringUtils;
 import com.meis.base.mei.base.BaseActivity;
+import com.meis.base.mei.entity.Result;
 import com.meis.base.mei.utils.Eyes;
+import com.vondear.rxtool.view.RxToast;
 import com.zhouyou.http.EasyHttp;
 import com.zhouyou.http.callback.SimpleCallBack;
 import com.zhouyou.http.exception.ApiException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * @author wenshi
@@ -43,19 +52,6 @@ public class CallActivity extends BaseActivity {
         Eyes.setStatusBarColor(mContext, getResources().getColor(R.color.color_163DC1));
         autoFillToolBarLeftIcon();
         setToolBarCenterTitle("金融信用审核");
-
-        EasyHttp.get(UrlApi.SCENES_CALL)
-                .execute(new SimpleCallBack<String>() {
-                    @Override
-                    public void onError(ApiException e) {
-
-                    }
-
-                    @Override
-                    public void onSuccess(String s) {
-
-                    }
-                });
     }
 
     @Override
@@ -63,4 +59,35 @@ public class CallActivity extends BaseActivity {
         return R.layout.call_activity;
     }
 
+
+    @OnClick({R.id.iv_hang_up, R.id.iv_answer})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.iv_hang_up:
+
+                break;
+            case R.id.iv_answer:
+                EasyHttp.get(UrlApi.SCENES_CALL)
+                        .execute(new SimpleCallBack<String>() {
+                            @Override
+                            public void onError(ApiException e) {
+                                RxToast.error(e.getMessage());
+                            }
+
+                            @Override
+                            public void onSuccess(String s) {
+                                if (!StringUtils.isEmpty(s)) {
+                                    Result result = new Gson().fromJson(s, new TypeToken<Result>() {
+                                    }.getType());
+                                    if (result.isOk()) {
+                                        mTvCalling.setText(getString(R.string.calling));
+                                    } else {
+                                        RxToast.error(result.getMsg());
+                                    }
+                                }
+                            }
+                        });
+                break;
+        }
+    }
 }

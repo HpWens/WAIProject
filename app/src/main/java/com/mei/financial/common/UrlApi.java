@@ -21,4 +21,7 @@ public class UrlApi {
     // 呼入
     public final static String SCENES_CALL = "/api/v1/app/call";
 
+    // 随机动态数字生成
+    public final static String SOUND_REGISTER_TEXT = "/api/v1/app/voice/upload";
+
 }
