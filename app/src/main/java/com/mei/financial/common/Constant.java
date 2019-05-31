@@ -17,9 +17,7 @@ public class Constant {
     public static String LOGIN_SAVE_ACCOUNT = "login_save_account";
     public static String LOGIN_SAVE_PASSWORD = "login_save_password";
 
-
     // 保存用户数据
     public static String USER_INFO = "user_info";
-
 
 }

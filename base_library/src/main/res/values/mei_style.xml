@@ -12,19 +12,21 @@
     </style>
 
     <style name="MeiLoadingText">
-        <item name="android:paddingTop">@dimen/mei_16_dp</item>
+        <item name="android:paddingTop">@dimen/mei_8_dp</item>
         <item name="android:text">?attr/meiTextLoading</item>
         <item name="android:textColor">?attr/meiColorTextGray</item>
+        <item name="android:textSize">@dimen/mei_16_sp</item>
     </style>
 
     <style name="MeiErrorText">
-        <item name="android:drawablePadding">@dimen/mei_16_dp</item>
+        <item name="android:drawablePadding">@dimen/mei_8_dp</item>
         <item name="android:drawableTop">?attr/meiIconError</item>
         <item name="android:gravity">center_horizontal</item>
         <item name="android:paddingBottom">@dimen/mei_16_dp</item>
         <item name="android:paddingTop">@dimen/mei_16_dp</item>
         <item name="android:text">?attr/meiTextError</item>
         <item name="android:textColor">?attr/meiColorTextGray</item>
+        <item name="android:textSize">@dimen/mei_16_sp</item>
     </style>
 
     <style name="MeiBaseDialog" parent="@android:style/Theme">

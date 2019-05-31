@@ -1,5 +1,6 @@
 package com.mei.financial.ui;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -7,8 +8,12 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.mei.financial.MyApplication;
 import com.mei.financial.R;
+import com.mei.financial.common.Constant;
 import com.mei.financial.common.UrlApi;
+import com.mei.financial.entity.ParameterizedTypeImpl;
+import com.mei.financial.entity.UserInfo;
 import com.mei.financial.entity.UserService;
 import com.mei.financial.utils.StringUtils;
 import com.meis.base.mei.base.BaseActivity;
@@ -22,6 +27,9 @@ import com.zhouyou.http.exception.ApiException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 /**
  * @author wenshi
@@ -65,6 +73,40 @@ public class CreditActivity extends BaseActivity {
 
         creditValue = UserService.getInstance().getUserInfo().credit_value;
 
+        getCreditValue();
+
+        // 发起网络请求
+        EasyHttp.get(UrlApi.GET_CREDIT_VALUE)
+                .execute(new SimpleCallBack<String>() {
+                    @Override
+                    public void onError(ApiException e) {
+                        RxToast.error(e.getMessage());
+                    }
+
+                    @Override
+                    public void onSuccess(String s) {
+                        Observable.just(s).map(new Function<String, Result<UserInfo>>() {
+                            @Override
+                            public Result<UserInfo> apply(String s) throws Exception {
+                                return new Gson().fromJson(s, new ParameterizedTypeImpl(Result.class, new Class[]{UserInfo.class}));
+                            }
+                        }).subscribe(new Consumer<Result<UserInfo>>() {
+                            @Override
+                            public void accept(Result<UserInfo> userInfoResult) throws Exception {
+                                if (userInfoResult.isOk() && null != userInfoResult.getData()) {
+                                    creditValue = userInfoResult.getData().credit_value;
+                                    getCreditValue();
+                                    UserService.getInstance().changeCreditValue(creditValue);
+                                } else {
+                                    RxToast.error(userInfoResult.getMsg());
+                                }
+                            }
+                        });
+                    }
+                });
+    }
+
+    private void getCreditValue() {
         if (creditValue >= 100) {
             mBtnPromise.setEnabled(false);
         } else if (creditValue <= 0) {

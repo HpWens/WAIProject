@@ -3,7 +3,16 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/color_0A0B29">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="58dp"
+        android:text="用户信息注册"
+        android:textColor="@color/color_4BC9FC"
+        android:textSize="20sp" />
 
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/scrollView"
@@ -12,8 +21,8 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginLeft="36dp"
+        android:layout_marginRight="36dp"
         android:fillViewport="true"
         android:scrollbarThumbVertical="@android:color/transparent"
         android:scrollbars="vertical">
@@ -22,26 +31,33 @@
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="106dp"
             android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@mipmap/edit_star_ic"
+                android:drawablePadding="8dp"
+                android:maxLength="4"
+                android:text="账号"
+                android:textColor="@color/color_4BC9FC"
+                android:textSize="16sp" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:layout_marginTop="100dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="9dp"
+                android:background="@drawable/login_edit_bg"
                 android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingLeft="13dp">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
-                    android:src="@drawable/ic_mobile_flag" />
+                android:orientation="horizontal">
 
                 <EditText
                     android:id="@+id/et_account"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="14dp"
                     android:layout_weight="1"
                     android:background="@null"
                     android:digits="@string/password_digits"
@@ -50,8 +66,8 @@
                     android:maxLength="16"
                     android:singleLine="true"
                     android:text=""
-                    android:textColor="@color/_9"
-                    android:textColorHint="@color/_9"
+                    android:textColor="@color/color_4BC9FC"
+                    android:textColorHint="@color/color_135E7D"
                     android:textSize="14dp" />
 
                 <ImageView
@@ -63,28 +79,32 @@
 
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="@color/e" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:drawableLeft="@mipmap/edit_star_ic"
+                android:drawablePadding="8dp"
+                android:maxLength="4"
+                android:text="手机号码"
+                android:textColor="@color/color_4BC9FC"
+                android:textSize="16sp" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="9dp"
+                android:background="@drawable/login_edit_bg"
                 android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingLeft="13dp">
+                android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
-                    android:src="@drawable/ic_mobile_flag" />
 
                 <EditText
                     android:id="@+id/et_phone"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
                     android:layout_weight="1"
                     android:background="@null"
                     android:hint="请输入11位手机号码"
@@ -92,8 +112,8 @@
                     android:maxLength="11"
                     android:singleLine="true"
                     android:text=""
-                    android:textColor="@color/_9"
-                    android:textColorHint="@color/_9"
+                    android:textColor="@color/color_4BC9FC"
+                    android:textColorHint="@color/color_135E7D"
                     android:textSize="14dp" />
 
                 <ImageView
@@ -105,28 +125,32 @@
 
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="@color/e" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:drawableLeft="@mipmap/edit_star_ic"
+                android:drawablePadding="8dp"
+                android:maxLength="4"
+                android:text="密码"
+                android:textColor="@color/color_4BC9FC"
+                android:textSize="16sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="9dp"
+                android:background="@drawable/login_edit_bg"
                 android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingLeft="13dp">
+                android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
-                    android:src="@drawable/ic_password_flag" />
 
                 <EditText
                     android:id="@+id/et_password"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="14dp"
                     android:layout_weight="1"
                     android:background="@null"
                     android:digits="@string/password_digits"
@@ -135,8 +159,8 @@
                     android:maxLength="30"
                     android:singleLine="true"
                     android:text=""
-                    android:textColor="@color/_9"
-                    android:textColorHint="@color/_9"
+                    android:textColor="@color/color_4BC9FC"
+                    android:textColorHint="@color/color_135E7D"
                     android:textSize="14dp" />
 
                 <ImageView
@@ -148,28 +172,31 @@
 
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="@color/e" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:drawableLeft="@mipmap/edit_star_ic"
+                android:drawablePadding="8dp"
+                android:maxLength="4"
+                android:text="姓名"
+                android:textColor="@color/color_4BC9FC"
+                android:textSize="16sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="9dp"
+                android:background="@drawable/login_edit_bg"
                 android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingLeft="13dp">
+                android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
-                    android:src="@drawable/ic_password_flag" />
 
                 <EditText
                     android:id="@+id/et_name"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="14dp"
                     android:layout_weight="1"
                     android:background="@null"
                     android:hint="请输入姓名"
@@ -177,8 +204,8 @@
                     android:maxLength="30"
                     android:singleLine="true"
                     android:text=""
-                    android:textColor="@color/_9"
-                    android:textColorHint="@color/_9"
+                    android:textColor="@color/color_4BC9FC"
+                    android:textColorHint="@color/color_135E7D"
                     android:textSize="14dp" />
 
                 <ImageView
@@ -190,10 +217,16 @@
 
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="@color/e" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:drawableLeft="@mipmap/edit_star_ic"
+                android:drawablePadding="8dp"
+                android:maxLength="4"
+                android:text="性别"
+                android:textColor="@color/color_4BC9FC"
+                android:textSize="16sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -204,48 +237,56 @@
                 <RadioGroup
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
                     android:orientation="horizontal">
 
                     <RadioButton
                         android:id="@+id/rb_man"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:button="@drawable/register_radio_selector"
                         android:checked="true"
-                        android:text="男" />
-
-                    <android.support.v4.widget.Space
-                        android:layout_width="100dp"
-                        android:layout_height="0dp" />
+                        android:paddingLeft="8dp"
+                        android:text="男"
+                        android:textColor="@color/color_4BC9FC"
+                        android:textSize="18sp" />
 
                     <RadioButton
                         android:id="@+id/rb_woman"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="女" />
+                        android:layout_marginLeft="30dp"
+                        android:button="@drawable/register_radio_selector"
+                        android:paddingLeft="8dp"
+                        android:text="女"
+                        android:textColor="@color/color_4BC9FC"
+                        android:textSize="18sp" />
 
                 </RadioGroup>
 
             </LinearLayout>
 
-            <CheckBox
-                android:id="@+id/cb_item"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp"
-                android:text="注册并同意事项" />
 
             <Button
                 android:id="@+id/btn_register"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:layout_marginTop="100dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/bg_btn_login_selected"
+                android:layout_marginTop="46dp"
+                android:background="@mipmap/login_btn_ic"
                 android:text="注册"
-                android:textColor="@color/white"
+                android:textColor="@color/color_4BC9FC"
                 android:textSize="18dp" />
+
+            <CheckBox
+                android:id="@+id/cb_item"
+                style="@style/login_checkbox_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="8dp"
+                android:text="注册并同意事项"
+                android:textColor="@color/color_30A6D5"
+                android:textSize="16sp" />
 
         </LinearLayout>
 

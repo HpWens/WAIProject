@@ -71,6 +71,7 @@ public class MyApplication extends Application {
         if (null != userInfo && !StringUtils.isEmpty(userInfo.token)) {
             headers.put("Authorization", "Bearer " + userInfo.token);
         }
+        EasyHttp.getInstance().getCommonHeaders().clear();
         EasyHttp.getInstance().addCommonHeaders(headers);
     }
 }

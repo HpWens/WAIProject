@@ -12,11 +12,11 @@ public class UserInfo implements Serializable {
 
     public String token;
     public int id;
-    public String name;
+    public String name = "";
     public int sex;
     // 是否进行了语音注册
     public boolean is_enroll;
-    public String phone_number;
+    public String phone_number = "";
     public int call_times;
     // 呼叫状态1:已接 2:未接 3:占线 4:空号 5:关机 6:其他
     public int call_status;

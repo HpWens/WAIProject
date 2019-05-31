@@ -29,9 +29,11 @@ import com.meis.base.mei.utils.Eyes;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.vondear.rxtool.view.RxToast;
 import com.zhouyou.http.EasyHttp;
+import com.zhouyou.http.body.ProgressResponseCallBack;
 import com.zhouyou.http.callback.SimpleCallBack;
 import com.zhouyou.http.exception.ApiException;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
@@ -78,6 +80,8 @@ public class SoundRegisterActivity extends BaseActivity {
     Button mBtnCancel;
     @BindView(R.id.tv_hint)
     TextView mTvHint;
+
+    private int mVerifyCount = 1;
 
     @Override
     protected void initView() {
@@ -140,6 +144,7 @@ public class SoundRegisterActivity extends BaseActivity {
 
                     @Override
                     public void onSuccess(String s) {
+
                     }
                 });
     }
@@ -193,7 +198,7 @@ public class SoundRegisterActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.iv_play, R.id.iv_record})
+    @OnClick({R.id.iv_play, R.id.iv_record, R.id.btn_confirm, R.id.btn_cancel})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_play:
@@ -265,6 +270,15 @@ public class SoundRegisterActivity extends BaseActivity {
                 });
                 mIatDialog.show();
                 break;
+            case R.id.btn_confirm:
+                mBtnConfirm.setVisibility(View.GONE);
+                mTvHint.setVisibility(View.GONE);
+                mIvRecord.setVisibility(View.VISIBLE);
+                mBtnCancel.setVisibility(View.GONE);
+                break;
+            case R.id.btn_cancel:
+                finish();
+                break;
         }
     }
 
@@ -314,4 +328,33 @@ public class SoundRegisterActivity extends BaseActivity {
         }
     }
 
+    private void uploadSoundFile() {
+        String soundPath = Environment.getExternalStorageDirectory() + "/msc/iat.wav";
+        File file = new File(soundPath);
+
+        EasyHttp.post(UrlApi.UPLOAD_SOUND)
+                .params("session_id", "")
+                .params("text", "")
+                .params("type", "")
+                .params("wave_file", file, file.getName(), new ProgressResponseCallBack() {
+                    @Override
+                    public void onResponseProgress(long bytesWritten, long contentLength, boolean done) {
+                        int progress = (int) (bytesWritten * 100 / contentLength);
+                        if (done) {
+                        }
+                    }
+                }).execute(new SimpleCallBack<String>() {
+            @Override
+            public void onError(ApiException e) {
+
+            }
+
+            @Override
+            public void onSuccess(String s) {
+
+            }
+        });
+
+
+    }
 }

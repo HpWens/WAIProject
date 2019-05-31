@@ -110,7 +110,7 @@
             android:layout_below="@+id/tv_description"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="18dp"
-            android:text="2408  9735"
+            android:text="0000  0000"
             android:textColor="@color/color_83DBFF"
             android:textSize="30sp" />
 
@@ -150,7 +150,8 @@
             android:layout_marginRight="26dp"
             android:text="久未放晴的天空，依旧留着你的笑容哭过却无法掩埋歉疚。风筝在阴天搁浅想念还在"
             android:textColor="@color/color_83DBFF"
-            android:textSize="17sp" />
+            android:textSize="17sp"
+            android:visibility="gone" />
 
     </RelativeLayout>
 
@@ -161,6 +162,7 @@
         android:layout_marginTop="36dp"
         android:scaleType="centerInside"
         android:src="@mipmap/sound_register_record_ic"
+        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout_content" />

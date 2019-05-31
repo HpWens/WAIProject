@@ -1,10 +1,11 @@
 package com.mei.financial.ui;
 
+import android.graphics.Paint;
 import android.support.v4.widget.NestedScrollView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -15,8 +16,11 @@ import com.google.gson.reflect.TypeToken;
 import com.mei.financial.R;
 import com.mei.financial.common.Constant;
 import com.mei.financial.common.UrlApi;
+import com.mei.financial.ui.dialog.RegisterSuccessDialog;
+import com.mei.financial.ui.dialog.UserProtocolDialog;
 import com.mei.financial.utils.StringUtils;
 import com.meis.base.mei.base.BaseActivity;
+import com.meis.base.mei.utils.Eyes;
 import com.vondear.rxtool.RxEncodeTool;
 import com.vondear.rxtool.RxNetTool;
 import com.vondear.rxtool.RxRegTool;
@@ -39,12 +43,8 @@ import butterknife.OnClick;
  */
 public class RegisterActivity extends BaseActivity {
 
-    @BindView(R.id.content)
-    LinearLayout mContent;
-    @BindView(R.id.scrollView)
-    NestedScrollView mScrollView;
-    @BindView(R.id.root)
-    RelativeLayout mRoot;
+    @BindView(R.id.et_account)
+    EditText mEtAccount;
     @BindView(R.id.et_phone)
     EditText mEtPhone;
     @BindView(R.id.et_password)
@@ -55,12 +55,16 @@ public class RegisterActivity extends BaseActivity {
     RadioButton mRbMan;
     @BindView(R.id.rb_woman)
     RadioButton mRbWoman;
-    @BindView(R.id.cb_item)
-    CheckBox mCbItem;
     @BindView(R.id.btn_register)
     Button mBtnRegister;
-    @BindView(R.id.et_account)
-    EditText mEtAccount;
+    @BindView(R.id.cb_item)
+    CheckBox mCbItem;
+    @BindView(R.id.content)
+    LinearLayout mContent;
+    @BindView(R.id.scrollView)
+    NestedScrollView mScrollView;
+    @BindView(R.id.root)
+    RelativeLayout mRoot;
 
     @Override
     protected void initView() {
@@ -69,7 +73,19 @@ public class RegisterActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        Eyes.translucentStatusBar(mContext, true);
 
+        mCbItem.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); // 下划线
+        mCbItem.getPaint().setAntiAlias(true); // 抗锯齿
+
+        mCbItem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    new UserProtocolDialog(mContext).show();
+                }
+            }
+        });
     }
 
     @Override
@@ -154,8 +170,16 @@ public class RegisterActivity extends BaseActivity {
                                         RxSPTool.putString(mContext, Constant.LOGIN_SAVE_ACCOUNT, account);
                                         RxSPTool.putString(mContext, Constant.LOGIN_SAVE_PASSWORD, encodePassword);
 
-                                        setResult(Constant.RESULT_OK);
-                                        finish();
+                                        new RegisterSuccessDialog(mContext, new RegisterSuccessDialog.OnPositiveListener() {
+                                            @Override
+                                            public void onClick(RegisterSuccessDialog dialog) {
+                                                dialog.dismiss();
+                                                setResult(Constant.RESULT_OK);
+                                                finish();
+                                            }
+                                        }).show();
+
+
                                     } else {
                                         RxToast.error(apiResult.getMsg());
                                     }

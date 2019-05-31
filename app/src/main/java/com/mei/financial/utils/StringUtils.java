@@ -20,4 +20,24 @@ public class StringUtils {
 
         return false;
     }
+
+    public static String getFormatPrePhone(String phone) {
+        if (null == phone || phone.length() != 11) {
+            return "";
+        }
+        return phone.substring(0, 3) + "***" + phone.substring(8, 11);
+    }
+
+    public static String getFormatName(String name) {
+        if (null == name || name.equals("")) {
+            return "";
+        }
+        int length = name.length();
+        if (length > 2) {
+            return name.substring(0, 1) + "*" + name.substring(length - 1, length);
+        } else {
+            return name;
+        }
+    }
+
 }

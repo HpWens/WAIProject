@@ -13,16 +13,17 @@ import com.vondear.rxui.view.dialog.RxDialog;
  * @Description
  * @since 2019/5/29
  */
-public class RegisterFailureDialog extends RxDialog {
+public class SoundRegisterSuccessDialog extends RxDialog {
 
-    public RegisterFailureDialog(Context context, int themeResId) {
+    public SoundRegisterSuccessDialog(Context context, int themeResId) {
         super(context, themeResId);
 
-        View view = LayoutInflater.from(mContext).inflate(R.layout.register_failure_dialog, null);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.sound_register_success_dialog, null);
         setContentView(view);
     }
 
-    public RegisterFailureDialog(Context context) {
+    public SoundRegisterSuccessDialog(Context context) {
         this(context, R.style.register_dialog);
     }
+
 }

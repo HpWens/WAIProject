@@ -95,6 +95,16 @@ public class LoginActivity extends BaseActivity {
     private static final int REGISTER_REQUEST_CODE = 0X03;
     @BindView(R.id.layout_verify)
     LinearLayout mLayoutVerify;
+    @BindView(R.id.tv_account)
+    TextView mTvAccount;
+    @BindView(R.id.tv_password)
+    TextView mTvPassword;
+    @BindView(R.id.tv_error_hint)
+    TextView mTvErrorHint;
+    @BindView(R.id.tv_verify)
+    TextView mTvVerify;
+    @BindView(R.id.clean_verify)
+    ImageView mCleanVerify;
 
     @Override
     protected void initView() {
@@ -108,7 +118,7 @@ public class LoginActivity extends BaseActivity {
         mEtMobile.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                mTvErrorHint.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -125,10 +135,11 @@ public class LoginActivity extends BaseActivity {
                 }
             }
         });
+
         mEtPassword.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                mTvErrorHint.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -151,6 +162,27 @@ public class LoginActivity extends BaseActivity {
                     Toast.makeText(mContext, "请输入数字或字母", Toast.LENGTH_SHORT).show();
                     s.delete(temp.length() - 1, temp.length());
                     mEtPassword.setSelection(s.length());
+                }
+            }
+        });
+
+        mEtVerifyCode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                mTvErrorHint.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!TextUtils.isEmpty(s) && mCleanVerify.getVisibility() == View.GONE) {
+                    mCleanVerify.setVisibility(View.VISIBLE);
+                } else if (TextUtils.isEmpty(s)) {
+                    mCleanVerify.setVisibility(View.GONE);
                 }
             }
         });
@@ -183,7 +215,7 @@ public class LoginActivity extends BaseActivity {
         return R.layout.login_activity;
     }
 
-    @OnClick({R.id.iv_clean_phone, R.id.clean_password, R.id.iv_show_pwd,
+    @OnClick({R.id.iv_clean_phone, R.id.clean_password, R.id.iv_show_pwd, R.id.clean_verify,
             R.id.iv_code, R.id.btn_login, R.id.register, R.id.forget_password})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -192,6 +224,9 @@ public class LoginActivity extends BaseActivity {
                 break;
             case R.id.clean_password:
                 mEtPassword.setText("");
+                break;
+            case R.id.clean_verify:
+                mEtVerifyCode.setText("");
                 break;
             case R.id.iv_show_pwd:
                 if (mEtPassword.getInputType() != InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
@@ -209,10 +244,11 @@ public class LoginActivity extends BaseActivity {
                 getVerifyCode();
                 break;
             case R.id.btn_login:
-                String mobile = mEtMobile.getText().toString();
-                String password = mEtPassword.getText().toString();
+                final String mobile = mEtMobile.getText().toString();
+                final String password = mEtPassword.getText().toString();
                 if (StringUtils.isEmpty(mobile) || StringUtils.isEmpty(password)) {
-                    RxToast.error(getString(R.string.account_password_no_empty));
+                    // RxToast.error(getString(R.string.account_password_no_empty));
+                    showErrorHint(getString(R.string.account_password_no_empty));
                     return;
                 }
 
@@ -222,20 +258,23 @@ public class LoginActivity extends BaseActivity {
                 // }
 
                 if (password.length() < 6 || password.length() > 16) {
-                    RxToast.error(getString(R.string.input_password_6_16));
+                    // RxToast.error(getString(R.string.input_password_6_16));
+                    showErrorHint(getString(R.string.input_password_6_16));
                     return;
                 }
 
                 if (mLayoutVerify.getVisibility() == View.VISIBLE) {
                     String code = mEtVerifyCode.getText().toString();
                     if (StringUtils.isEmpty(code)) {
-                        RxToast.error(getString(R.string.verify_code_no_empty));
+                        // RxToast.error(getString(R.string.verify_code_no_empty));
+                        showErrorHint(getString(R.string.verify_code_no_empty));
                         return;
                     }
 
                     if (!RxCaptcha2.build().getCode().equals(code.toLowerCase())) {
                         getVerifyCode();
-                        RxToast.error(getString(R.string.verify_code_input_error));
+                        // RxToast.error(getString(R.string.verify_code_input_error));
+                        showErrorHint(getString(R.string.verify_code_input_error));
                         return;
                     }
                 }
@@ -246,12 +285,6 @@ public class LoginActivity extends BaseActivity {
                 }
 
                 final String passwordEncode = RxEncodeTool.base64Encode2String(password.getBytes());
-
-                // RxEncodeTool.base64Encode2String
-                RxSPTool.putString(mContext, Constant.LOGIN_SAVE_ACCOUNT, mCbAccount.isChecked() ? mobile : "");
-
-                RxSPTool.putString(mContext, Constant.LOGIN_SAVE_PASSWORD,
-                        mCbPassword.isChecked() ? passwordEncode : "");
 
                 // 发起网络请求
                 EasyHttp.post(UrlApi.USER_LOGIN)
@@ -277,14 +310,23 @@ public class LoginActivity extends BaseActivity {
                                             if (getApplication() instanceof MyApplication) {
                                                 ((MyApplication) getApplication()).addEasyTokenHeader();
                                             }
+
+                                            // RxEncodeTool.base64Encode2String
+                                            RxSPTool.putString(mContext, Constant.LOGIN_SAVE_ACCOUNT, mCbAccount.isChecked() ? mobile : "");
+
+                                            RxSPTool.putString(mContext, Constant.LOGIN_SAVE_PASSWORD,
+                                                    mCbPassword.isChecked() ? passwordEncode : "");
+
                                             UserService.getInstance().saveUser(userInfoResult.data);
                                             startActivity(new Intent(mContext, HomeActivity.class));
                                             finish();
                                         } else {
-                                            RxToast.error(userInfoResult.getMsg());
+                                            // RxToast.error(userInfoResult.getMsg());
+                                            showErrorHint(userInfoResult.getMsg());
                                             if (null != userInfoResult.getData()) {
                                                 if (userInfoResult.getData().need_verify) {
                                                     mLayoutVerify.setVisibility(View.VISIBLE);
+                                                    mTvVerify.setVisibility(View.VISIBLE);
                                                 }
                                             }
                                         }
@@ -301,6 +343,20 @@ public class LoginActivity extends BaseActivity {
                 startActivity(new Intent(mContext, ForgetPasswordActivity.class));
                 break;
         }
+    }
+
+
+    public void showErrorHint(String error) {
+        if (mTvErrorHint.getVisibility() != View.VISIBLE) {
+            mTvErrorHint.setVisibility(View.VISIBLE);
+        }
+        mTvErrorHint.setText(error);
+        mTvErrorHint.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mTvErrorHint.setVisibility(View.INVISIBLE);
+            }
+        }, 1000);
     }
 
     @Override

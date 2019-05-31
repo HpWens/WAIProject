@@ -3,6 +3,7 @@
     <string name="app_id" translatable="false">5ce634a4</string>
     <string name="account_password_no_empty" translatable="false">账号，密码不能为空</string>
     <string name="correct_phone_number" translatable="false">请输入正确的手机号码</string>
+    <string name="error_phone_hint" translatable="false">手机号码格式不正确</string>
     <string name="input_password_6_16" translatable="false">请输入6-16位密码</string>
     <string name="verify_code_no_empty" translatable="false">验证码不能为空</string>
     <string name="verify_code_input_error" translatable="false">验证码输入不正确</string>
@@ -14,5 +15,16 @@
     <string name="account_no_empty" translatable="false">账号不能为空</string>
     <string name="net_connection_error" translatable="false">请检测网络连接</string>
     <string name="calling" translatable="false">对方铃声响起... </string>
-    <string name="login_forget_password">忘记密码？</string>
+    <string name="login_forget_password" translatable="false">忘记密码？</string>
+    <string name="identical_pre_phone" translatable="false">输入的手机号码与预留号码不一致</string>
+    <string name="password_compare_correct" translatable="false">密码输入不一致</string>
+
+    <string name="user_protocol" translatable="false">重要提示：\n\n
+为保障您的合法权益，请您务必审慎阅读、充分理解本授权的全部条款，特别是授权条款或限制您权利的条款，这些条款可能以加黑加粗形式提示您注意。\n\n
+您确认（确认形式包括不限于勾选同意、点击确认等形式，具体以实际操作为准）本授权书前应核实本授权书全部内容。本授权书一经您确认，即视为您已阅读并同意本授权书全部条款。\n\n
+本人理解，贵司向本人提供产品/服务，有必要收集、保存、使用本人的相关信息进行声纹识别，因此本人特作出以下授权：\n\n
+(1) 本人知悉并同意贵司收集本人身份信息，包括姓名、声音信息等为声纹识别服务所需要的相关信息。\n\n
+(2) 本人知悉并同意第三方公司有权从贵司获得本人的声音信息，用于声纹识别服务，并向贵司返回识别结果；\n\n
+(3) 本人知悉并同意贵司有权将本人的声音信息提供至其合作单位，用于声纹识别服务，并由其合作单位向第三方公司返回识别结果；\n\n
+(4) 本人知悉并同意贵司有权保存本人的声音信息的验证记录，并有权用于与本人相关的声纹识别业务及贵司内部算法测试。</string>
 </resources>
