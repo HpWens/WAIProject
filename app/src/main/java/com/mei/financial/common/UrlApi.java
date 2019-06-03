@@ -35,6 +35,18 @@ public class UrlApi {
     // 保存密码
     public final static String COMMIT_SAVE_PASSWORD = "";
 
+    // 声纹注册
     public final static String UPLOAD_SOUND = "/api/v1/app/voice/upload";
 
+    // 修改手机号码
+    public final static String CHANGE_PHONE = "/api/v1/app/phone_number";
+
+    // 修改密码
+    public final static String CHANGE_PASSWORD = "/api/v1/app/password";
+
+    // 语音注册
+    public final static String SOUND_REGISTER = "/api/v1/app/voice/enroll";
+
+    // 声纹验证
+    public final static String SOUND_VERIFY = "/api/v1/app/voice/verify";
 }

@@ -91,8 +91,6 @@ public class LoginActivity extends BaseActivity {
     CheckBox mCbAccount;
     @BindView(R.id.cb_password)
     CheckBox mCbPassword;
-
-    private static final int REGISTER_REQUEST_CODE = 0X03;
     @BindView(R.id.layout_verify)
     LinearLayout mLayoutVerify;
     @BindView(R.id.tv_account)
@@ -105,6 +103,9 @@ public class LoginActivity extends BaseActivity {
     TextView mTvVerify;
     @BindView(R.id.clean_verify)
     ImageView mCleanVerify;
+
+    private static final int REGISTER_REQUEST_CODE = 0X03;
+    private static final int FORGET_PASSWORD_REQUEST_CODE = 0X06;
 
     @Override
     protected void initView() {
@@ -340,7 +341,7 @@ public class LoginActivity extends BaseActivity {
                 startActivityForResult(new Intent(mContext, RegisterActivity.class), REGISTER_REQUEST_CODE);
                 break;
             case R.id.forget_password:
-                startActivity(new Intent(mContext, ForgetPasswordActivity.class));
+                startActivityForResult(new Intent(mContext, ForgetPasswordActivity.class), FORGET_PASSWORD_REQUEST_CODE);
                 break;
         }
     }
@@ -363,6 +364,8 @@ public class LoginActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REGISTER_REQUEST_CODE && resultCode == Constant.RESULT_OK) {
+            fillMobilePasswordData();
+        } else if (requestCode == FORGET_PASSWORD_REQUEST_CODE && resultCode == Constant.RESULT_OK) {
             fillMobilePasswordData();
         }
     }

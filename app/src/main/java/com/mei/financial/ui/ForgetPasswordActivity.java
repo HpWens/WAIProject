@@ -17,7 +17,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.mei.financial.R;
+import com.mei.financial.common.Constant;
 import com.mei.financial.common.UrlApi;
 import com.mei.financial.entity.ParameterizedTypeImpl;
 import com.mei.financial.entity.UserInfo;
@@ -29,10 +31,12 @@ import com.mob.tools.utils.ResHelper;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.vondear.rxtool.RxEncodeTool;
 import com.vondear.rxtool.RxRegTool;
+import com.vondear.rxtool.RxSPTool;
 import com.vondear.rxtool.view.RxToast;
 import com.zhouyou.http.EasyHttp;
 import com.zhouyou.http.callback.SimpleCallBack;
 import com.zhouyou.http.exception.ApiException;
+import com.zhouyou.http.model.ApiResult;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -322,7 +326,34 @@ public class ForgetPasswordActivity extends BaseActivity {
     // 请求接口
     private void commitSavePassword() {
         final String password = mEtPassword.getText().toString();
+        final String account = mEtAccount.getText().toString();
         final String passwordEncode = RxEncodeTool.base64Encode2String(password.getBytes());
+
+        EasyHttp.put(UrlApi.CHANGE_PASSWORD)
+                .params("account", account)
+                .params("password", passwordEncode)
+                .execute(new SimpleCallBack<String>() {
+                    @Override
+                    public void onError(ApiException e) {
+                        RxToast.error(e.getMessage());
+                    }
+
+                    @Override
+                    public void onSuccess(String s) {
+                        if (!StringUtils.isEmpty(s)) {
+                            ApiResult apiResult = new Gson().fromJson(s, new TypeToken<ApiResult>() {
+                            }.getType());
+                            if (apiResult.isOk()) {
+                                RxToast.normal(getString(R.string.change_success));
+                                RxSPTool.putString(mContext, Constant.LOGIN_SAVE_PASSWORD, passwordEncode);
+                                setResult(Constant.RESULT_OK);
+                                finish();
+                            } else {
+                                RxToast.error(apiResult.getMsg());
+                            }
+                        }
+                    }
+                });
     }
 
     public void setListener() {

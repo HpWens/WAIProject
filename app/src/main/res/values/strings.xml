@@ -18,6 +18,8 @@
     <string name="login_forget_password" translatable="false">忘记密码？</string>
     <string name="identical_pre_phone" translatable="false">输入的手机号码与预留号码不一致</string>
     <string name="password_compare_correct" translatable="false">密码输入不一致</string>
+    <string name="repeat_verify_hint" translatable="false">验证失败，请重新验证</string>
+    <string name="change_success" translatable="false">修改成功</string>
 
     <string name="user_protocol" translatable="false">重要提示：\n\n
 为保障您的合法权益，请您务必审慎阅读、充分理解本授权的全部条款，特别是授权条款或限制您权利的条款，这些条款可能以加黑加粗形式提示您注意。\n\n
@@ -27,4 +29,6 @@
 (2) 本人知悉并同意第三方公司有权从贵司获得本人的声音信息，用于声纹识别服务，并向贵司返回识别结果；\n\n
 (3) 本人知悉并同意贵司有权将本人的声音信息提供至其合作单位，用于声纹识别服务，并由其合作单位向第三方公司返回识别结果；\n\n
 (4) 本人知悉并同意贵司有权保存本人的声音信息的验证记录，并有权用于与本人相关的声纹识别业务及贵司内部算法测试。</string>
+
+
 </resources>

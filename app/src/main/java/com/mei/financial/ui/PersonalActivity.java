@@ -7,7 +7,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.mei.financial.R;
+import com.mei.financial.common.Constant;
+import com.mei.financial.common.UrlApi;
 import com.mei.financial.entity.UserInfo;
 import com.mei.financial.entity.UserService;
 import com.mei.financial.utils.StringUtils;
@@ -16,6 +20,13 @@ import com.meis.base.mei.status.ViewState;
 import com.meis.base.mei.utils.Eyes;
 import com.vondear.rxtool.RxKeyboardTool;
 import com.vondear.rxtool.RxNetTool;
+import com.vondear.rxtool.RxRegTool;
+import com.vondear.rxtool.RxSPTool;
+import com.vondear.rxtool.view.RxToast;
+import com.zhouyou.http.EasyHttp;
+import com.zhouyou.http.callback.SimpleCallBack;
+import com.zhouyou.http.exception.ApiException;
+import com.zhouyou.http.model.ApiResult;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -104,7 +115,43 @@ public class PersonalActivity extends BaseActivity {
                 RxKeyboardTool.showSoftInput(mContext, mEtPhone);
                 break;
             case R.id.btn_confirm:
+                final String phone = mEtPhone.getText().toString();
 
+                if (!RxRegTool.isMobile(phone)) {
+                    RxToast.normal(getString(R.string.correct_phone_number));
+                    return;
+                }
+
+                if (!phone.equals(mUserInfo.phone_number)) {
+                    String account = RxSPTool.getString(mContext, Constant.LOGIN_SAVE_ACCOUNT);
+                    EasyHttp.put(UrlApi.CHANGE_PHONE)
+                            .params("account", account)
+                            .params("phone_number", phone)
+                            .execute(new SimpleCallBack<String>() {
+                                @Override
+                                public void onError(ApiException e) {
+                                    RxToast.error(e.getMessage());
+                                }
+
+                                @Override
+                                public void onSuccess(String s) {
+                                    if (!StringUtils.isEmpty(s)) {
+                                        ApiResult apiResult = new Gson().fromJson(s, new TypeToken<ApiResult>() {
+                                        }.getType());
+                                        if (apiResult.isOk()) {
+                                            // 保存手机号码
+                                            RxToast.normal(getString(R.string.change_success));
+                                            UserService.getInstance().changePhone(phone);
+                                            finish();
+                                        } else {
+                                            RxToast.error(apiResult.getMsg());
+                                        }
+                                    }
+                                }
+                            });
+                } else {
+                    finish();
+                }
                 break;
         }
     }

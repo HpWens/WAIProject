@@ -3,6 +3,10 @@ package com.mei.financial.ui.sound;
 import android.Manifest;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -11,6 +15,8 @@ import android.widget.RelativeLayout;
 import android.widget.Space;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.iflytek.cloud.ErrorCode;
 import com.iflytek.cloud.InitListener;
 import com.iflytek.cloud.RecognizerResult;
@@ -22,25 +28,41 @@ import com.iflytek.cloud.SynthesizerListener;
 import com.iflytek.cloud.ui.RecognizerDialog;
 import com.iflytek.cloud.ui.RecognizerDialogListener;
 import com.mei.financial.R;
+import com.mei.financial.common.Constant;
 import com.mei.financial.common.UrlApi;
+import com.mei.financial.entity.ParameterizedTypeImpl;
+import com.mei.financial.entity.SoundInfo;
+import com.mei.financial.entity.VerifyResultInfo;
+import com.mei.financial.ui.dialog.RegisterSuccessDialog;
+import com.mei.financial.ui.dialog.SoundRegisterFailureDialog;
+import com.mei.financial.ui.dialog.SoundRegisterSuccessDialog;
 import com.mei.financial.utils.JsonParser;
+import com.mei.financial.utils.StringUtils;
 import com.meis.base.mei.base.BaseActivity;
+import com.meis.base.mei.entity.Result;
 import com.meis.base.mei.utils.Eyes;
+import com.meis.base.mei.utils.ListUtils;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.vondear.rxtool.RxSPTool;
 import com.vondear.rxtool.view.RxToast;
 import com.zhouyou.http.EasyHttp;
 import com.zhouyou.http.body.ProgressResponseCallBack;
 import com.zhouyou.http.callback.SimpleCallBack;
 import com.zhouyou.http.exception.ApiException;
+import com.zhouyou.http.model.ApiResult;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 /**
  * @author wenshi
@@ -81,7 +103,10 @@ public class SoundRegisterActivity extends BaseActivity {
     @BindView(R.id.tv_hint)
     TextView mTvHint;
 
-    private int mVerifyCount = 1;
+    private int mIndexVerify = 0;
+    private String mSessionId = "";
+    private List<String> mTextsVerify = new ArrayList<>();
+    private String mVerifyText = "中国工商银行提供资金管理、收费缴费、营销服务、金融理财、代理销售、电子商务六大类服务";
 
     @Override
     protected void initView() {
@@ -144,9 +169,37 @@ public class SoundRegisterActivity extends BaseActivity {
 
                     @Override
                     public void onSuccess(String s) {
+                        Observable.just(s).map(new Function<String, Result<SoundInfo>>() {
+                            @Override
+                            public Result<SoundInfo> apply(String s) throws Exception {
+                                return new Gson().fromJson(s, new ParameterizedTypeImpl(Result.class, new Class[]{SoundInfo.class}));
+                            }
+                        }).subscribe(new Consumer<Result<SoundInfo>>() {
+                            @Override
+                            public void accept(Result<SoundInfo> soundInfoResult) throws Exception {
+                                if (soundInfoResult.isOk()) {
+                                    mIndexVerify = 0;
+                                    if (null != soundInfoResult.getData() && soundInfoResult.getData().text != null) {
+                                        mSessionId = soundInfoResult.getData().session_id;
 
+                                        // 添加2次文本
+                                        soundInfoResult.getData().text.add(mVerifyText);
+                                        soundInfoResult.getData().text.add(mVerifyText);
+
+                                        mTextsVerify = soundInfoResult.getData().text;
+                                        updateViews();
+                                    }
+                                } else {
+                                    RxToast.error(soundInfoResult.getMsg());
+                                }
+                            }
+                        });
                     }
                 });
+    }
+
+    private void updateView(SpannableStringBuilder builder) {
+        mTvCount.setText(builder);
     }
 
     @Override
@@ -205,8 +258,20 @@ public class SoundRegisterActivity extends BaseActivity {
                 if (null == mTts) {
                     return;
                 }
+                if (ListUtils.isEmpty(mTextsVerify)) {
+                    return;
+                }
                 setPlayParam();
-                int code = mTts.startSpeaking("2,3,4,5,6,7", new SynthesizerListener() {
+                char[] sounds = mTextsVerify.get(mIndexVerify).toCharArray();
+                String speak = "";
+                if (mIndexVerify > 2 && mIndexVerify < mTextsVerify.size()) {
+                    speak = mTextsVerify.get(mIndexVerify);
+                } else {
+                    for (int i = 0; i < sounds.length; i++) {
+                        speak += sounds[i] + ",";
+                    }
+                }
+                int code = mTts.startSpeaking(speak, new SynthesizerListener() {
                     @Override
                     public void onSpeakBegin() {
 
@@ -255,6 +320,10 @@ public class SoundRegisterActivity extends BaseActivity {
                     // 创建单例失败，与 21001 错误为同样原因，参考 http://bbs.xfyun.cn/forum.php?mod=viewthread&tid=9688
                     return;
                 }
+                if (null != mTts) {
+                    mTts.stopSpeaking();
+                }
+
                 // 设置参数
                 setParam();
                 mIatDialog.setListener(new RecognizerDialogListener() {
@@ -308,7 +377,10 @@ public class SoundRegisterActivity extends BaseActivity {
 
     private void printResult(RecognizerResult results) {
         String text = JsonParser.parseIatResult(results.getResultString());
-        RxToast.normal(text);
+        if (!StringUtils.isEmpty(text)) {
+            uploadSoundFile();
+        }
+        // RxToast.normal(text);
     }
 
     @Override
@@ -329,13 +401,16 @@ public class SoundRegisterActivity extends BaseActivity {
     }
 
     private void uploadSoundFile() {
+        if (ListUtils.isEmpty(mTextsVerify)) return;
         String soundPath = Environment.getExternalStorageDirectory() + "/msc/iat.wav";
         File file = new File(soundPath);
 
+        int currentCount = mIndexVerify + 1;
         EasyHttp.post(UrlApi.UPLOAD_SOUND)
-                .params("session_id", "")
-                .params("text", "")
-                .params("type", "")
+                .params("session_id", mSessionId)
+                .params("text", mTextsVerify.get(mIndexVerify))
+                .params("type", mIndexVerify > 2 ? "td" : "rd")
+                .params("voice_number", mIndexVerify > 2 ? ("td_" + currentCount) : ("rd_" + currentCount))
                 .params("wave_file", file, file.getName(), new ProgressResponseCallBack() {
                     @Override
                     public void onResponseProgress(long bytesWritten, long contentLength, boolean done) {
@@ -346,15 +421,94 @@ public class SoundRegisterActivity extends BaseActivity {
                 }).execute(new SimpleCallBack<String>() {
             @Override
             public void onError(ApiException e) {
-
+                RxToast.error(e.getMessage());
             }
 
             @Override
             public void onSuccess(String s) {
+                Observable.just(s).map(new Function<String, Result<VerifyResultInfo>>() {
+                    @Override
+                    public Result<VerifyResultInfo> apply(String s) throws Exception {
+                        return new Gson().fromJson(s, new ParameterizedTypeImpl(Result.class, new Class[]{VerifyResultInfo.class}));
+                    }
+                }).subscribe(new Consumer<Result<VerifyResultInfo>>() {
+                    @Override
+                    public void accept(Result<VerifyResultInfo> verifyResultInfoResult) throws Exception {
+                        if (verifyResultInfoResult.isOk() && verifyResultInfoResult.getData() != null) {
+                            // if (!verifyResultInfoResult.getData().asr_result) {
+                            //     RxToast.normal(getString(R.string.repeat_verify_hint));
+                            //     return;
+                            // }
 
+                            mIndexVerify++;
+                            if (mIndexVerify == 5) {
+                                completeRegister();
+                                return;
+                            }
+                            updateViews();
+
+                        } else {
+                            RxToast.error(verifyResultInfoResult.getMsg());
+                        }
+                    }
+                });
             }
         });
+    }
 
+    private void completeRegister() {
+        EasyHttp.post(UrlApi.SOUND_REGISTER)
+                .params("session_id", mSessionId)
+                .execute(new SimpleCallBack<String>() {
+                    @Override
+                    public void onError(ApiException e) {
+                        RxToast.normal(e.getMessage());
+                    }
 
+                    @Override
+                    public void onSuccess(String s) {
+                        if (!StringUtils.isEmpty(s)) {
+                            ApiResult apiResult = new Gson().fromJson(s, new TypeToken<ApiResult>() {
+                            }.getType());
+                            if (apiResult.isOk()) {
+                                new SoundRegisterSuccessDialog(mContext, new SoundRegisterSuccessDialog.OnPositiveListener() {
+                                    @Override
+                                    public void onClick(SoundRegisterSuccessDialog dialog) {
+                                        dialog.dismiss();
+                                        finish();
+                                    }
+                                }).show();
+                            } else {
+                                new SoundRegisterFailureDialog(mContext, new SoundRegisterFailureDialog.OnPositiveListener() {
+                                    @Override
+                                    public void onClick(SoundRegisterFailureDialog dialog) {
+                                        dialog.dismiss();
+                                        finish();
+                                    }
+                                }).show();
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void updateViews() {
+        if (mIndexVerify >= mTextsVerify.size()) {
+            mIndexVerify = mTextsVerify.size() - 1;
+        }
+        mTvDescription.setText(mIndexVerify > 2 ? "文本无关" : "动态数字");
+
+        mTvSoundContent.setVisibility(mIndexVerify > 2 ? View.INVISIBLE : View.VISIBLE);
+        mTvText.setVisibility(mIndexVerify > 2 ? View.VISIBLE : View.GONE);
+
+        mTvSoundContent.setText(mIndexVerify > 2 ? "" : StringUtils.getCenterTwoSpace(mTextsVerify.get(mIndexVerify)));
+        mTvText.setText(mTextsVerify.get(mIndexVerify));
+
+        // mTvCount.setText((mIndexVerify + 1) + "/5");
+        String contText = (mIndexVerify + 1) + "/5";
+        SpannableString spannableString = new SpannableString(contText);
+        ForegroundColorSpan colorSpan = new ForegroundColorSpan(getResources().getColor(R.color.color_83DBFF));
+        spannableString.setSpan(colorSpan, 0, 1, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        mTvCount.setText(spannableString);
     }
 }

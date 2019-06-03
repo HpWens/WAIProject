@@ -40,4 +40,12 @@ public class StringUtils {
         }
     }
 
+    public static String getCenterTwoSpace(String content) {
+        if (StringUtils.isEmpty(content)) {
+            return "";
+        }
+        int half = content.length() / 2;
+        return content.substring(0, half) + "  " + content.substring(half, content.length());
+    }
+
 }

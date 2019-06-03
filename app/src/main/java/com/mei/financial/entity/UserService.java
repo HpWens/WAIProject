@@ -97,4 +97,10 @@ public class UserService {
         }
     }
 
+    public void changePhone(String phone) {
+        UserInfo userInfo = getUserInfo();
+        userInfo.phone_number = phone;
+        saveUser(userInfo);
+    }
+
 }

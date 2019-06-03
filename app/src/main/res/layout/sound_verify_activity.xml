@@ -110,7 +110,7 @@
             android:layout_below="@+id/tv_description"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="18dp"
-            android:text="2408  9735"
+            android:text="0000  0000"
             android:textColor="@color/color_83DBFF"
             android:textSize="30sp" />
 
@@ -159,6 +159,7 @@
         android:text="恭喜您的声纹验证成功!"
         android:textColor="@color/color_2ef386"
         android:textSize="17sp"
+        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout_content" />
@@ -173,6 +174,7 @@
         android:text="退出"
         android:textColor="@color/color_4BC9FC"
         android:textSize="18sp"
+        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_verify_success" />
@@ -187,6 +189,7 @@
         android:text="对不起，您的声纹验证失败！\n 请重新验证！"
         android:textColor="@color/color_FF3333"
         android:textSize="17sp"
+        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout_content" />
@@ -210,6 +213,7 @@
         android:text="重新验证"
         android:textColor="@color/color_4BC9FC"
         android:textSize="18sp"
+        android:visibility="gone"
         app:layout_constraintRight_toLeftOf="@+id/space_view"
         app:layout_constraintTop_toBottomOf="@+id/tv_verify_failure" />
 
@@ -223,6 +227,7 @@
         android:text="退出"
         android:textColor="@color/color_4BC9FC"
         android:textSize="18sp"
+        android:visibility="gone"
         app:layout_constraintLeft_toRightOf="@+id/space_view"
         app:layout_constraintTop_toBottomOf="@+id/tv_verify_failure" />
 

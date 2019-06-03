@@ -136,7 +136,7 @@
             android:layout_toRightOf="@+id/iv_play"
             android:gravity="center_vertical"
             android:text="(第1次)"
-            android:textColor="@color/color_7BCDF1"
+            android:textColor="@color/color_1E82AA"
             android:textSize="14sp" />
 
 
