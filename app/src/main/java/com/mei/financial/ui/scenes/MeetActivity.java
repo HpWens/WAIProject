@@ -32,6 +32,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.functions.Consumer;
+import me.jessyan.autosize.internal.CancelAdapt;
 
 /**
  * @author wenshi
@@ -39,7 +40,7 @@ import io.reactivex.functions.Consumer;
  * @Description 会见页面
  * @since 2019/5/23
  */
-public class MeetActivity extends BaseActivity {
+public class MeetActivity extends BaseActivity implements CancelAdapt {
 
     @BindView(R.id.recycler_content)
     RecyclerView mRecyclerView;

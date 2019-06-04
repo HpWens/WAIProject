@@ -13,6 +13,7 @@ import com.meis.base.mei.utils.Eyes;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import me.jessyan.autosize.internal.CancelAdapt;
 
 /**
  * @author wenshi
@@ -20,7 +21,7 @@ import butterknife.OnClick;
  * @Description
  * @since 2019/5/23
  */
-public class ScenesMainActivity extends BaseActivity {
+public class ScenesMainActivity extends BaseActivity implements CancelAdapt {
     @BindView(R.id.tv_scenes)
     TextView mTvScenes;
     @BindView(R.id.btn_call)

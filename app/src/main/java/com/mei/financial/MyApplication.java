@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.iflytek.cloud.SpeechUtility;
 import com.mei.financial.entity.UserInfo;
 import com.mei.financial.entity.UserService;
+import com.mei.financial.utils.ScreenAdapter;
 import com.mei.financial.utils.StringUtils;
 import com.vondear.rxtool.RxTool;
 import com.zhouyou.http.EasyHttp;

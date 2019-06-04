@@ -17,6 +17,7 @@ import com.meis.base.mei.dialog.MeiCompatDialog;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
+import me.jessyan.autosize.internal.CancelAdapt;
 import me.yokeyword.fragmentation.ExtraTransaction;
 import me.yokeyword.fragmentation.ISupportActivity;
 import me.yokeyword.fragmentation.ISupportFragment;

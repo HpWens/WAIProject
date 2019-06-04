@@ -30,6 +30,7 @@ import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import me.jessyan.autosize.internal.CustomAdapt;
 
 /**
  * @author wenshi
@@ -37,7 +38,7 @@ import io.reactivex.functions.Function;
  * @Description 信用界面
  * @since 2019/5/23
  */
-public class CreditActivity extends BaseActivity {
+public class CreditActivity extends BaseActivity implements CustomAdapt {
 
     @BindView(R.id.view_banner)
     View mViewBanner;
@@ -207,4 +208,13 @@ public class CreditActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public boolean isBaseOnWidth() {
+        return false;
+    }
+
+    @Override
+    public float getSizeInDp() {
+        return 640;
+    }
 }

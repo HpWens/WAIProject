@@ -29,6 +29,14 @@ public class RegisterSuccessDialog extends RxDialog {
                 }
             }
         });
+        view.findViewById(R.id.iv_close).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener != null) {
+                    mListener.onClick(RegisterSuccessDialog.this);
+                }
+            }
+        });
         setContentView(view);
     }
 

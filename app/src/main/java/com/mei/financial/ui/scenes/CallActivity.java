@@ -22,6 +22,7 @@ import com.zhouyou.http.exception.ApiException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import me.jessyan.autosize.internal.CancelAdapt;
 
 /**
  * @author wenshi
@@ -29,7 +30,7 @@ import butterknife.OnClick;
  * @Description 场景体验
  * @since 2019/5/23
  */
-public class CallActivity extends BaseActivity {
+public class CallActivity extends BaseActivity implements CancelAdapt {
 
     @BindView(R.id.iv_call)
     ImageView mIvCall;

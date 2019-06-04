@@ -9,7 +9,7 @@
     <string name="verify_code_input_error" translatable="false">验证码输入不正确</string>
     <string name="phone_no_empty" translatable="false">手机号码不能为空</string>
     <string name="password_no_empty" translatable="false">密码不能为空</string>
-    <string name="password_digits" translatable="false">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz012345678_</string>
+    <string name="password_digits" translatable="false">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_</string>
     <string name="name_limit_hint" translatable="false">请输入2-10位姓名</string>
     <string name="hook_note_item" translatable="false">请勾选注册并同意事项</string>
     <string name="account_no_empty" translatable="false">账号不能为空</string>

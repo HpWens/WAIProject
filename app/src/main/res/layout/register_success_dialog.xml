@@ -13,6 +13,7 @@
         android:shadowDy="5">
 
         <ImageView
+            android:id="@+id/iv_close"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="right"

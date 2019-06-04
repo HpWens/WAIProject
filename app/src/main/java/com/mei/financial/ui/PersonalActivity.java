@@ -1,5 +1,7 @@
 package com.mei.financial.ui;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +16,7 @@ import com.mei.financial.common.Constant;
 import com.mei.financial.common.UrlApi;
 import com.mei.financial.entity.UserInfo;
 import com.mei.financial.entity.UserService;
+import com.mei.financial.utils.ScreenAdapter;
 import com.mei.financial.utils.StringUtils;
 import com.meis.base.mei.base.BaseActivity;
 import com.meis.base.mei.status.ViewState;
@@ -31,6 +34,7 @@ import com.zhouyou.http.model.ApiResult;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import me.jessyan.autosize.internal.CustomAdapt;
 
 /**
  * @author wenshi
@@ -38,7 +42,7 @@ import butterknife.OnClick;
  * @Description
  * @since 2019/5/23
  */
-public class PersonalActivity extends BaseActivity {
+public class PersonalActivity extends BaseActivity implements CustomAdapt {
 
     @BindView(R.id.iv_avatar)
     ImageView mIvAvatar;
@@ -117,6 +121,10 @@ public class PersonalActivity extends BaseActivity {
             case R.id.btn_confirm:
                 final String phone = mEtPhone.getText().toString();
 
+                if (phone.contains("*")) {
+                    finish();
+                    return;
+                }
                 if (!RxRegTool.isMobile(phone)) {
                     RxToast.normal(getString(R.string.correct_phone_number));
                     return;
@@ -154,5 +162,15 @@ public class PersonalActivity extends BaseActivity {
                 }
                 break;
         }
+    }
+
+    @Override
+    public boolean isBaseOnWidth() {
+        return false;
+    }
+
+    @Override
+    public float getSizeInDp() {
+        return 640;
     }
 }

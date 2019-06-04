@@ -23,6 +23,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import me.jessyan.autosize.internal.CancelAdapt;
 
 /**
  * @author wenshi
@@ -30,7 +31,7 @@ import butterknife.OnClick;
  * @Description
  * @since 2019/5/23
  */
-public class HomeActivity extends BaseActivity {
+public class HomeActivity extends BaseActivity implements CancelAdapt {
     @BindView(R.id.tv_name)
     TextView mTvName;
     @BindView(R.id.tv_agency)

@@ -34,7 +34,7 @@
     <RelativeLayout
         android:id="@+id/layout_break_contract"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="136dp"
         android:layout_marginLeft="12dp"
         android:layout_marginTop="8dp"
         android:layout_marginRight="12dp"
@@ -45,8 +45,8 @@
 
         <Button
             android:id="@+id/btn_break_contract"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="133dp"
+            android:layout_height="41dp"
             android:layout_centerInParent="true"
             android:background="@drawable/credit_button_selector"
             android:text="违约信用"
@@ -58,13 +58,13 @@
             android:id="@+id/tv_break_contract_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/btn_break_contract"
+            android:layout_above="@+id/btn_break_contract"
             android:layout_centerHorizontal="true"
+            android:layout_marginBottom="8dp"
             android:text="-25"
             android:textColor="#ffff3333"
             android:textSize="17sp"
             android:visibility="gone" />
-
 
     </RelativeLayout>
 
@@ -82,7 +82,7 @@
 
     <RelativeLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="136dp"
         android:layout_marginLeft="12dp"
         android:layout_marginTop="8dp"
         android:layout_marginRight="12dp"
@@ -93,8 +93,8 @@
 
         <Button
             android:id="@+id/btn_promise"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="133dp"
+            android:layout_height="41dp"
             android:layout_centerInParent="true"
             android:background="@drawable/credit_button_selector"
             android:text="守约信用"
@@ -105,8 +105,9 @@
             android:id="@+id/tv_promise_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/btn_promise"
+            android:layout_above="@+id/btn_promise"
             android:layout_centerHorizontal="true"
+            android:layout_marginBottom="8dp"
             android:text="+25"
             android:textColor="#2EF386"
             android:textSize="17sp"

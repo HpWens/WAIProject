@@ -121,9 +121,9 @@
             android:layout_height="48dp"
             android:layout_below="@+id/tv_sound_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="68dp"
+            android:layout_marginTop="32dp"
             android:layout_marginBottom="14dp"
-            android:src="@mipmap/sound_register_play_ic" />
+            android:src="@mipmap/sound_register_pause_ic" />
 
     </RelativeLayout>
 
@@ -167,8 +167,8 @@
 
     <Button
         android:id="@+id/btn_exit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="133dp"
+        android:layout_height="41dp"
         android:layout_marginTop="42dp"
         android:background="@mipmap/sound_register_confirm_ic"
         android:text="退出"
@@ -205,8 +205,8 @@
 
     <Button
         android:id="@+id/btn_restart_verify"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="133dp"
+        android:layout_height="41dp"
         android:layout_marginTop="32dp"
         android:layout_marginRight="4dp"
         android:background="@mipmap/sound_register_confirm_ic"
@@ -219,8 +219,8 @@
 
     <Button
         android:id="@+id/btn_failure_exit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="133dp"
+        android:layout_height="41dp"
         android:layout_marginLeft="4dp"
         android:layout_marginTop="32dp"
         android:background="@mipmap/sound_register_cancel_ic"

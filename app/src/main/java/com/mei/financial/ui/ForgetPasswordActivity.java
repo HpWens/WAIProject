@@ -50,6 +50,7 @@ import cn.smssdk.UserInterruptException;
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import me.jessyan.autosize.internal.CancelAdapt;
 
 /**
  * @author wenshi
@@ -57,7 +58,7 @@ import io.reactivex.functions.Function;
  * @Description
  * @since 2019/5/23
  */
-public class ForgetPasswordActivity extends BaseActivity {
+public class ForgetPasswordActivity extends BaseActivity implements CancelAdapt {
 
 
     int mCountdown = 60;
@@ -335,7 +336,9 @@ public class ForgetPasswordActivity extends BaseActivity {
                 .execute(new SimpleCallBack<String>() {
                     @Override
                     public void onError(ApiException e) {
-                        RxToast.error(e.getMessage());
+                        if (e.getCode() != ApiException.ERROR.UNKNOWN) {
+                            RxToast.error(e.getMessage());
+                        }
                     }
 
                     @Override

@@ -34,6 +34,7 @@ import com.zhouyou.http.model.ApiResult;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import me.jessyan.autosize.internal.CancelAdapt;
 
 /**
  * @author wenshi
@@ -41,7 +42,7 @@ import butterknife.OnClick;
  * @Description
  * @since 2019/5/23
  */
-public class RegisterActivity extends BaseActivity {
+public class RegisterActivity extends BaseActivity implements CancelAdapt {
 
     @BindView(R.id.et_account)
     EditText mEtAccount;
@@ -157,7 +158,9 @@ public class RegisterActivity extends BaseActivity {
                         .execute(new SimpleCallBack<String>() {
                             @Override
                             public void onError(ApiException e) {
-                                RxToast.error(e.getMessage());
+                                if (e.getCode() != ApiException.ERROR.UNKNOWN) {
+                                    RxToast.error(e.getMessage());
+                                }
                             }
 
                             @Override

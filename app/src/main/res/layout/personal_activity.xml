@@ -168,10 +168,10 @@
             android:layout_toRightOf="@+id/tv_phone_left"
             android:background="@null"
             android:enabled="false"
-            android:maxLength="16"
-            android:singleLine="true"
             android:inputType="number"
+            android:maxLength="16"
             android:minWidth="48dp"
+            android:singleLine="true"
             android:text="152****5656"
             android:textColor="@color/color_83DBFF"
             android:textSize="18sp" />

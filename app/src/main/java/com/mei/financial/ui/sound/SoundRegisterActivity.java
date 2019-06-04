@@ -63,6 +63,8 @@ import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import me.jessyan.autosize.internal.CancelAdapt;
+import me.jessyan.autosize.internal.CustomAdapt;
 
 /**
  * @author wenshi
@@ -70,7 +72,7 @@ import io.reactivex.functions.Function;
  * @Description
  * @since 2019/5/23
  */
-public class SoundRegisterActivity extends BaseActivity {
+public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
 
     @BindView(R.id.iv_header)
     ImageView mIvHeader;
@@ -107,6 +109,10 @@ public class SoundRegisterActivity extends BaseActivity {
     private String mSessionId = "";
     private List<String> mTextsVerify = new ArrayList<>();
     private String mVerifyText = "中国工商银行提供资金管理、收费缴费、营销服务、金融理财、代理销售、电子商务六大类服务";
+
+    private boolean mIsPlaySound = false;
+    private boolean mSoundCompleted = true;
+
 
     @Override
     protected void initView() {
@@ -180,8 +186,8 @@ public class SoundRegisterActivity extends BaseActivity {
                                 if (soundInfoResult.isOk()) {
                                     mIndexVerify = 0;
                                     if (null != soundInfoResult.getData() && soundInfoResult.getData().text != null) {
+                                        mSoundCompleted = true;
                                         mSessionId = soundInfoResult.getData().session_id;
-
                                         // 添加2次文本
                                         soundInfoResult.getData().text.add(mVerifyText);
                                         soundInfoResult.getData().text.add(mVerifyText);
@@ -261,6 +267,18 @@ public class SoundRegisterActivity extends BaseActivity {
                 if (ListUtils.isEmpty(mTextsVerify)) {
                     return;
                 }
+
+                mIsPlaySound = !mIsPlaySound;
+                mIvPlay.setImageResource(mIsPlaySound ? R.mipmap.sound_register_play_ic : R.mipmap.sound_register_pause_ic);
+                if (!mIsPlaySound) {
+                    mTts.pauseSpeaking();
+                } else {
+                    mTts.resumeSpeaking();
+                }
+                if (!mSoundCompleted) {
+                    return;
+                }
+
                 setPlayParam();
                 char[] sounds = mTextsVerify.get(mIndexVerify).toCharArray();
                 String speak = "";
@@ -274,7 +292,7 @@ public class SoundRegisterActivity extends BaseActivity {
                 int code = mTts.startSpeaking(speak, new SynthesizerListener() {
                     @Override
                     public void onSpeakBegin() {
-
+                        mSoundCompleted = false;
                     }
 
                     @Override
@@ -300,6 +318,7 @@ public class SoundRegisterActivity extends BaseActivity {
                     @Override
                     public void onCompleted(SpeechError error) {
                         if (error == null) {
+                            restorePlayViewState();
                         } else if (error != null) {
                             RxToast.error(error.getPlainDescription(true));
                         }
@@ -322,6 +341,7 @@ public class SoundRegisterActivity extends BaseActivity {
                 }
                 if (null != mTts) {
                     mTts.stopSpeaking();
+                    restorePlayViewState();
                 }
 
                 // 设置参数
@@ -349,6 +369,12 @@ public class SoundRegisterActivity extends BaseActivity {
                 finish();
                 break;
         }
+    }
+
+    private void restorePlayViewState() {
+        mSoundCompleted = true;
+        mIsPlaySound = false;
+        mIvPlay.setImageResource(R.mipmap.sound_register_pause_ic);
     }
 
     private void setPlayParam() {
@@ -510,5 +536,15 @@ public class SoundRegisterActivity extends BaseActivity {
         ForegroundColorSpan colorSpan = new ForegroundColorSpan(getResources().getColor(R.color.color_83DBFF));
         spannableString.setSpan(colorSpan, 0, 1, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         mTvCount.setText(spannableString);
+    }
+
+    @Override
+    public boolean isBaseOnWidth() {
+        return false;
+    }
+
+    @Override
+    public float getSizeInDp() {
+        return 640;
     }
 }

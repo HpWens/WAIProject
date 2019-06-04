@@ -32,10 +32,7 @@ import com.mei.financial.utils.StringUtils;
 import com.meis.base.mei.base.BaseActivity;
 import com.meis.base.mei.entity.Result;
 import com.meis.base.mei.utils.Eyes;
-import com.meis.base.mei.utils.ListUtils;
 import com.tbruyelle.rxpermissions2.RxPermissions;
-import com.vondear.rxtool.RxEncodeTool;
-import com.vondear.rxtool.RxEncryptTool;
 import com.vondear.rxtool.view.RxToast;
 import com.zhouyou.http.EasyHttp;
 import com.zhouyou.http.body.ProgressResponseCallBack;
@@ -52,6 +49,7 @@ import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import me.jessyan.autosize.internal.CustomAdapt;
 
 /**
  * @author wenshi
@@ -59,7 +57,7 @@ import io.reactivex.functions.Function;
  * @Description
  * @since 2019/5/23
  */
-public class SoundVerifyActivity extends BaseActivity {
+public class SoundVerifyActivity extends BaseActivity implements CustomAdapt {
 
     @BindView(R.id.iv_header)
     ImageView mIvHeader;
@@ -112,6 +110,9 @@ public class SoundVerifyActivity extends BaseActivity {
 
     private String mSessionId = "";
     private String mSoundContent = "";
+
+    private boolean mIsPlaySound = false;
+    private boolean mSoundCompleted = true;
 
     @Override
     protected void initView() {
@@ -184,6 +185,7 @@ public class SoundVerifyActivity extends BaseActivity {
                             public void accept(Result<SoundInfo> soundInfoResult) throws Exception {
                                 if (soundInfoResult.isOk()) {
                                     if (null != soundInfoResult.getData() && soundInfoResult.getData().text != null) {
+                                        mSoundCompleted = true;
                                         mSessionId = soundInfoResult.getData().session_id;
                                         mSoundContent = soundInfoResult.getData().text.get(0);
                                         mTvSoundContent.setText(StringUtils.getCenterTwoSpace(mSoundContent));
@@ -213,6 +215,16 @@ public class SoundVerifyActivity extends BaseActivity {
                 if (StringUtils.isEmpty(mSoundContent)) {
                     return;
                 }
+                mIsPlaySound = !mIsPlaySound;
+                mIvPlay.setImageResource(mIsPlaySound ? R.mipmap.sound_register_play_ic : R.mipmap.sound_register_pause_ic);
+                if (!mIsPlaySound) {
+                    mTts.pauseSpeaking();
+                } else {
+                    mTts.resumeSpeaking();
+                }
+                if (!mSoundCompleted) {
+                    return;
+                }
                 setPlayParam();
                 String speak = "";
                 final char[] sounds = mSoundContent.toCharArray();
@@ -222,7 +234,7 @@ public class SoundVerifyActivity extends BaseActivity {
                 int code = mTts.startSpeaking(speak, new SynthesizerListener() {
                     @Override
                     public void onSpeakBegin() {
-
+                        mSoundCompleted = false;
                     }
 
                     @Override
@@ -248,6 +260,7 @@ public class SoundVerifyActivity extends BaseActivity {
                     @Override
                     public void onCompleted(SpeechError error) {
                         if (error == null) {
+                            restorePlayViewState();
                         } else if (error != null) {
                             RxToast.error(error.getPlainDescription(true));
                         }
@@ -270,6 +283,7 @@ public class SoundVerifyActivity extends BaseActivity {
                 }
                 if (null != mTts) {
                     mTts.stopSpeaking();
+                    restorePlayViewState();
                 }
 
                 // 设置参数
@@ -297,6 +311,12 @@ public class SoundVerifyActivity extends BaseActivity {
                 finish();
                 break;
         }
+    }
+
+    private void restorePlayViewState() {
+        mSoundCompleted = true;
+        mIsPlaySound = false;
+        mIvPlay.setImageResource(R.mipmap.sound_register_pause_ic);
     }
 
     private void printResult(RecognizerResult results) {
@@ -431,5 +451,15 @@ public class SoundVerifyActivity extends BaseActivity {
             mIat.cancel();
             mIat.destroy();
         }
+    }
+
+    @Override
+    public boolean isBaseOnWidth() {
+        return false;
+    }
+
+    @Override
+    public float getSizeInDp() {
+        return 640;
     }
 }

@@ -47,6 +47,7 @@ import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import me.jessyan.autosize.internal.CancelAdapt;
 
 /**
  * @author wenshi
@@ -55,7 +56,7 @@ import io.reactivex.functions.Function;
  * @since 2019/5/23
  */
 
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends BaseActivity implements CancelAdapt {
 
     @BindView(R.id.logo)
     ImageView mLogo;
@@ -294,7 +295,9 @@ public class LoginActivity extends BaseActivity {
                         .execute(new SimpleCallBack<String>() {
                             @Override
                             public void onError(ApiException e) {
-                                RxToast.error(e.getMessage());
+                                if (e.getCode() != ApiException.ERROR.UNKNOWN) {
+                                    RxToast.error(e.getMessage());
+                                }
                             }
 
                             @Override

@@ -72,6 +72,7 @@
         <activity
             android:name=".ui.scenes.ScenesMainActivity"
             android:windowSoftInputMode="adjustPan"></activity>
+
         <activity
             android:name=".ui.PersonalActivity"
             android:windowSoftInputMode="adjustPan"></activity>
@@ -90,6 +91,13 @@
         <meta-data
             android:name="IFLYTEK_CHANNEL"
             android:value="Android_Demo" />
+
+        <meta-data
+            android:name="design_width_in_dp"
+            android:value="360" />
+        <meta-data
+            android:name="design_height_in_dp"
+            android:value="640" />
 
     </application>
 
