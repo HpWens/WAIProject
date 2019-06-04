@@ -425,7 +425,7 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
     private void uploadSoundFile() {
         if (ListUtils.isEmpty(mTextsVerify)) return;
         String soundPath = Environment.getExternalStorageDirectory() + "/msc/iat.wav";
-        File file = new File(soundPath);
+        final File file = new File(soundPath);
 
         int currentCount = mIndexVerify + 1;
         EasyHttp.post(UrlApi.UPLOAD_SOUND)
@@ -460,6 +460,10 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
                             if (!verifyResultInfoResult.getData().asr_result) {
                                 RxToast.normal(getString(R.string.repeat_verify_hint));
                                 return;
+                            }
+                            // 上传成功后删除文件
+                            if (file.exists() && file.isFile()) {
+                                file.delete();
                             }
                             mIndexVerify++;
                             if (mIndexVerify == 5) {

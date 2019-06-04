@@ -311,6 +311,7 @@ public class LoginActivity extends BaseActivity implements CancelAdapt {
                                     @Override
                                     public void accept(Result<UserInfo> userInfoResult) throws Exception {
                                         if (userInfoResult.isOk()) {
+                                            UserService.getInstance().saveUser(userInfoResult.data);
                                             if (getApplication() instanceof MyApplication) {
                                                 ((MyApplication) getApplication()).addEasyTokenHeader();
                                             }
@@ -321,7 +322,6 @@ public class LoginActivity extends BaseActivity implements CancelAdapt {
                                             RxSPTool.putString(mContext, Constant.LOGIN_SAVE_PASSWORD,
                                                     mCbPassword.isChecked() ? passwordEncode : "");
 
-                                            UserService.getInstance().saveUser(userInfoResult.data);
                                             startActivity(new Intent(mContext, HomeActivity.class));
                                             finish();
                                         } else {
