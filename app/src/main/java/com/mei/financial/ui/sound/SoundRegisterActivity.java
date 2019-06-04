@@ -457,11 +457,10 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
                     @Override
                     public void accept(Result<VerifyResultInfo> verifyResultInfoResult) throws Exception {
                         if (verifyResultInfoResult.isOk() && verifyResultInfoResult.getData() != null) {
-                            // if (!verifyResultInfoResult.getData().asr_result) {
-                            //     RxToast.normal(getString(R.string.repeat_verify_hint));
-                            //     return;
-                            // }
-
+                            if (!verifyResultInfoResult.getData().asr_result) {
+                                RxToast.normal(getString(R.string.repeat_verify_hint));
+                                return;
+                            }
                             mIndexVerify++;
                             if (mIndexVerify == 5) {
                                 deleteSound();
