@@ -80,6 +80,7 @@
         <activity
             android:name=".ui.scenes.CallActivity"
             android:windowSoftInputMode="adjustPan"></activity>
+
         <activity
             android:name=".ui.scenes.MeetActivity"
             android:windowSoftInputMode="adjustPan"></activity>

@@ -49,4 +49,7 @@ public class UrlApi {
 
     // 声纹验证
     public final static String SOUND_VERIFY = "/api/v1/app/voice/verify";
+
+    // 删除声纹
+    public final static String DELETE_SOUND = "/api/v1/app/voice/delete";
 }

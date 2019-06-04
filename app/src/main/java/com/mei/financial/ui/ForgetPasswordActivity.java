@@ -203,6 +203,11 @@ public class ForgetPasswordActivity extends BaseActivity implements CancelAdapt 
                     return;
                 }
 
+                if (password.length() < 6 || password.length() > 16) {
+                    RxToast.error(getString(R.string.input_password_6_16));
+                    return;
+                }
+
                 if (!password.equals(passwordAgain)) {
                     RxToast.error(getString(R.string.password_compare_correct));
                     return;

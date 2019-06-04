@@ -113,6 +113,7 @@
                 android:orientation="horizontal">
 
                 <FrameLayout
+                    android:layout_marginBottom="2dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -155,7 +156,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginTop="9dp"
+                        android:layout_marginTop="7dp"
                         android:text="个人信息详情编辑"
                         android:textColor="@color/color_1E82AA"
                         android:textSize="13sp" />
@@ -186,6 +187,7 @@
                 android:orientation="horizontal">
 
                 <FrameLayout
+                    android:layout_marginBottom="2dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -228,7 +230,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginTop="9dp"
+                        android:layout_marginTop="7dp"
                         android:text="创建属于私人的声纹模型"
                         android:textColor="@color/color_1E82AA"
                         android:textSize="13sp" />
@@ -259,6 +261,7 @@
                 android:orientation="horizontal">
 
                 <FrameLayout
+                    android:layout_marginBottom="2dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -301,8 +304,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginTop="9dp"
-                        android:text="通过声音确认是否本人"
+                        android:layout_marginTop="7dp"
+                        android:text="通过声音确认是否为本人"
                         android:textColor="@color/color_1E82AA"
                         android:textSize="13sp" />
 
@@ -332,6 +335,7 @@
                 android:orientation="horizontal">
 
                 <FrameLayout
+                    android:layout_marginBottom="2dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -374,7 +378,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginTop="9dp"
+                        android:layout_marginTop="7dp"
                         android:text="是否有违约行为"
                         android:textColor="@color/color_1E82AA"
                         android:textSize="13sp" />
@@ -405,6 +409,7 @@
                 android:orientation="horizontal">
 
                 <FrameLayout
+                    android:layout_marginBottom="2dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -447,7 +452,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginTop="9dp"
+                        android:layout_marginTop="7dp"
                         android:text="通过电话呼入进行声纹辨认场景体验"
                         android:textColor="@color/color_1E82AA"
                         android:textSize="13sp" />

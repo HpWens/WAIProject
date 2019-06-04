@@ -48,8 +48,8 @@
 
     <Button
         android:id="@+id/btn_copy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="133dp"
+        android:layout_height="41dp"
         android:layout_marginTop="39dp"
         android:layout_marginRight="4dp"
         android:background="@mipmap/sound_register_confirm_ic"
@@ -61,8 +61,8 @@
 
     <Button
         android:id="@+id/btn_clear"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="133dp"
+        android:layout_height="41dp"
         android:layout_marginLeft="4dp"
         android:layout_marginTop="39dp"
         android:background="@mipmap/sound_register_cancel_ic"
@@ -75,8 +75,8 @@
 
     <ImageView
         android:id="@+id/iv_record"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="113dp"
+        android:layout_height="113dp"
         android:layout_marginBottom="7dp"
         android:scaleType="centerInside"
         android:src="@mipmap/sound_register_record_ic"

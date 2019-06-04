@@ -33,6 +33,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.functions.Consumer;
 import me.jessyan.autosize.internal.CancelAdapt;
+import me.jessyan.autosize.internal.CustomAdapt;
 
 /**
  * @author wenshi
@@ -40,7 +41,7 @@ import me.jessyan.autosize.internal.CancelAdapt;
  * @Description 会见页面
  * @since 2019/5/23
  */
-public class MeetActivity extends BaseActivity implements CancelAdapt {
+public class MeetActivity extends BaseActivity implements CustomAdapt {
 
     @BindView(R.id.recycler_content)
     RecyclerView mRecyclerView;
@@ -195,4 +196,13 @@ public class MeetActivity extends BaseActivity implements CancelAdapt {
     }
 
 
+    @Override
+    public boolean isBaseOnWidth() {
+        return false;
+    }
+
+    @Override
+    public float getSizeInDp() {
+        return 640;
+    }
 }

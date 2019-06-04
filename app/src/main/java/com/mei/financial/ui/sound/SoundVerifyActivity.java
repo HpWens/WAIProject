@@ -362,10 +362,10 @@ public class SoundVerifyActivity extends BaseActivity implements CustomAdapt {
                     @Override
                     public void accept(Result<VerifyResultInfo> verifyResultInfoResult) throws Exception {
                         if (verifyResultInfoResult.isOk() && verifyResultInfoResult.getData() != null) {
-                            // if (!verifyResultInfoResult.getData().asr_result) {
-                            //     RxToast.normal(getString(R.string.repeat_verify_hint));
-                            //     return;
-                            // }
+                            if (!verifyResultInfoResult.getData().verify_result) {
+                                RxToast.normal(getString(R.string.repeat_verify_hint));
+                                return;
+                            }
                             mTvHint.setVisibility(View.GONE);
                             mIvRecord.setVisibility(View.GONE);
                             mTvVerifySuccess.setVisibility(View.VISIBLE);

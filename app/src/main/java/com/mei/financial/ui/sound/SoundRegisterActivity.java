@@ -28,12 +28,10 @@ import com.iflytek.cloud.SynthesizerListener;
 import com.iflytek.cloud.ui.RecognizerDialog;
 import com.iflytek.cloud.ui.RecognizerDialogListener;
 import com.mei.financial.R;
-import com.mei.financial.common.Constant;
 import com.mei.financial.common.UrlApi;
 import com.mei.financial.entity.ParameterizedTypeImpl;
 import com.mei.financial.entity.SoundInfo;
 import com.mei.financial.entity.VerifyResultInfo;
-import com.mei.financial.ui.dialog.RegisterSuccessDialog;
 import com.mei.financial.ui.dialog.SoundRegisterFailureDialog;
 import com.mei.financial.ui.dialog.SoundRegisterSuccessDialog;
 import com.mei.financial.utils.JsonParser;
@@ -43,7 +41,6 @@ import com.meis.base.mei.entity.Result;
 import com.meis.base.mei.utils.Eyes;
 import com.meis.base.mei.utils.ListUtils;
 import com.tbruyelle.rxpermissions2.RxPermissions;
-import com.vondear.rxtool.RxSPTool;
 import com.vondear.rxtool.view.RxToast;
 import com.zhouyou.http.EasyHttp;
 import com.zhouyou.http.body.ProgressResponseCallBack;
@@ -63,7 +60,6 @@ import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
-import me.jessyan.autosize.internal.CancelAdapt;
 import me.jessyan.autosize.internal.CustomAdapt;
 
 /**
@@ -436,7 +432,7 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
                 .params("session_id", mSessionId)
                 .params("text", mTextsVerify.get(mIndexVerify))
                 .params("type", mIndexVerify > 2 ? "td" : "rd")
-                .params("voice_number", mIndexVerify > 2 ? ("td_" + currentCount) : ("rd_" + currentCount))
+                .params("voice_number", mIndexVerify > 2 ? ("td_" + (currentCount - 3)) : ("rd_" + currentCount))
                 .params("wave_file", file, file.getName(), new ProgressResponseCallBack() {
                     @Override
                     public void onResponseProgress(long bytesWritten, long contentLength, boolean done) {
@@ -468,7 +464,7 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
 
                             mIndexVerify++;
                             if (mIndexVerify == 5) {
-                                completeRegister();
+                                deleteSound();
                                 return;
                             }
                             updateViews();
@@ -482,7 +478,32 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
         });
     }
 
-    private void completeRegister() {
+    private void deleteSound() {
+        // 先删除声纹
+        EasyHttp.delete(UrlApi.DELETE_SOUND)
+                .execute(new SimpleCallBack<String>() {
+                    @Override
+                    public void onError(ApiException e) {
+                        RxToast.normal(e.getMessage());
+                    }
+
+                    @Override
+                    public void onSuccess(String s) {
+                        if (!StringUtils.isEmpty(s)) {
+                            ApiResult apiResult = new Gson().fromJson(s, new TypeToken<ApiResult>() {
+                            }.getType());
+                            if (apiResult.isOk()) {
+                                // 提交注册
+                                commitRegister();
+                            } else {
+                                RxToast.normal(apiResult.getMsg());
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void commitRegister() {
         EasyHttp.post(UrlApi.SOUND_REGISTER)
                 .params("session_id", mSessionId)
                 .execute(new SimpleCallBack<String>() {

@@ -5,15 +5,6 @@
     android:layout_height="match_parent"
     android:background="@color/color_0A0B29">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="58dp"
-        android:text="用户信息注册"
-        android:textColor="@color/color_4BC9FC"
-        android:textSize="20sp" />
-
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
@@ -31,13 +22,22 @@
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="106dp"
+            android:layout_marginTop="58dp"
             android:layout_marginBottom="16dp"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="用户信息注册"
+                android:textColor="@color/color_4BC9FC"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="27dp"
                 android:drawableLeft="@mipmap/edit_star_ic"
                 android:drawablePadding="8dp"
                 android:maxLength="4"

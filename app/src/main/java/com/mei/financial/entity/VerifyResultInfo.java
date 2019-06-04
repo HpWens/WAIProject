@@ -18,6 +18,8 @@ public class VerifyResultInfo {
     public String voice_group_id;
     public int upload_count;
 
+    public boolean verify_result;
+
     public String getAsr_text() {
         return asr_text;
     }

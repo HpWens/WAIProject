@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mei.financial.R;
+import com.mei.financial.entity.UserService;
 import com.mei.financial.ui.adapter.HomeViewPagerAdapter;
 import com.mei.financial.ui.scenes.ScenesMainActivity;
 import com.mei.financial.ui.sound.SoundRegisterActivity;
@@ -16,6 +17,7 @@ import com.mei.financial.ui.sound.SoundVerifyActivity;
 import com.meis.base.mei.base.BaseActivity;
 import com.meis.base.mei.utils.Eyes;
 import com.scwang.smartrefresh.layout.util.DensityUtil;
+import com.vondear.rxtool.view.RxToast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -145,6 +147,10 @@ public class HomeActivity extends BaseActivity implements CancelAdapt {
                 startActivity(new Intent(mContext, SoundRegisterActivity.class));
                 break;
             case R.id.cv_sound_verify:
+                if (!UserService.getInstance().getUserInfo().is_enroll) {
+                    RxToast.normal(getString(R.string.please_register_sound_hint));
+                    return;
+                }
                 startActivity(new Intent(mContext, SoundVerifyActivity.class));
                 break;
             case R.id.cv_credit:

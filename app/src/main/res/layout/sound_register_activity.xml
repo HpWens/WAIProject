@@ -207,6 +207,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="22dp"
         android:layout_marginRight="22dp"
+        android:lineSpacingExtra="1dp"
         android:layout_marginBottom="25dp"
         android:text="温馨提示：请先注册声纹(需要录三次动态数字，两次文本无关)之后即可进行个人声纹验证。"
         android:textColor="@color/color_1e82aa"
