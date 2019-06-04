@@ -28,7 +28,7 @@
             android:layout_gravity="center"
             android:text="金融声纹认证系统"
             android:textColor="@color/color_83DBFF"
-            android:textSize="17sp" />
+            android:textSize="17dp" />
 
     </FrameLayout>
 
@@ -78,7 +78,7 @@
                     android:layout_marginRight="7dp"
                     android:text="声纹验证"
                     android:textColor="@color/color_83DBFF"
-                    android:textSize="18sp" />
+                    android:textSize="18dp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -100,7 +100,7 @@
             android:layout_marginTop="28dp"
             android:text="动态数字"
             android:textColor="@color/color_1E82AA"
-            android:textSize="15sp" />
+            android:textSize="15dp" />
 
 
         <TextView
@@ -112,7 +112,7 @@
             android:layout_marginTop="18dp"
             android:text="0000  0000"
             android:textColor="@color/color_83DBFF"
-            android:textSize="30sp" />
+            android:textSize="30dp" />
 
 
         <ImageView
@@ -129,8 +129,8 @@
 
     <ImageView
         android:id="@+id/iv_record"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="113dp"
+        android:layout_height="113dp"
         android:layout_marginTop="36dp"
         android:scaleType="centerInside"
         android:src="@mipmap/sound_register_record_ic"
@@ -146,7 +146,7 @@
         android:layout_marginTop="11dp"
         android:text="温馨提示：请按住说话，读完后松开。"
         android:textColor="@color/color_1E82AA"
-        android:textSize="14sp"
+        android:textSize="14dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_record" />
@@ -158,7 +158,7 @@
         android:layout_marginTop="46dp"
         android:text="恭喜您的声纹验证成功!"
         android:textColor="@color/color_2ef386"
-        android:textSize="17sp"
+        android:textSize="17dp"
         android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -173,7 +173,7 @@
         android:background="@mipmap/sound_register_confirm_ic"
         android:text="退出"
         android:textColor="@color/color_4BC9FC"
-        android:textSize="18sp"
+        android:textSize="18dp"
         android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -188,7 +188,7 @@
         android:gravity="center"
         android:text="对不起，您的声纹验证失败！\n 请重新验证！"
         android:textColor="@color/color_FF3333"
-        android:textSize="17sp"
+        android:textSize="17dp"
         android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -212,7 +212,7 @@
         android:background="@mipmap/sound_register_confirm_ic"
         android:text="重新验证"
         android:textColor="@color/color_4BC9FC"
-        android:textSize="18sp"
+        android:textSize="18dp"
         android:visibility="gone"
         app:layout_constraintRight_toLeftOf="@+id/space_view"
         app:layout_constraintTop_toBottomOf="@+id/tv_verify_failure" />
@@ -226,7 +226,7 @@
         android:background="@mipmap/sound_register_cancel_ic"
         android:text="退出"
         android:textColor="@color/color_4BC9FC"
-        android:textSize="18sp"
+        android:textSize="18dp"
         android:visibility="gone"
         app:layout_constraintLeft_toRightOf="@+id/space_view"
         app:layout_constraintTop_toBottomOf="@+id/tv_verify_failure" />

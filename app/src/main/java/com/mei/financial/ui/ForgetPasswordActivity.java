@@ -7,6 +7,7 @@ import android.support.v4.widget.NestedScrollView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -361,6 +362,28 @@ public class ForgetPasswordActivity extends BaseActivity implements CancelAdapt 
 
     public void setListener() {
 
+        mEtAccount.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                final String account = mEtAccount.getText().toString();
+                if (!TextUtils.isEmpty(account) && !hasFocus) {
+                    EasyHttp.get(UrlApi.GET_PRE_PHONE)
+                            .params("account", account)
+                            .execute(new SimpleCallBack<String>() {
+                                @Override
+                                public void onError(ApiException e) {
+                                    RxToast.error(e.getMessage());
+                                }
+
+                                @Override
+                                public void onSuccess(String s) {
+                                    handlerPerPhone(s);
+                                }
+                            });
+                }
+            }
+        });
+
         mEtAccount.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -379,21 +402,15 @@ public class ForgetPasswordActivity extends BaseActivity implements CancelAdapt 
                 } else if (TextUtils.isEmpty(s)) {
                     mIvCleanAccount.setVisibility(View.GONE);
                 }
+            }
+        });
 
-                if (!TextUtils.isEmpty(s)) {
-                    EasyHttp.get(UrlApi.GET_PRE_PHONE)
-                            .params("account", s.toString())
-                            .execute(new SimpleCallBack<String>() {
-                                @Override
-                                public void onError(ApiException e) {
-                                    RxToast.error(e.getMessage());
-                                }
-
-                                @Override
-                                public void onSuccess(String s) {
-                                    handlerPerPhone(s);
-                                }
-                            });
+        mEtPhone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                final String account = mEtAccount.getText().toString();
+                if (hasFocus && StringUtils.isEmpty(account)) {
+                    RxToast.normal(getString(R.string.account_no_empty));
                 }
             }
         });

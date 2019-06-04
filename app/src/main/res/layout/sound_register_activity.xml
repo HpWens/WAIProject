@@ -28,7 +28,7 @@
             android:layout_gravity="center"
             android:text="金融声纹认证系统"
             android:textColor="@color/color_83DBFF"
-            android:textSize="17sp" />
+            android:textSize="17dp" />
 
     </FrameLayout>
 
@@ -78,7 +78,7 @@
                     android:layout_marginRight="7dp"
                     android:text="声纹注册"
                     android:textColor="@color/color_83DBFF"
-                    android:textSize="18sp" />
+                    android:textSize="18dp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -100,7 +100,7 @@
             android:layout_marginTop="28dp"
             android:text="动态数字"
             android:textColor="@color/color_1E82AA"
-            android:textSize="15sp" />
+            android:textSize="15dp" />
 
 
         <TextView
@@ -112,7 +112,7 @@
             android:layout_marginTop="18dp"
             android:text="0000  0000"
             android:textColor="@color/color_83DBFF"
-            android:textSize="30sp" />
+            android:textSize="30dp" />
 
 
         <ImageView
@@ -137,7 +137,7 @@
             android:gravity="center_vertical"
             android:text="(第1次)"
             android:textColor="@color/color_1E82AA"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
 
         <TextView
@@ -150,7 +150,7 @@
             android:layout_marginRight="26dp"
             android:text="久未放晴的天空，依旧留着你的笑容哭过却无法掩埋歉疚。风筝在阴天搁浅想念还在"
             android:textColor="@color/color_83DBFF"
-            android:textSize="17sp"
+            android:textSize="17dp"
             android:visibility="gone" />
 
     </RelativeLayout>
@@ -184,7 +184,7 @@
         android:background="@mipmap/sound_register_confirm_ic"
         android:text="确定"
         android:textColor="@color/color_4BC9FC"
-        android:textSize="18sp"
+        android:textSize="18dp"
         app:layout_constraintRight_toLeftOf="@+id/space_view"
         app:layout_constraintTop_toBottomOf="@+id/layout_content" />
 
@@ -197,7 +197,7 @@
         android:background="@mipmap/sound_register_cancel_ic"
         android:text="退出"
         android:textColor="@color/color_4BC9FC"
-        android:textSize="18sp"
+        android:textSize="18dp"
         app:layout_constraintLeft_toRightOf="@+id/space_view"
         app:layout_constraintTop_toBottomOf="@+id/layout_content" />
 
@@ -210,7 +210,7 @@
         android:layout_marginBottom="25dp"
         android:text="温馨提示：请先注册声纹(需要录三次动态数字，两次文本无关)之后即可进行个人声纹验证。"
         android:textColor="@color/color_1e82aa"
-        android:textSize="14sp"
+        android:textSize="14dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />

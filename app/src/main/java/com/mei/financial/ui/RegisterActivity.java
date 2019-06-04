@@ -135,7 +135,7 @@ public class RegisterActivity extends BaseActivity implements CancelAdapt {
                 }
 
                 // 1 女 2 男
-                String sex = mRbMan.isChecked() ? "1" : "2";
+                String sex = mRbMan.isChecked() ? "2" : "1";
 
                 if (!mCbItem.isChecked()) {
                     RxToast.error(getString(R.string.hook_note_item));

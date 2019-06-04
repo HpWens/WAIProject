@@ -25,7 +25,7 @@
         android:layout_marginRight="36dp"
         android:fillViewport="true"
         android:scrollbarThumbVertical="@android:color/transparent"
-        android:scrollbars="vertical">
+        android:scrollbars="none">
 
         <LinearLayout
             android:id="@+id/content"
