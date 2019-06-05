@@ -273,6 +273,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="46dp"
+                android:checked="true"
                 android:paddingLeft="8dp"
                 android:text="注册并同意事项"
                 android:textColor="@color/color_30A6D5"
