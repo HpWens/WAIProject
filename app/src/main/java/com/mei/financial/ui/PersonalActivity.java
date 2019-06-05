@@ -89,7 +89,7 @@ public class PersonalActivity extends BaseActivity implements CustomAdapt {
 
     private void fillUserData() {
         mUserInfo = UserService.getInstance().getUserInfo();
-        mTvName.setText(StringUtils.getFormatName(mUserInfo.name));
+        mTvName.setText(StringUtils.getFormatName(mUserInfo.name.trim()));
         mTvSex.setText(mUserInfo.sex == 1 ? "女" : "男");
         mTvCredit.setText("" + mUserInfo.getCredit_value());
         mEtPhone.setText(StringUtils.getFormatPrePhone(mUserInfo.phone_number));

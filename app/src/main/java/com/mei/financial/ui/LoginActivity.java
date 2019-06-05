@@ -1,5 +1,6 @@
 package com.mei.financial.ui;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
@@ -32,6 +33,7 @@ import com.meis.base.mei.base.BaseActivity;
 import com.meis.base.mei.entity.Result;
 import com.meis.base.mei.utils.Eyes;
 import com.scwang.smartrefresh.layout.util.DensityUtil;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.vondear.rxtool.RxDataTool;
 import com.vondear.rxtool.RxEncodeTool;
 import com.vondear.rxtool.RxNetTool;
