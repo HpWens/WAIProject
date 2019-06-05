@@ -339,13 +339,12 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
                     mTts.stopSpeaking();
                     restorePlayViewState();
                 }
-
                 // 设置参数
                 setParam();
                 mIatDialog.setListener(new RecognizerDialogListener() {
                     @Override
                     public void onResult(RecognizerResult results, boolean isLast) {
-                        printResult(results);
+                        printResult(results, isLast);
                     }
 
                     @Override
@@ -397,10 +396,15 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
         mTts.setParameter(SpeechConstant.TTS_AUDIO_PATH, Environment.getExternalStorageDirectory() + "/msc/tts.pcm");
     }
 
-    private void printResult(RecognizerResult results) {
+    private void printResult(RecognizerResult results, boolean isLast) {
         String text = JsonParser.parseIatResult(results.getResultString());
-        if (!StringUtils.isEmpty(text)) {
-            uploadSoundFile();
+        if (isLast) {
+            mIvRecord.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    uploadSoundFile();
+                }
+            }, 200);
         }
         // RxToast.normal(text);
     }
@@ -443,7 +447,11 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
                 }).execute(new SimpleCallBack<String>() {
             @Override
             public void onError(ApiException e) {
-                RxToast.error(e.getMessage());
+                if (e.getCode() != ApiException.ERROR.UNKNOWN) {
+                    RxToast.error(e.getMessage());
+                } else {
+                    RxToast.normal(getString(R.string.repeat_verify_hint));
+                }
             }
 
             @Override
@@ -462,9 +470,9 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
                                 return;
                             }
                             // 上传成功后删除文件
-                            if (file.exists() && file.isFile()) {
-                                // file.delete();
-                            }
+                            // if (file.exists() && file.isFile()) {
+                            //     file.delete();
+                            // }
                             mIndexVerify++;
                             if (mIndexVerify == 5) {
                                 deleteSound();

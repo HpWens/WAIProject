@@ -43,7 +43,7 @@ public class MyApplication extends Application {
         HttpParams params = new HttpParams();
         // params.put("appId", "10010");
         EasyHttp.getInstance()
-                //.debug("RxEasyHttp", BuildConfig.DEBUG)
+                .debug("RxEasyHttp", BuildConfig.DEBUG)
                 .setReadTimeOut(10 * 60 * 1000)
                 .setWriteTimeOut(10 * 60 * 1000)
                 .setConnectTimeout(10 * 60 * 1000)

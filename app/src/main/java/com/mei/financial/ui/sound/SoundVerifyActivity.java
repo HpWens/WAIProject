@@ -296,7 +296,7 @@ public class SoundVerifyActivity extends BaseActivity implements CustomAdapt {
                 mIatDialog.setListener(new RecognizerDialogListener() {
                     @Override
                     public void onResult(RecognizerResult results, boolean isLast) {
-                        printResult(results);
+                        printResult(results, isLast);
                     }
 
                     @Override
@@ -324,10 +324,15 @@ public class SoundVerifyActivity extends BaseActivity implements CustomAdapt {
         mIvPlay.setImageResource(R.mipmap.sound_register_pause_ic);
     }
 
-    private void printResult(RecognizerResult results) {
+    private void printResult(RecognizerResult results, boolean isLast) {
         String text = JsonParser.parseIatResult(results.getResultString());
-        if (!StringUtils.isEmpty(text)) {
-            uploadSoundFile();
+        if (isLast) {
+            mIvRecord.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    uploadSoundFile();
+                }
+            }, 200);
         }
         // RxToast.normal(text);
     }
@@ -352,7 +357,11 @@ public class SoundVerifyActivity extends BaseActivity implements CustomAdapt {
                 }).execute(new SimpleCallBack<String>() {
             @Override
             public void onError(ApiException e) {
-                RxToast.error(e.getMessage());
+                if (e.getCode() != ApiException.ERROR.UNKNOWN) {
+                    RxToast.error(e.getMessage());
+                } else {
+                    RxToast.normal(getString(R.string.repeat_verify_hint));
+                }
             }
 
             @Override

@@ -7,7 +7,7 @@
     <TextView
         android:id="@+id/view_test"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="148dp"
         android:background="@color/color_4BC9FC"
         android:ellipsize="end"
         android:maxLength="50">
