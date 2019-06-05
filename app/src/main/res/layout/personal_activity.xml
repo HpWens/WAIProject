@@ -36,9 +36,9 @@
         android:id="@+id/layout_content"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="42dp"
+        android:layout_marginLeft="40dp"
         android:layout_marginTop="20dp"
-        android:layout_marginRight="42dp"
+        android:layout_marginRight="40dp"
         android:background="@mipmap/user_content_bg"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -81,7 +81,7 @@
             android:layout_toLeftOf="@+id/space_view"
             android:text="姓名："
             android:textColor="@color/color_1E82AA"
-            android:textSize="18sp" />
+            android:textSize="17sp" />
 
 
         <TextView
@@ -89,13 +89,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/tv_name_left"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="6dp"
             android:layout_toRightOf="@+id/tv_name_left"
             android:maxLength="12"
             android:singleLine="true"
             android:text="王*鹤"
             android:textColor="@color/color_83DBFF"
-            android:textSize="18sp" />
+            android:textSize="17sp" />
 
 
         <TextView
@@ -107,7 +107,7 @@
             android:layout_toLeftOf="@+id/space_view"
             android:text="性别："
             android:textColor="@color/color_1E82AA"
-            android:textSize="18sp" />
+            android:textSize="17sp" />
 
 
         <TextView
@@ -115,13 +115,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/tv_sex_left"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="6dp"
             android:layout_toRightOf="@+id/tv_sex_left"
             android:maxLength="12"
             android:singleLine="true"
             android:text="男"
             android:textColor="@color/color_83DBFF"
-            android:textSize="18sp" />
+            android:textSize="17sp" />
 
         <TextView
             android:id="@+id/tv_credit_left"
@@ -132,20 +132,20 @@
             android:layout_toLeftOf="@+id/space_view"
             android:text="信用值："
             android:textColor="@color/color_1E82AA"
-            android:textSize="18sp" />
+            android:textSize="17sp" />
 
         <TextView
             android:id="@+id/tv_credit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/tv_credit_left"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="6dp"
             android:layout_toRightOf="@+id/tv_credit_left"
             android:maxLength="3"
             android:singleLine="true"
             android:text="100"
             android:textColor="@color/color_83DBFF"
-            android:textSize="18sp" />
+            android:textSize="17sp" />
 
         <TextView
             android:id="@+id/tv_phone_left"
@@ -156,25 +156,25 @@
             android:layout_toLeftOf="@+id/space_view"
             android:text="手机号码："
             android:textColor="@color/color_1E82AA"
-            android:textSize="18sp" />
+            android:textSize="17sp" />
 
         <EditText
             android:id="@+id/et_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/tv_phone_left"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="6dp"
             android:layout_marginBottom="50dp"
             android:layout_toRightOf="@+id/tv_phone_left"
             android:background="@null"
             android:enabled="false"
             android:inputType="number"
-            android:maxLength="16"
+            android:maxLength="11"
             android:minWidth="48dp"
             android:singleLine="true"
             android:text="152****5656"
             android:textColor="@color/color_83DBFF"
-            android:textSize="18sp" />
+            android:textSize="17sp" />
 
         <ImageView
             android:id="@+id/user_phone_edit"

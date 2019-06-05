@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Library</string>
+    <string name="app_name" translatable="false">My Library</string>
     <string name="mei_hint_empty">all over, nothing was found</string>
     <string name="mei_hint_loading">loading ...</string>
     <string name="mei_hint_error">failed to load , click retry ~~</string>

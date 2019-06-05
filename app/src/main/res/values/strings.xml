@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">FinancialProject</string>
+    <string name="app_name" translatable="false">声盾</string>
     <string name="app_id" translatable="false">5ce634a4</string>
     <string name="account_password_no_empty" translatable="false">账号，密码不能为空</string>
     <string name="correct_phone_number" translatable="false">请输入正确的手机号码</string>

@@ -49,7 +49,6 @@ import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
-import me.jessyan.autosize.internal.CancelAdapt;
 import me.jessyan.autosize.internal.CustomAdapt;
 
 /**
@@ -167,6 +166,11 @@ public class SoundVerifyActivity extends BaseActivity implements CustomAdapt {
             }
         });
 
+        requestDynamicNum();
+    }
+
+    // 请求随机数字
+    private void requestDynamicNum() {
         EasyHttp.get(UrlApi.SOUND_REGISTER_TEXT)
                 .execute(new SimpleCallBack<String>() {
                     @Override
@@ -362,7 +366,8 @@ public class SoundVerifyActivity extends BaseActivity implements CustomAdapt {
                     @Override
                     public void accept(Result<VerifyResultInfo> verifyResultInfoResult) throws Exception {
                         if (verifyResultInfoResult.isOk() && verifyResultInfoResult.getData() != null) {
-                            if (!verifyResultInfoResult.getData().verify_result) {
+                            if (!verifyResultInfoResult.getData().verify_result || !verifyResultInfoResult.getData().asr_result) {
+                                requestDynamicNum();
                                 RxToast.normal(getString(R.string.repeat_verify_hint));
                                 return;
                             }

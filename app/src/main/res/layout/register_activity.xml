@@ -87,99 +87,6 @@
                 android:drawableLeft="@mipmap/edit_star_ic"
                 android:drawablePadding="8dp"
                 android:maxLength="4"
-                android:text="手机号码"
-                android:textColor="@color/color_4BC9FC"
-                android:textSize="16sp" />
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="42dp"
-                android:layout_marginTop="9dp"
-                android:background="@drawable/login_edit_bg"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-
-                <EditText
-                    android:id="@+id/et_phone"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:hint="请输入11位手机号码"
-                    android:inputType="number"
-                    android:maxLength="11"
-                    android:singleLine="true"
-                    android:text=""
-                    android:textColor="@color/color_4BC9FC"
-                    android:textColorHint="@color/color_135E7D"
-                    android:textSize="14dp" />
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="fill_parent"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_clear"
-                    android:visibility="gone" />
-
-            </LinearLayout>
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:drawableLeft="@mipmap/edit_star_ic"
-                android:drawablePadding="8dp"
-                android:maxLength="4"
-                android:text="密码"
-                android:textColor="@color/color_4BC9FC"
-                android:textSize="16sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="42dp"
-                android:layout_marginTop="9dp"
-                android:background="@drawable/login_edit_bg"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-
-                <EditText
-                    android:id="@+id/et_password"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="14dp"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:digits="@string/password_digits"
-                    android:hint="请输入6-16位密码"
-                    android:inputType="textPassword"
-                    android:maxLength="30"
-                    android:singleLine="true"
-                    android:text=""
-                    android:textColor="@color/color_4BC9FC"
-                    android:textColorHint="@color/color_135E7D"
-                    android:textSize="14dp" />
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="fill_parent"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_clear"
-                    android:visibility="gone" />
-
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:drawableLeft="@mipmap/edit_star_ic"
-                android:drawablePadding="8dp"
-                android:maxLength="4"
                 android:text="姓名"
                 android:textColor="@color/color_4BC9FC"
                 android:textSize="16sp" />
@@ -267,27 +174,119 @@
 
             </LinearLayout>
 
-
-            <Button
-                android:id="@+id/btn_register"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginTop="46dp"
-                android:background="@mipmap/login_btn_ic"
-                android:text="注册"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:drawableLeft="@mipmap/edit_star_ic"
+                android:drawablePadding="8dp"
+                android:maxLength="4"
+                android:text="手机号码"
                 android:textColor="@color/color_4BC9FC"
-                android:textSize="18dp" />
+                android:textSize="16sp" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:layout_marginTop="9dp"
+                android:background="@drawable/login_edit_bg"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+
+                <EditText
+                    android:id="@+id/et_phone"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="请输入11位手机号码"
+                    android:inputType="number"
+                    android:maxLength="11"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textColor="@color/color_4BC9FC"
+                    android:textColorHint="@color/color_135E7D"
+                    android:textSize="14dp" />
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="fill_parent"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_clear"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:drawableLeft="@mipmap/edit_star_ic"
+                android:drawablePadding="8dp"
+                android:maxLength="4"
+                android:text="密码"
+                android:textColor="@color/color_4BC9FC"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:layout_marginTop="9dp"
+                android:background="@drawable/login_edit_bg"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+
+                <EditText
+                    android:id="@+id/et_password"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="14dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:digits="@string/password_digits"
+                    android:hint="请输入6-16位密码"
+                    android:inputType="textPassword"
+                    android:maxLength="30"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textColor="@color/color_4BC9FC"
+                    android:textColorHint="@color/color_135E7D"
+                    android:textSize="14dp" />
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="fill_parent"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_clear"
+                    android:visibility="gone" />
+
+            </LinearLayout>
 
             <CheckBox
                 android:id="@+id/cb_item"
                 style="@style/login_checkbox_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="46dp"
                 android:paddingLeft="8dp"
                 android:text="注册并同意事项"
                 android:textColor="@color/color_30A6D5"
                 android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/btn_register"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="10dp"
+                android:background="@mipmap/login_btn_ic"
+                android:text="注册"
+                android:textColor="@color/color_4BC9FC"
+                android:textSize="18dp" />
 
         </LinearLayout>
 
