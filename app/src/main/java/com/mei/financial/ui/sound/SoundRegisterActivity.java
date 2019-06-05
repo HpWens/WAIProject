@@ -463,7 +463,7 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
                             }
                             // 上传成功后删除文件
                             if (file.exists() && file.isFile()) {
-                                file.delete();
+                                // file.delete();
                             }
                             mIndexVerify++;
                             if (mIndexVerify == 5) {

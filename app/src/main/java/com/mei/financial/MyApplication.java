@@ -2,19 +2,15 @@ package com.mei.financial;
 
 import android.app.Application;
 
-import com.google.gson.Gson;
 import com.iflytek.cloud.SpeechUtility;
 import com.mei.financial.entity.UserInfo;
 import com.mei.financial.entity.UserService;
-import com.mei.financial.utils.ScreenAdapter;
 import com.mei.financial.utils.StringUtils;
 import com.vondear.rxtool.RxTool;
 import com.zhouyou.http.EasyHttp;
 import com.zhouyou.http.cache.converter.SerializableDiskConverter;
 import com.zhouyou.http.model.HttpHeaders;
 import com.zhouyou.http.model.HttpParams;
-
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * @author wenshi
@@ -47,9 +43,9 @@ public class MyApplication extends Application {
         HttpParams params = new HttpParams();
         // params.put("appId", "10010");
         EasyHttp.getInstance()
-                .debug("RxEasyHttp", BuildConfig.DEBUG)
-                .setReadTimeOut(3 * 60 * 1000)
-                .setWriteTimeOut(3 * 60 * 1000)
+                //.debug("RxEasyHttp", BuildConfig.DEBUG)
+                .setReadTimeOut(10 * 60 * 1000)
+                .setWriteTimeOut(10 * 60 * 1000)
                 .setConnectTimeout(10 * 60 * 1000)
                 .setRetryCount(3) // 默认网络不好自动重试3次
                 .setRetryDelay(500) // 每次延时500ms重试
@@ -59,7 +55,7 @@ public class MyApplication extends Application {
                 .setCacheMaxSize(50 * 1024 * 1024) // 设置缓存大小为50M
                 .setCacheVersion(1) // 缓存版本为1
                 .setCertificates() // 信任所有证书
-                .addConverterFactory(GsonConverterFactory.create(new Gson()))
+                // .addConverterFactory(GsonConverterFactory.create(new Gson()))
                 .addCommonHeaders(headers) // 设置全局公共头
                 .addCommonParams(params); // 设置全局公共参数
 
