@@ -31,6 +31,7 @@ import com.mei.financial.R;
 import com.mei.financial.common.UrlApi;
 import com.mei.financial.entity.ParameterizedTypeImpl;
 import com.mei.financial.entity.SoundInfo;
+import com.mei.financial.entity.UserService;
 import com.mei.financial.entity.VerifyResultInfo;
 import com.mei.financial.ui.dialog.SoundRegisterFailureDialog;
 import com.mei.financial.ui.dialog.SoundRegisterSuccessDialog;
@@ -529,6 +530,8 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
                             ApiResult apiResult = new Gson().fromJson(s, new TypeToken<ApiResult>() {
                             }.getType());
                             if (apiResult.isOk()) {
+                                // 更改用户是否语音验证状态
+                                UserService.getInstance().changeIsEnroll(true);
                                 new SoundRegisterSuccessDialog(mContext, new SoundRegisterSuccessDialog.OnPositiveListener() {
                                     @Override
                                     public void onClick(SoundRegisterSuccessDialog dialog) {

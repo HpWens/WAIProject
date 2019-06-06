@@ -103,4 +103,10 @@ public class UserService {
         saveUser(userInfo);
     }
 
+    public void changeIsEnroll(boolean isEnroll) {
+        UserInfo userInfo = getUserInfo();
+        userInfo.is_enroll = isEnroll;
+        saveUser(userInfo);
+    }
+
 }
