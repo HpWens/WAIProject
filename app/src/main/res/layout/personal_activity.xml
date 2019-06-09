@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/color_0A0B29">
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             android:background="@color/color_0A0B29">
 
     <FrameLayout
         android:id="@+id/fl_header"
@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:scaleType="centerInside"
-            android:src="@mipmap/user_header_bg" />
+            android:src="@mipmap/user_header_bg"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -28,7 +28,7 @@
             android:layout_gravity="center"
             android:text="金融声纹认证系统"
             android:textColor="@color/color_83DBFF"
-            android:textSize="17sp" />
+            android:textSize="17sp"/>
 
     </FrameLayout>
 
@@ -55,13 +55,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleType="centerInside"
-                android:src="@mipmap/user_avatar_bg" />
+                android:src="@mipmap/user_avatar_bg"/>
 
             <ImageView
                 android:id="@+id/iv_avatar"
                 android:layout_width="94dp"
                 android:layout_height="94dp"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"/>
 
         </FrameLayout>
 
@@ -70,7 +70,7 @@
             android:id="@+id/space_view"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"/>
 
         <TextView
             android:id="@+id/tv_name_left"
@@ -81,7 +81,7 @@
             android:layout_toLeftOf="@+id/space_view"
             android:text="姓名："
             android:textColor="@color/color_1E82AA"
-            android:textSize="17sp" />
+            android:textSize="17sp"/>
 
 
         <TextView
@@ -95,7 +95,7 @@
             android:singleLine="true"
             android:text="王*鹤"
             android:textColor="@color/color_83DBFF"
-            android:textSize="17sp" />
+            android:textSize="17sp"/>
 
 
         <TextView
@@ -107,7 +107,7 @@
             android:layout_toLeftOf="@+id/space_view"
             android:text="性别："
             android:textColor="@color/color_1E82AA"
-            android:textSize="17sp" />
+            android:textSize="17sp"/>
 
 
         <TextView
@@ -121,7 +121,7 @@
             android:singleLine="true"
             android:text="男"
             android:textColor="@color/color_83DBFF"
-            android:textSize="17sp" />
+            android:textSize="17sp"/>
 
         <TextView
             android:id="@+id/tv_credit_left"
@@ -132,7 +132,7 @@
             android:layout_toLeftOf="@+id/space_view"
             android:text="信用值："
             android:textColor="@color/color_1E82AA"
-            android:textSize="17sp" />
+            android:textSize="17sp"/>
 
         <TextView
             android:id="@+id/tv_credit"
@@ -145,7 +145,7 @@
             android:singleLine="true"
             android:text="100"
             android:textColor="@color/color_83DBFF"
-            android:textSize="17sp" />
+            android:textSize="17sp"/>
 
         <TextView
             android:id="@+id/tv_phone_left"
@@ -156,7 +156,7 @@
             android:layout_toLeftOf="@+id/space_view"
             android:text="手机号码："
             android:textColor="@color/color_1E82AA"
-            android:textSize="17sp" />
+            android:textSize="17sp"/>
 
         <EditText
             android:id="@+id/et_phone"
@@ -174,18 +174,19 @@
             android:singleLine="true"
             android:text="152****5656"
             android:textColor="@color/color_83DBFF"
-            android:textSize="17sp" />
+            android:textSize="17sp"/>
 
         <ImageView
             android:id="@+id/user_phone_edit"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignTop="@+id/et_phone"
             android:layout_alignBottom="@+id/et_phone"
-            android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/et_phone"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:scaleType="centerInside"
-            android:src="@mipmap/user_phone_edit" />
+            android:src="@mipmap/user_phone_edit"/>
 
 
     </RelativeLayout>
@@ -200,8 +201,9 @@
         android:text="确定"
         android:textColor="@color/color_4BC9FC"
         android:textSize="18sp"
+        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_content" />
+        app:layout_constraintTop_toBottomOf="@+id/layout_content"/>
 
 </android.support.constraint.ConstraintLayout>

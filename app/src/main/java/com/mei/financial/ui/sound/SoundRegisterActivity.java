@@ -1,6 +1,7 @@
 package com.mei.financial.ui.sound;
 
 import android.Manifest;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.Spannable;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Space;
 import android.widget.TextView;
@@ -25,7 +27,6 @@ import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.SpeechRecognizer;
 import com.iflytek.cloud.SpeechSynthesizer;
 import com.iflytek.cloud.SynthesizerListener;
-import com.iflytek.cloud.ui.RecognizerDialog;
 import com.iflytek.cloud.ui.RecognizerDialogListener;
 import com.mei.financial.R;
 import com.mei.financial.common.UrlApi;
@@ -33,6 +34,7 @@ import com.mei.financial.entity.ParameterizedTypeImpl;
 import com.mei.financial.entity.SoundInfo;
 import com.mei.financial.entity.UserService;
 import com.mei.financial.entity.VerifyResultInfo;
+import com.mei.financial.ui.dialog.CustomRecognizerDialog;
 import com.mei.financial.ui.dialog.SoundRegisterFailureDialog;
 import com.mei.financial.ui.dialog.SoundRegisterSuccessDialog;
 import com.mei.financial.utils.JsonParser;
@@ -147,10 +149,16 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
             }
         });
 
-        mIatDialog = new RecognizerDialog(this, new InitListener() {
+        mIatDialog = new CustomRecognizerDialog(this, new InitListener() {
             @Override
             public void onInit(int code) {
+            }
+        });
 
+        post(new Runnable() {
+            @Override
+            public void run() {
+                handlerIatLayout();
             }
         });
 
@@ -201,6 +209,24 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
                 });
     }
 
+    private void handlerIatLayout() {
+        if (null != mIatDialog.getCustomView()) {
+            View parent = mIatDialog.getCustomView();
+            parent.setBackground(new ColorDrawable(0));
+            if (parent instanceof LinearLayout) {
+                LinearLayout linearParent = (LinearLayout) parent;
+                linearParent.setBackground(new ColorDrawable(0));
+                View firstChild = linearParent.getChildAt(0);
+                if (null != firstChild && firstChild instanceof LinearLayout) {
+                    LinearLayout childParent = (LinearLayout) firstChild;
+                    if (childParent.getChildCount() >= 1) {
+                        childParent.getChildAt(childParent.getChildCount() - 1).setVisibility(View.INVISIBLE);
+                    }
+                }
+            }
+        }
+    }
+
     private void updateView(SpannableStringBuilder builder) {
         mTvCount.setText(builder);
     }
@@ -219,7 +245,7 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
     // 语音听写对象
     private SpeechRecognizer mIat;
     // 语音听写UI
-    private RecognizerDialog mIatDialog;
+    private CustomRecognizerDialog mIatDialog;
     // 用HashMap存储听写结果
     private HashMap<String, String> mIatResults = new LinkedHashMap<String, String>();
 

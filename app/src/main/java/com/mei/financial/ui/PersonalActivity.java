@@ -56,7 +56,8 @@ public class PersonalActivity extends BaseActivity implements CustomAdapt {
     EditText mEtPhone;
     @BindView(R.id.btn_confirm)
     Button mBtnConfirm;
-
+    @BindView(R.id.user_phone_edit)
+    ImageView mIvEdit;
 
     private UserInfo mUserInfo;
 
@@ -112,6 +113,8 @@ public class PersonalActivity extends BaseActivity implements CustomAdapt {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.user_phone_edit:
+                mBtnConfirm.setVisibility(View.VISIBLE);
+                mIvEdit.setVisibility(View.GONE);
                 mEtPhone.setText(mUserInfo.phone_number);
                 mEtPhone.setSelection(mEtPhone.getText().length());
                 mEtPhone.setEnabled(true);
