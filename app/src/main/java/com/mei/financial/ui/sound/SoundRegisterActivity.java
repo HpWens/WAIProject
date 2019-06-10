@@ -454,6 +454,7 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
     private void printResult(RecognizerResult results, boolean isLast) {
         String text = JsonParser.parseIatResult(results.getResultString());
         if (isLast) {
+            resetListening();
             showUploadDialog();
             mIvRecord.postDelayed(new Runnable() {
                 @Override

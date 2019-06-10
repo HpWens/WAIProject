@@ -66,6 +66,7 @@ public class CallActivity extends BaseActivity implements CancelAdapt {
         switch (view.getId()) {
             case R.id.iv_hang_up:
                 mTvCalling.setText("手机");
+                finish();
                 break;
             case R.id.iv_answer:
                 EasyHttp.get(UrlApi.SCENES_CALL)
