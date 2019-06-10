@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
+
+    <ImageView
+            android:id="@+id/iv_wave1"
+            android:layout_gravity="center"
+            android:src="@mipmap/iv_wave_ic"
+            android:scaleType="centerInside"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <ImageView
+            android:id="@+id/iv_wave2"
+            android:layout_gravity="center"
+            android:src="@mipmap/iv_wave_ic"
+            android:scaleType="centerInside"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <ImageView
+            android:id="@+id/iv_wave3"
+            android:layout_gravity="center"
+            android:src="@mipmap/iv_wave_ic"
+            android:scaleType="centerInside"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <ImageView
+            android:id="@+id/iv_play"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:src="@mipmap/sound_register_record_ic"
+            android:layout_height="wrap_content"/>
+
+
+</FrameLayout>

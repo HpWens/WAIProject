@@ -20,7 +20,8 @@
     <string name="password_compare_correct" translatable="false">密码输入不一致</string>
     <string name="repeat_verify_hint" translatable="false">验证失败，请重新验证</string>
     <string name="change_success" translatable="false">修改成功</string>
-    <string name="please_register_sound_hint"  translatable="false">请先进行声纹注册</string>
+    <string name="please_register_sound_hint" translatable="false">请先进行声纹注册</string>
+    <string name="text_begin" translatable="false">请开始说话…说完后再点击</string>
 
     <string name="user_protocol" translatable="false">重要提示：\n\n
 为保障您的合法权益，请您务必审慎阅读、充分理解本授权的全部条款，特别是授权条款或限制您权利的条款，这些条款可能以加黑加粗形式提示您注意。\n\n

@@ -2,6 +2,7 @@ package com.meis.base.mei.status;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.DrawableRes;
@@ -120,6 +121,7 @@ public class StatusHelper {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     mContentView.setBackground(null);
                     mView.setBackground(background);
+                    //mView.setBackground(new ColorDrawable(0));
                 }
             }
         }

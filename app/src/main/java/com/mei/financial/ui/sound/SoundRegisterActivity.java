@@ -21,13 +21,13 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.iflytek.cloud.ErrorCode;
 import com.iflytek.cloud.InitListener;
+import com.iflytek.cloud.RecognizerListener;
 import com.iflytek.cloud.RecognizerResult;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.SpeechRecognizer;
 import com.iflytek.cloud.SpeechSynthesizer;
 import com.iflytek.cloud.SynthesizerListener;
-import com.iflytek.cloud.ui.RecognizerDialogListener;
 import com.mei.financial.R;
 import com.mei.financial.common.UrlApi;
 import com.mei.financial.entity.ParameterizedTypeImpl;
@@ -37,13 +37,17 @@ import com.mei.financial.entity.VerifyResultInfo;
 import com.mei.financial.ui.dialog.CustomRecognizerDialog;
 import com.mei.financial.ui.dialog.SoundRegisterFailureDialog;
 import com.mei.financial.ui.dialog.SoundRegisterSuccessDialog;
+import com.mei.financial.ui.dialog.UploadSoundDialog;
 import com.mei.financial.utils.JsonParser;
 import com.mei.financial.utils.StringUtils;
+import com.mei.financial.view.RecordWaveView;
 import com.meis.base.mei.base.BaseActivity;
 import com.meis.base.mei.entity.Result;
+import com.meis.base.mei.status.ViewState;
 import com.meis.base.mei.utils.Eyes;
 import com.meis.base.mei.utils.ListUtils;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.vondear.rxtool.RxImageTool;
 import com.vondear.rxtool.view.RxToast;
 import com.zhouyou.http.EasyHttp;
 import com.zhouyou.http.body.ProgressResponseCallBack;
@@ -90,7 +94,7 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
     @BindView(R.id.layout_content)
     RelativeLayout mLayoutContent;
     @BindView(R.id.iv_record)
-    ImageView mIvRecord;
+    RecordWaveView mIvRecord;
     @BindView(R.id.iv_play)
     ImageView mIvPlay;
     @BindView(R.id.tv_text)
@@ -112,6 +116,8 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
     private boolean mIsPlaySound = false;
     private boolean mSoundCompleted = true;
 
+    private boolean mFinishRecord = false;
+    private UploadSoundDialog mUploadSoundDialog;
 
     @Override
     protected void initView() {
@@ -218,6 +224,8 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
                 linearParent.setBackground(new ColorDrawable(0));
                 View firstChild = linearParent.getChildAt(0);
                 if (null != firstChild && firstChild instanceof LinearLayout) {
+                    LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) firstChild.getLayoutParams();
+                    lp.topMargin = RxImageTool.dip2px(64);
                     LinearLayout childParent = (LinearLayout) firstChild;
                     if (childParent.getChildCount() >= 1) {
                         childParent.getChildAt(childParent.getChildCount() - 1).setVisibility(View.INVISIBLE);
@@ -240,7 +248,6 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
     private SpeechSynthesizer mTts;
     // 默认发音人
     private String voicer = "xiaoyan";
-
 
     // 语音听写对象
     private SpeechRecognizer mIat;
@@ -269,7 +276,7 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
         mIat.setParameter(SpeechConstant.VAD_BOS, "4000");
 
         // 设置语音后端点:后端点静音检测时间，即用户停止说话多长时间内即认为不再输入， 自动停止录音
-        mIat.setParameter(SpeechConstant.VAD_EOS, "1000");
+        mIat.setParameter(SpeechConstant.VAD_EOS, "3000");
 
         // 设置标点符号,设置为"0"返回结果无标点,设置为"1"返回结果有标点
         mIat.setParameter(SpeechConstant.ASR_PTT, "0");
@@ -277,7 +284,6 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
         // 设置音频保存路径，保存音频格式支持pcm、wav，设置路径为sd卡请注意WRITE_EXTERNAL_STORAGE权限
         mIat.setParameter(SpeechConstant.AUDIO_FORMAT, "wav");
         mIat.setParameter(SpeechConstant.ASR_AUDIO_PATH, Environment.getExternalStorageDirectory() + "/msc/iat.wav");
-
     }
 
     @OnClick({R.id.iv_play, R.id.iv_record, R.id.btn_confirm, R.id.btn_cancel})
@@ -354,7 +360,7 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
                 });
 
                 if (code != ErrorCode.SUCCESS) {
-                    RxToast.error("语音合成失败,错误码: " + code + ",请点击网址https://www.xfyun.cn/document/error-code查询解决方案");
+                    RxToast.error("语音合成失败,错误码: " + code);
                 }
                 break;
             case R.id.iv_record:
@@ -362,24 +368,41 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
                     // 创建单例失败，与 21001 错误为同样原因，参考 http://bbs.xfyun.cn/forum.php?mod=viewthread&tid=9688
                     return;
                 }
-                if (null != mTts) {
+                if (null != mTts && mTts.isSpeaking()) {
                     mTts.stopSpeaking();
                     restorePlayViewState();
                 }
-                // 设置参数
-                setParam();
-                mIatDialog.setListener(new RecognizerDialogListener() {
-                    @Override
-                    public void onResult(RecognizerResult results, boolean isLast) {
-                        printResult(results, isLast);
-                    }
 
-                    @Override
-                    public void onError(SpeechError error) {
-                        error.getPlainDescription(true);
+                if (mFinishRecord) {
+                    mIvRecord.stopAnimator();
+                    if (mIat.isListening()) {
+                        mIat.stopListening();
                     }
-                });
-                mIatDialog.show();
+                } else {
+                    mIvRecord.startWaveAnimator();
+                    // 设置参数
+                    setParam();
+                    int ret = mIat.startListening(mRecognizerListener);
+                    if (ret != ErrorCode.SUCCESS) {
+                        RxToast.normal("听写失败,错误码：" + ret);
+                        resetListening();
+                    } else {
+                        RxToast.normal(getString(R.string.text_begin));
+                    }
+                }
+//                mIatDialog.setListener(new RecognizerDialogListener() {
+//                    @Override
+//                    public void onResult(RecognizerResult results, boolean isLast) {
+//                        printResult(results, isLast);
+//                    }
+//
+//                    @Override
+//                    public void onError(SpeechError error) {
+//                        error.getPlainDescription(true);
+//                    }
+//                });
+//                mIatDialog.show();
+                mFinishRecord = !mFinishRecord;
                 break;
             case R.id.btn_confirm:
                 mBtnConfirm.setVisibility(View.GONE);
@@ -391,6 +414,11 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
                 finish();
                 break;
         }
+    }
+
+    private void resetListening() {
+        mFinishRecord = false;
+        mIvRecord.stopAnimator();
     }
 
     private void restorePlayViewState() {
@@ -426,6 +454,7 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
     private void printResult(RecognizerResult results, boolean isLast) {
         String text = JsonParser.parseIatResult(results.getResultString());
         if (isLast) {
+            showUploadDialog();
             mIvRecord.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -434,6 +463,19 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
             }, 200);
         }
         // RxToast.normal(text);
+    }
+
+    private void showUploadDialog() {
+        if (mUploadSoundDialog == null) {
+            mUploadSoundDialog = new UploadSoundDialog(mContext);
+        }
+        mUploadSoundDialog.show();
+    }
+
+    private void dismissUploadDialog() {
+        if (mUploadSoundDialog != null && mUploadSoundDialog.isShowing()) {
+            mUploadSoundDialog.dismiss();
+        }
     }
 
     @Override
@@ -479,6 +521,7 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
                 } else {
                     RxToast.normal(getString(R.string.repeat_verify_hint));
                 }
+                dismissUploadDialog();
             }
 
             @Override
@@ -501,6 +544,10 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
                             //     file.delete();
                             // }
                             mIndexVerify++;
+
+                            if (mIndexVerify == 2) {
+                                mIndexVerify++;
+                            }
                             if (mIndexVerify == 5) {
                                 deleteSound();
                                 return;
@@ -512,6 +559,7 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
                         }
                     }
                 });
+                dismissUploadDialog();
             }
         });
     }
@@ -591,13 +639,63 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
         mTvSoundContent.setText(mIndexVerify > 2 ? "" : StringUtils.getCenterTwoSpace(mTextsVerify.get(mIndexVerify)));
         mTvText.setText(mTextsVerify.get(mIndexVerify));
 
-        // mTvCount.setText((mIndexVerify + 1) + "/5");
-        String contText = (mIndexVerify + 1) + "/5";
+        // mTvCount.setText((mIndexVerify + 1) + "/5"); (mIndexVerify + 1) + "/4";
+        String contText = (mIndexVerify + 1) + "/4";
+        if (mIndexVerify >= 3) {
+            contText = mIndexVerify + "/4";
+        }
         SpannableString spannableString = new SpannableString(contText);
         ForegroundColorSpan colorSpan = new ForegroundColorSpan(getResources().getColor(R.color.color_83DBFF));
         spannableString.setSpan(colorSpan, 0, 1, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         mTvCount.setText(spannableString);
     }
+
+    /**
+     * 听写监听器。
+     */
+    private RecognizerListener mRecognizerListener = new RecognizerListener() {
+
+        @Override
+        public void onBeginOfSpeech() {
+            // 此回调表示：sdk内部录音机已经准备好了，用户可以开始语音输入
+        }
+
+        @Override
+        public void onError(SpeechError error) {
+            // Tips：
+            // 错误码：10118(您没有说话)，可能是录音机权限被禁，需要提示用户打开应用的录音权限。
+            if (mTranslateEnable && error.getErrorCode() == 14002) {
+                RxToast.normal(error.getPlainDescription(true) + "\n请确认是否已开通翻译功能");
+            } else {
+                RxToast.normal(error.getPlainDescription(true));
+            }
+            resetListening();
+        }
+
+        @Override
+        public void onEndOfSpeech() {
+            // 此回调表示：检测到了语音的尾端点，已经进入识别过程，不再接受语音输入
+        }
+
+        @Override
+        public void onResult(RecognizerResult results, boolean isLast) {
+            printResult(results, isLast);
+        }
+
+        @Override
+        public void onVolumeChanged(int volume, byte[] data) {
+        }
+
+        @Override
+        public void onEvent(int eventType, int arg1, int arg2, Bundle obj) {
+            // 以下代码用于获取与云端的会话id，当业务出错时将会话id提供给技术支持人员，可用于查询会话日志，定位出错原因
+            // 若使用本地能力，会话id为null
+            //	if (SpeechEvent.EVENT_SESSION_ID == eventType) {
+            //		String sid = obj.getString(SpeechEvent.KEY_EVENT_SESSION_ID);
+            //		Log.d(TAG, "session id =" + sid);
+            //	}
+        }
+    };
 
     @Override
     public boolean isBaseOnWidth() {

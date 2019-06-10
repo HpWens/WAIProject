@@ -155,14 +155,13 @@
 
     </RelativeLayout>
 
-    <ImageView
+    <com.mei.financial.view.RecordWaveView
         android:id="@+id/iv_record"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_marginTop="36dp"
-        android:scaleType="centerInside"
-        android:src="@mipmap/sound_register_record_ic"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout_content" />
@@ -207,8 +206,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="22dp"
         android:layout_marginRight="22dp"
-        android:lineSpacingExtra="1dp"
         android:layout_marginBottom="25dp"
+        android:lineSpacingExtra="1dp"
         android:text="温馨提示：请先注册声纹(需要录三次动态数字，两次文本无关)之后即可进行个人声纹验证。"
         android:textColor="@color/color_1e82aa"
         android:textSize="14dp"

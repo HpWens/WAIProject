@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipChildren="false"
     android:background="@color/color_0A0B29">
 
     <FrameLayout
@@ -127,11 +128,12 @@
 
     </RelativeLayout>
 
-    <ImageView
+    <com.mei.financial.view.RecordWaveView
         android:id="@+id/iv_record"
-        android:layout_width="113dp"
-        android:layout_height="113dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
+        android:clipChildren="false"
         android:scaleType="centerInside"
         android:src="@mipmap/sound_register_record_ic"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -144,7 +146,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="11dp"
-        android:text="温馨提示：请按住说话，读完后松开。"
+        android:text="温馨提示：点击开始录音，读完后再点击"
         android:textColor="@color/color_1E82AA"
         android:textSize="14dp"
         app:layout_constraintLeft_toLeftOf="parent"

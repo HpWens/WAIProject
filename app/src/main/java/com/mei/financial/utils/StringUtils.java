@@ -1,5 +1,9 @@
 package com.mei.financial.utils;
 
+import android.media.AudioFormat;
+import android.media.AudioRecord;
+import android.media.MediaRecorder;
+
 /**
  * @author wenshi
  * @github
@@ -46,6 +50,38 @@ public class StringUtils {
         }
         int half = content.length() / 2;
         return content.substring(0, half) + "  " + content.substring(half, content.length());
+    }
+
+    /***
+     * 返回 true 就是没有被占用
+     * 返回 false 就是被占用
+     * @return
+     */
+    private boolean validateMicAvailability() {
+        Boolean available = true;
+        AudioRecord recorder =
+                new AudioRecord(MediaRecorder.AudioSource.MIC, 44100,
+                        AudioFormat.CHANNEL_IN_MONO,
+                        AudioFormat.ENCODING_DEFAULT, 44100);
+        try {
+            if (recorder.getRecordingState() != AudioRecord.RECORDSTATE_STOPPED) {
+                available = false;
+
+            }
+
+            recorder.startRecording();
+            if (recorder.getRecordingState() != AudioRecord.RECORDSTATE_RECORDING) {
+                recorder.stop();
+                available = false;
+
+            }
+            recorder.stop();
+        } finally {
+            recorder.release();
+            recorder = null;
+        }
+
+        return available;
     }
 
 }
