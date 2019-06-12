@@ -36,9 +36,9 @@
         android:id="@+id/layout_content"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="40dp"
+        android:layout_marginLeft="32dp"
         android:layout_marginTop="20dp"
-        android:layout_marginRight="40dp"
+        android:layout_marginRight="32dp"
         android:background="@mipmap/user_content_bg"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -183,8 +183,8 @@
             android:layout_alignTop="@+id/et_phone"
             android:layout_alignBottom="@+id/et_phone"
             android:layout_toRightOf="@+id/et_phone"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
             android:scaleType="centerInside"
             android:src="@mipmap/user_phone_edit"/>
 

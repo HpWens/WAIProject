@@ -20,7 +20,7 @@ import com.zhouyou.http.model.HttpParams;
  */
 public class MyApplication extends Application {
 
-    String urlHeader = "http://119.3.70.106:8030";
+   public static String urlHeader = "http://119.3.70.106:8030";
 
     @Override
     public void onCreate() {

@@ -1,38 +1,75 @@
 package com.mei.financial.ui.scenes;
 
 import android.Manifest;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Rect;
+import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.Space;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.iflytek.cloud.ErrorCode;
 import com.iflytek.cloud.InitListener;
+import com.iflytek.cloud.RecognizerListener;
 import com.iflytek.cloud.RecognizerResult;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.SpeechRecognizer;
 import com.iflytek.cloud.ui.RecognizerDialog;
-import com.iflytek.cloud.ui.RecognizerDialogListener;
+import com.mei.financial.MyApplication;
 import com.mei.financial.R;
-import com.mei.financial.entity.MeetContentBean;
+import com.mei.financial.common.UrlApi;
+import com.mei.financial.entity.MeetContentInfo;
+import com.mei.financial.entity.MeetResultInfo;
+import com.mei.financial.entity.ParameterizedTypeImpl;
+import com.mei.financial.entity.VerifyResultInfo;
 import com.mei.financial.ui.adapter.MeetContentAdapter;
+import com.mei.financial.ui.dialog.UploadSoundDialog;
 import com.mei.financial.utils.JsonParser;
+import com.mei.financial.utils.StringUtils;
+import com.mei.financial.view.RecordWaveView;
 import com.meis.base.mei.base.BaseActivity;
+import com.meis.base.mei.entity.Result;
 import com.meis.base.mei.utils.Eyes;
+import com.meis.base.mei.utils.ListUtils;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.vondear.rxtool.RxImageTool;
 import com.vondear.rxtool.view.RxToast;
+import com.zhouyou.http.EasyHttp;
+import com.zhouyou.http.body.ProgressResponseCallBack;
+import com.zhouyou.http.callback.SimpleCallBack;
+import com.zhouyou.http.exception.ApiException;
+import com.zhouyou.http.model.ApiResult;
+
+import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.handshake.ServerHandshake;
+
+import java.io.File;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
-import me.jessyan.autosize.internal.CancelAdapt;
+import io.reactivex.functions.Function;
 import me.jessyan.autosize.internal.CustomAdapt;
 
 /**
@@ -56,7 +93,7 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
     @BindView(R.id.btn_clear)
     Button mBtnClear;
     @BindView(R.id.iv_record)
-    ImageView mIvRecord;
+    RecordWaveView mIvRecord;
     @BindView(R.id.tv_record_hint)
     TextView mTvRecordHint;
 
@@ -70,6 +107,10 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
     private String mEngineType = SpeechConstant.TYPE_CLOUD;
     private boolean mTranslateEnable = false;
     private String resultType = "json";
+    private WebSocketClient mSocketClient;
+
+    private boolean mFinishRecord = false;
+    private UploadSoundDialog mUploadSoundDialog;
 
     @Override
     protected void initView() {
@@ -84,6 +125,17 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter = new MeetContentAdapter());
+        mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
+        mRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                super.getItemOffsets(outRect, view, parent, state);
+                int position = parent.getChildAdapterPosition(view);
+                if (position == mAdapter.getData().size() - 1) {
+                    outRect.bottom = RxImageTool.dip2px(8);
+                }
+            }
+        });
 
         new RxPermissions(mContext).request(new String[]
                 {Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -116,6 +168,77 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
 
             }
         });
+
+        // 创建长连接
+        try {
+            mSocketClient = new WebSocketClient(new URI(MyApplication.urlHeader + "/api/v1/app_ws")) {
+                @Override
+                public void onOpen(ServerHandshake handshakedata) {
+                }
+
+                @Override
+                public void onMessage(String message) {
+                    Observable.just(message).map(new Function<String, Result<MeetResultInfo>>() {
+                        @Override
+                        public Result<MeetResultInfo> apply(String s) throws Exception {
+                            return new Gson().fromJson(s, new ParameterizedTypeImpl(Result.class, new Class[]{MeetResultInfo.class}));
+                        }
+                    }).subscribeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Consumer<Result<MeetResultInfo>>() {
+                                @Override
+                                public void accept(Result<MeetResultInfo> meetResultInfoResult) throws Exception {
+                                    if (meetResultInfoResult.isOk() && meetResultInfoResult.getData() != null) {
+                                        MeetResultInfo resultInfo = meetResultInfoResult.getData();
+                                        if (!ListUtils.isEmpty(resultInfo.chat_record)) {
+                                            addData(resultInfo.chat_record);
+                                        }
+                                    } else if (meetResultInfoResult.getCode() == 1 && meetResultInfoResult.getData() != null) {
+                                        addData(meetResultInfoResult.getData());
+                                    }
+                                }
+                            });
+                }
+
+                @Override
+                public void onClose(int code, String reason, boolean remote) {
+
+                }
+
+                @Override
+                public void onError(Exception ex) {
+
+                }
+            };
+            mSocketClient.connect();
+        } catch (Exception e) {
+        }
+    }
+
+    private void addData(MeetResultInfo resultInfo) {
+        MeetContentInfo contentInfo = new MeetContentInfo();
+        List<MeetContentInfo> array = new ArrayList<>();
+
+        contentInfo.userId = resultInfo.id;
+        contentInfo.speaker_name = resultInfo.speaker_name;
+        contentInfo.context = resultInfo.context;
+        contentInfo.create_time = resultInfo.create_time;
+
+        array.add(contentInfo);
+        addData(array);
+    }
+
+    private void addData(List<MeetContentInfo> array) {
+        mAdapter.addData(array);
+        if (mAdapter.getData().isEmpty()) {
+            mTvHint.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.GONE);
+        } else {
+            mTvHint.setVisibility(View.GONE);
+            mRecyclerView.setVisibility(View.VISIBLE);
+        }
+        if (mAdapter.getData().size() > 1) {
+            mRecyclerView.smoothScrollToPosition(mAdapter.getData().size() - 1);
+        }
     }
 
     @Override
@@ -123,41 +246,66 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
         return R.layout.meet_activity;
     }
 
+    public String getCopyContent() {
+        StringBuilder builder = new StringBuilder();
+        for (MeetContentInfo info : mAdapter.getData()) {
+            builder.append(info.speaker_name + "\n");
+            builder.append(info.context + "\n");
+        }
+        return builder.toString();
+    }
+
     @OnClick({R.id.btn_copy, R.id.btn_clear, R.id.iv_record})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_copy:
-
-                MeetContentBean bean = new MeetContentBean();
-                bean.name = "周杰伦：";
-                bean.content = "哎呦不错哦，come on，来一首周杰伦的\n" +
-                        "稻花香";
-                mAdapter.addData(bean);
-
-                mRecyclerView.smoothScrollToPosition(mAdapter.getData().size() - 1);
-
+                if (mAdapter.getData().isEmpty()) {
+                    RxToast.normal("无复制内容");
+                    return;
+                }
+                copyTextToClipboard(getCopyContent());
+                RxToast.normal("复制成功");
                 break;
             case R.id.btn_clear:
+                mAdapter.setNewData(new ArrayList<MeetContentInfo>());
+                mTvHint.setVisibility(View.VISIBLE);
+                mRecyclerView.setVisibility(View.GONE);
                 break;
             case R.id.iv_record:
                 if (null == mIat) {
                     // 创建单例失败，与 21001 错误为同样原因，参考 http://bbs.xfyun.cn/forum.php?mod=viewthread&tid=9688
                     return;
                 }
-                // 设置参数
-                setParam();
-                mIatDialog.setListener(new RecognizerDialogListener() {
-                    @Override
-                    public void onResult(RecognizerResult results, boolean isLast) {
-                        printResult(results);
+                if (mFinishRecord) {
+                    mIvRecord.stopAnimator();
+                    if (mIat.isListening()) {
+                        mIat.stopListening();
                     }
-
-                    @Override
-                    public void onError(SpeechError error) {
-                        error.getPlainDescription(true);
+                } else {
+                    mIvRecord.startWaveAnimator();
+                    // 设置参数
+                    setParam();
+                    int ret = mIat.startListening(mRecognizerListener);
+                    if (ret != ErrorCode.SUCCESS) {
+                        RxToast.normal("听写失败");
+                        resetListening();
+                    } else {
+                        // RxToast.normal(getString(R.string.text_begin));
                     }
-                });
-                mIatDialog.show();
+                }
+//                mIatDialog.setListener(new RecognizerDialogListener() {
+//                    @Override
+//                    public void onResult(RecognizerResult results, boolean isLast) {
+//                        printResult(results);
+//                    }
+//
+//                    @Override
+//                    public void onError(SpeechError error) {
+//                        error.getPlainDescription(true);
+//                    }
+//                });
+//                mIatDialog.show();
+                mFinishRecord = !mFinishRecord;
                 break;
         }
     }
@@ -178,7 +326,7 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
         mIat.setParameter(SpeechConstant.VAD_BOS, "4000");
 
         // 设置语音后端点:后端点静音检测时间，即用户停止说话多长时间内即认为不再输入， 自动停止录音
-        mIat.setParameter(SpeechConstant.VAD_EOS, "1000");
+        mIat.setParameter(SpeechConstant.VAD_EOS, "3000");
 
         // 设置标点符号,设置为"0"返回结果无标点,设置为"1"返回结果有标点
         mIat.setParameter(SpeechConstant.ASR_PTT, "1");
@@ -189,12 +337,135 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
 
     }
 
-
     private void printResult(RecognizerResult results) {
         String text = JsonParser.parseIatResult(results.getResultString());
         RxToast.normal(text);
     }
 
+    private void resetListening() {
+        mFinishRecord = false;
+        mIvRecord.stopAnimator();
+    }
+
+    private void showUploadDialog() {
+        if (mUploadSoundDialog == null) {
+            mUploadSoundDialog = new UploadSoundDialog(mContext);
+        }
+        mUploadSoundDialog.show();
+    }
+
+    private void dismissUploadDialog() {
+        if (mUploadSoundDialog != null && mUploadSoundDialog.isShowing()) {
+            mUploadSoundDialog.dismiss();
+        }
+    }
+
+    private void printResult(RecognizerResult results, boolean isLast) {
+        String text = JsonParser.parseIatResult(results.getResultString());
+        if (isLast) {
+            resetListening();
+            showUploadDialog();
+            mIvRecord.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    uploadSoundFile();
+                }
+            }, 200);
+        }
+        // RxToast.normal(text);
+    }
+
+    private void uploadSoundFile() {
+        String soundPath = Environment.getExternalStorageDirectory() + "/msc/iat.wav";
+        File file = new File(soundPath);
+        EasyHttp.post(UrlApi.MEET_UPLOAD_VOICE)
+                .params("type", "ti")
+                .params("wave_file", file, file.getName(), new ProgressResponseCallBack() {
+                    @Override
+                    public void onResponseProgress(long bytesWritten, long contentLength, boolean done) {
+                        int progress = (int) (bytesWritten * 100 / contentLength);
+                        if (done) {
+                        }
+                    }
+                }).execute(new SimpleCallBack<String>() {
+            @Override
+            public void onError(ApiException e) {
+                if (e.getCode() != ApiException.ERROR.UNKNOWN) {
+                    RxToast.normal(e.getMessage());
+                }
+                dismissUploadDialog();
+            }
+
+            @Override
+            public void onSuccess(String s) {
+                if (!StringUtils.isEmpty(s)) {
+                    ApiResult apiResult = new Gson().fromJson(s, new TypeToken<ApiResult>() {
+                    }.getType());
+                    if (apiResult.isOk()) {
+                        // 上传成功 长连接接受消息
+                    } else {
+                        RxToast.error(apiResult.getMsg());
+                    }
+                }
+                dismissUploadDialog();
+            }
+        });
+    }
+
+    /**
+     * 听写监听器。
+     */
+    private RecognizerListener mRecognizerListener = new RecognizerListener() {
+
+        @Override
+        public void onBeginOfSpeech() {
+            // 此回调表示：sdk内部录音机已经准备好了，用户可以开始语音输入
+        }
+
+        @Override
+        public void onError(SpeechError error) {
+            // Tips：
+            // 错误码：10118(您没有说话)，可能是录音机权限被禁，需要提示用户打开应用的录音权限。
+            if (mTranslateEnable && error.getErrorCode() == 14002) {
+                RxToast.normal(error.getErrorDescription() + "\n请确认是否已开通翻译功能");
+            } else {
+                RxToast.normal(error.getErrorDescription());
+            }
+            resetListening();
+        }
+
+        @Override
+        public void onEndOfSpeech() {
+            // 此回调表示：检测到了语音的尾端点，已经进入识别过程，不再接受语音输入
+        }
+
+        @Override
+        public void onResult(RecognizerResult results, boolean isLast) {
+            printResult(results, isLast);
+        }
+
+        @Override
+        public void onVolumeChanged(int volume, byte[] data) {
+        }
+
+        @Override
+        public void onEvent(int eventType, int arg1, int arg2, Bundle obj) {
+            // 以下代码用于获取与云端的会话id，当业务出错时将会话id提供给技术支持人员，可用于查询会话日志，定位出错原因
+            // 若使用本地能力，会话id为null
+            //	if (SpeechEvent.EVENT_SESSION_ID == eventType) {
+            //		String sid = obj.getString(SpeechEvent.KEY_EVENT_SESSION_ID);
+            //		Log.d(TAG, "session id =" + sid);
+            //	}
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        if (mSocketClient != null) {
+            mSocketClient.close();
+        }
+        super.onDestroy();
+    }
 
     @Override
     public boolean isBaseOnWidth() {
@@ -204,5 +475,16 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
     @Override
     public float getSizeInDp() {
         return 640;
+    }
+
+    public void copyTextToClipboard(final String text) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ClipboardManager clipboardManager = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clipData = ClipData.newPlainText("playerId", text);
+                clipboardManager.setPrimaryClip(clipData);
+            }
+        });
     }
 }

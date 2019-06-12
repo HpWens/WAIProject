@@ -17,6 +17,7 @@
         android:maxHeight="48dp"
         android:minWidth="48dp"
         android:minHeight="48dp"
+        app:SpinKit_Color="@color/color_7be7fe"
         app:SpinKit_Style="CubeGrid" />
 
     <TextView
@@ -24,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="上传中..."
-        android:textColor="#FFF"
+        android:textColor="@color/color_7be7fe"
         android:textSize="16dp" />
 
 </LinearLayout>

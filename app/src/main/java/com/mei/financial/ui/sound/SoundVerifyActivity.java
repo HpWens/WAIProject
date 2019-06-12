@@ -283,7 +283,7 @@ public class SoundVerifyActivity extends BaseActivity implements CustomAdapt {
                 });
 
                 if (code != ErrorCode.SUCCESS) {
-                    RxToast.error("语音合成失败,错误码: " + code + ",请点击网址https://www.xfyun.cn/document/error-code查询解决方案");
+                    RxToast.error("语音合成失败");
                 }
                 break;
             case R.id.iv_record:
@@ -307,7 +307,7 @@ public class SoundVerifyActivity extends BaseActivity implements CustomAdapt {
                     setParam();
                     int ret = mIat.startListening(mRecognizerListener);
                     if (ret != ErrorCode.SUCCESS) {
-                        RxToast.normal("听写失败,错误码：" + ret);
+                        RxToast.normal("听写失败");
                         resetListening();
                     } else {
                         // RxToast.normal(getString(R.string.text_begin));
@@ -527,9 +527,9 @@ public class SoundVerifyActivity extends BaseActivity implements CustomAdapt {
             // Tips：
             // 错误码：10118(您没有说话)，可能是录音机权限被禁，需要提示用户打开应用的录音权限。
             if (mTranslateEnable && error.getErrorCode() == 14002) {
-                RxToast.normal(error.getPlainDescription(true) + "\n请确认是否已开通翻译功能");
+                RxToast.normal(error.getErrorDescription() + "\n请确认是否已开通翻译功能");
             } else {
-                RxToast.normal(error.getPlainDescription(true));
+                RxToast.normal(error.getErrorDescription());
             }
             resetListening();
         }

@@ -14,6 +14,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.jessyan.autosize.internal.CancelAdapt;
+import me.jessyan.autosize.internal.CustomAdapt;
 
 /**
  * @author wenshi
@@ -21,7 +22,7 @@ import me.jessyan.autosize.internal.CancelAdapt;
  * @Description
  * @since 2019/5/23
  */
-public class ScenesMainActivity extends BaseActivity implements CancelAdapt {
+public class ScenesMainActivity extends BaseActivity implements CustomAdapt {
     @BindView(R.id.tv_scenes)
     TextView mTvScenes;
     @BindView(R.id.btn_call)
@@ -58,5 +59,15 @@ public class ScenesMainActivity extends BaseActivity implements CancelAdapt {
                 startActivity(new Intent(mContext, CallActivity.class));
                 break;
         }
+    }
+
+    @Override
+    public boolean isBaseOnWidth() {
+        return false;
+    }
+
+    @Override
+    public float getSizeInDp() {
+        return 640;
     }
 }

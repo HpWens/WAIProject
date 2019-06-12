@@ -52,4 +52,7 @@ public class UrlApi {
 
     // 删除声纹
     public final static String DELETE_SOUND = "/api/v1/app/voice/delete";
+
+    // 会见系统
+    public final static String MEET_UPLOAD_VOICE = "/api/v1/app/voice/meeting/identify";
 }

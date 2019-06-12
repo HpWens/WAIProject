@@ -43,7 +43,6 @@ import com.mei.financial.utils.StringUtils;
 import com.mei.financial.view.RecordWaveView;
 import com.meis.base.mei.base.BaseActivity;
 import com.meis.base.mei.entity.Result;
-import com.meis.base.mei.status.ViewState;
 import com.meis.base.mei.utils.Eyes;
 import com.meis.base.mei.utils.ListUtils;
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -360,7 +359,7 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
                 });
 
                 if (code != ErrorCode.SUCCESS) {
-                    RxToast.error("语音合成失败,错误码: " + code);
+                    RxToast.error("语音合成失败");
                 }
                 break;
             case R.id.iv_record:
@@ -384,7 +383,7 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
                     setParam();
                     int ret = mIat.startListening(mRecognizerListener);
                     if (ret != ErrorCode.SUCCESS) {
-                        RxToast.normal("听写失败,错误码：" + ret);
+                        RxToast.normal("听写失败");
                         resetListening();
                     } else {
                         RxToast.normal(getString(R.string.text_begin));
@@ -666,9 +665,9 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
             // Tips：
             // 错误码：10118(您没有说话)，可能是录音机权限被禁，需要提示用户打开应用的录音权限。
             if (mTranslateEnable && error.getErrorCode() == 14002) {
-                RxToast.normal(error.getPlainDescription(true) + "\n请确认是否已开通翻译功能");
+                RxToast.normal(error.getErrorDescription() + "\n请确认是否已开通翻译功能");
             } else {
-                RxToast.normal(error.getPlainDescription(true));
+                RxToast.normal(error.getErrorDescription());
             }
             resetListening();
         }

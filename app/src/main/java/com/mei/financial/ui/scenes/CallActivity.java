@@ -23,6 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.jessyan.autosize.internal.CancelAdapt;
+import me.jessyan.autosize.internal.CustomAdapt;
 
 /**
  * @author wenshi
@@ -30,7 +31,7 @@ import me.jessyan.autosize.internal.CancelAdapt;
  * @Description 场景体验
  * @since 2019/5/23
  */
-public class CallActivity extends BaseActivity implements CancelAdapt {
+public class CallActivity extends BaseActivity implements CustomAdapt {
 
     @BindView(R.id.iv_call)
     ImageView mIvCall;
@@ -91,5 +92,15 @@ public class CallActivity extends BaseActivity implements CancelAdapt {
                         });
                 break;
         }
+    }
+
+    @Override
+    public boolean isBaseOnWidth() {
+        return false;
+    }
+
+    @Override
+    public float getSizeInDp() {
+        return 640;
     }
 }

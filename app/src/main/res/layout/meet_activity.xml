@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_0A0B29">
+    android:background="@color/color_0A0B29"
+    android:clipChildren="false">
 
     <FrameLayout
         android:id="@+id/fl_content"
@@ -73,11 +74,12 @@
         app:layout_constraintTop_toBottomOf="@+id/fl_content" />
 
 
-    <ImageView
+    <com.mei.financial.view.RecordWaveView
         android:id="@+id/iv_record"
         android:layout_width="113dp"
         android:layout_height="113dp"
         android:layout_marginBottom="7dp"
+        android:clipChildren="false"
         android:scaleType="centerInside"
         android:src="@mipmap/sound_register_record_ic"
         app:layout_constraintBottom_toTopOf="@+id/tv_record_hint"
@@ -90,7 +92,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
-        android:text="点击开始录音"
+        android:text="点击开始录音，读完后再点击"
         android:textColor="@color/color_1e82aa"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
