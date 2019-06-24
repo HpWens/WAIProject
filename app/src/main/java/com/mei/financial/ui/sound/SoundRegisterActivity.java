@@ -259,6 +259,9 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
     private boolean mTranslateEnable = false;
     private String resultType = "json";
 
+    private long moreClickDuration = 500;
+    private long currentTime = 0;
+
     public void setParam() {
         // 清空参数
         mIat.setParameter(SpeechConstant.PARAMS, null);
@@ -363,6 +366,11 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
                 }
                 break;
             case R.id.iv_record:
+                if (System.currentTimeMillis() - currentTime < moreClickDuration) {
+                    return;
+                }
+                currentTime = System.currentTimeMillis();
+
                 if (null == mIat) {
                     // 创建单例失败，与 21001 错误为同样原因，参考 http://bbs.xfyun.cn/forum.php?mod=viewthread&tid=9688
                     return;
@@ -675,6 +683,7 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
         @Override
         public void onEndOfSpeech() {
             // 此回调表示：检测到了语音的尾端点，已经进入识别过程，不再接受语音输入
+            resetListening();
         }
 
         @Override

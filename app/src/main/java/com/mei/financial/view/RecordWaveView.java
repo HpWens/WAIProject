@@ -137,11 +137,11 @@ public class RecordWaveView extends FrameLayout {
             waveAnimator1.cancel();
             waveAnimator1 = null;
         }
-        if (waveAnimator2 != null && waveAnimator2.isRunning()) {
+        if (waveAnimator2 != null) {
             waveAnimator2.cancel();
             waveAnimator2 = null;
         }
-        if (waveAnimator3 != null && waveAnimator3.isRunning()) {
+        if (waveAnimator3 != null) {
             waveAnimator3.cancel();
             waveAnimator3 = null;
         }

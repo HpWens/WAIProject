@@ -123,6 +123,7 @@
             android:layout_below="@+id/tv_sound_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="68dp"
+            android:visibility="gone"
             android:layout_marginBottom="14dp"
             android:src="@mipmap/sound_register_pause_ic" />
 
@@ -130,13 +131,12 @@
             android:id="@+id/tv_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/iv_play"
-            android:layout_alignBottom="@+id/iv_play"
             android:layout_centerHorizontal="true"
-            android:layout_marginLeft="15dp"
-            android:layout_toRightOf="@+id/iv_play"
+            android:layout_marginTop="68dp"
+            android:layout_below="@+id/tv_sound_content"
             android:gravity="center_vertical"
             android:text="(第1次)"
+            android:layout_marginBottom="16dp"
             android:textColor="@color/color_1E82AA"
             android:textSize="14dp" />
 
