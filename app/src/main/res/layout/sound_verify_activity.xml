@@ -123,6 +123,7 @@
             android:layout_below="@+id/tv_sound_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="32dp"
+            android:visibility="gone"
             android:layout_marginBottom="14dp"
             android:src="@mipmap/sound_register_pause_ic" />
 

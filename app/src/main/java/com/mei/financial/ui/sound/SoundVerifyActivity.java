@@ -418,10 +418,11 @@ public class SoundVerifyActivity extends BaseActivity implements CustomAdapt {
                                 RxToast.normal(getString(R.string.repeat_verify_hint));
                                 return;
                             }
-                            mTvHint.setVisibility(View.GONE);
-                            mIvRecord.setVisibility(View.GONE);
-                            mTvVerifySuccess.setVisibility(View.VISIBLE);
-                            mBtnExit.setVisibility(View.VISIBLE);
+
+                            // mTvHint.setVisibility(View.GONE);
+                            // mIvRecord.setVisibility(View.GONE);
+                            // mTvVerifySuccess.setVisibility(View.VISIBLE);
+                            // mBtnExit.setVisibility(View.VISIBLE);
                         } else {
                             againVerify(true);
                         }

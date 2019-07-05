@@ -110,7 +110,7 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
     private int mIndexVerify = 0;
     private String mSessionId = "";
     private List<String> mTextsVerify = new ArrayList<>();
-    private String mVerifyText = "中国工商银行提供资金管理、收费缴费、营销服务、金融理财、代理销售、电子商务六大类服务";
+    private String mVerifyText = "信用风险是指合同的一方不履行义务的可能性，包括贷款、掉期、期权及在结算过程中的交易对手违约带来损失的风险。";
 
     private boolean mIsPlaySound = false;
     private boolean mSoundCompleted = true;
