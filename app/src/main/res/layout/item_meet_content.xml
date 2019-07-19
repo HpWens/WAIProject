@@ -12,20 +12,21 @@
         android:layout_marginTop="17dp"
         android:layout_marginRight="15dp"
         android:lines="1"
-        android:text="小小智："
+        android:text="小小智       14:00"
         android:textColor="@color/color_4BC9FC"
-        android:textSize="17sp" />
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/tv_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="2dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="8dp"
         android:layout_marginRight="15dp"
+        android:layout_marginBottom="8dp"
         android:text="点击开始录音"
         android:textColor="@color/white"
-        android:textSize="17sp" />
+        android:textSize="14sp" />
 
 
 </LinearLayout>

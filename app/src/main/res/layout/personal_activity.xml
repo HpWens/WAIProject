@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="金融声纹认证系统"
+            android:text="@string/financial_voice_verify_system"
             android:textColor="@color/color_83DBFF"
             android:textSize="17sp"/>
 

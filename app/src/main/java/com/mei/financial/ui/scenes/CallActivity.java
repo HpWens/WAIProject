@@ -53,7 +53,7 @@ public class CallActivity extends BaseActivity implements CustomAdapt {
     protected void initData() {
         Eyes.setStatusBarColor(mContext, getResources().getColor(R.color.color_163DC1));
         autoFillToolBarLeftIcon();
-        setToolBarCenterTitle("金融信用审核");
+        setToolBarCenterTitle(getString(R.string.financial_voice_review));
     }
 
     @Override

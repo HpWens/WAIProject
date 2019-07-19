@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name" translatable="false">声盾</string>
-    <string name="app_id" translatable="false">5ce634a4</string>
+    <!-- 5d23f362 5ce634a4-->
+    <string name="app_name2" translatable="false">强控设备</string>
+
+    <string name="app_id" translatable="false">5d23f362</string>
     <string name="account_password_no_empty" translatable="false">账号，密码不能为空</string>
     <string name="correct_phone_number" translatable="false">请输入正确的手机号码</string>
     <string name="error_phone_hint" translatable="false">手机号码格式不正确</string>
@@ -31,5 +34,14 @@
 (2) 本人知悉并同意第三方公司有权从贵司获得本人的声音信息，用于声纹识别服务，并向贵司返回识别结果；\n\n
 (3) 本人知悉并同意贵司有权将本人的声音信息提供至其合作单位，用于声纹识别服务，并由其合作单位向第三方公司返回识别结果；\n\n
 (4) 本人知悉并同意贵司有权保存本人的声音信息的验证记录，并有权用于与本人相关的声纹识别业务及贵司内部算法测试。</string>
+
+
+    <!--<string name="financial_structure" translatable="false">金融机构</string>-->
+    <!--<string name="financial_voice_verify_system" translatable="false">金融声纹认证系统</string>-->
+    <!--<string name="financial_voice_review" translatable="false">金融信用审核</string>-->
+
+    <string name="financial_structure" translatable="false">会议机构</string>
+    <string name="financial_voice_verify_system" translatable="false">会议声纹认证系统</string>
+    <string name="financial_voice_review" translatable="false">会议信用审核</string>
 
 </resources>

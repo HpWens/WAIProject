@@ -4,21 +4,22 @@ import android.Manifest;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.SpannableString;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Space;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -36,7 +37,6 @@ import com.mei.financial.common.UrlApi;
 import com.mei.financial.entity.MeetContentInfo;
 import com.mei.financial.entity.MeetResultInfo;
 import com.mei.financial.entity.ParameterizedTypeImpl;
-import com.mei.financial.entity.VerifyResultInfo;
 import com.mei.financial.ui.adapter.MeetContentAdapter;
 import com.mei.financial.ui.dialog.UploadSoundDialog;
 import com.mei.financial.utils.JsonParser;
@@ -88,16 +88,26 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
     FrameLayout mFlContent;
     @BindView(R.id.space_view)
     Space mSpaceView;
-    @BindView(R.id.btn_copy)
-    Button mBtnCopy;
+    @BindView(R.id.btn_keep_on)
+    Button mBtnKeepOn;
     @BindView(R.id.btn_clear)
     Button mBtnClear;
     @BindView(R.id.iv_record)
     RecordWaveView mIvRecord;
     @BindView(R.id.tv_record_hint)
     TextView mTvRecordHint;
+    @BindView(R.id.btn_copy)
+    Button mBtnCopy;
+    @BindView(R.id.btn_switch)
+    Button mBtnSwitch;
+    @BindView(R.id.iv_start_meet)
+    ImageView mIvStartMeet;
+    @BindView(R.id.iv_end_meet)
+    ImageView mIvEndMeet;
 
+    private boolean mIsStartMeet = false;
     private MeetContentAdapter mAdapter;
+    private boolean mIsRecordStop = false;
 
     // 语音听写对象
     private SpeechRecognizer mIat;
@@ -222,12 +232,15 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
         contentInfo.speaker_name = resultInfo.speaker_name;
         contentInfo.context = resultInfo.context;
         contentInfo.create_time = resultInfo.create_time;
+        contentInfo.task_id = resultInfo.task_id;
+        contentInfo.pass = resultInfo.pass;
 
         array.add(contentInfo);
         addData(array);
     }
 
     private void addData(List<MeetContentInfo> array) {
+        if (mIsRecordStop) return;
         mAdapter.addData(array);
         if (mAdapter.getData().isEmpty()) {
             mTvHint.setVisibility(View.VISIBLE);
@@ -255,7 +268,7 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
         return builder.toString();
     }
 
-    @OnClick({R.id.btn_copy, R.id.btn_clear, R.id.iv_record})
+    @OnClick({R.id.btn_copy, R.id.btn_clear, R.id.iv_record, R.id.btn_switch, R.id.btn_keep_on})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_copy:
@@ -287,7 +300,7 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
                     setParam();
                     int ret = mIat.startListening(mRecognizerListener);
                     if (ret != ErrorCode.SUCCESS) {
-                        RxToast.normal("听写失败");
+                        // RxToast.normal("听写失败");
                         resetListening();
                     } else {
                         // RxToast.normal(getString(R.string.text_begin));
@@ -307,6 +320,47 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
 //                mIatDialog.show();
                 mFinishRecord = !mFinishRecord;
                 break;
+            case R.id.btn_switch:
+                if (mIsStartMeet) {
+                    mIsRecordStop = true;
+                    mBtnSwitch.setVisibility(View.GONE);
+                    mIvStartMeet.setVisibility(View.GONE);
+                    mIvEndMeet.setVisibility(View.VISIBLE);
+                    mBtnClear.setVisibility(View.VISIBLE);
+                    mBtnKeepOn.setVisibility(View.VISIBLE);
+                    Glide.with(this).load(R.mipmap.sound_stop_ic).into(mIvEndMeet);
+                    break;
+                }
+                mIsStartMeet = !mIsStartMeet;
+                mBtnSwitch.setText("结束会议");
+                mIvStartMeet.setVisibility(View.VISIBLE);
+                startRecord();
+                Glide.with(this).load(R.mipmap.meet_sound_start_ic).diskCacheStrategy(DiskCacheStrategy.ALL).into(mIvStartMeet);
+                break;
+            case R.id.btn_keep_on:
+                mIsRecordStop = false;
+                mBtnClear.setVisibility(View.GONE);
+                mBtnKeepOn.setVisibility(View.GONE);
+                mBtnSwitch.setVisibility(View.VISIBLE);
+                mIvStartMeet.setVisibility(View.VISIBLE);
+                mIvEndMeet.setVisibility(View.GONE);
+                break;
+        }
+    }
+
+    private void startRecord() {
+        if (null == mIat) {
+            // 创建单例失败，与 21001 错误为同样原因，参考 http://bbs.xfyun.cn/forum.php?mod=viewthread&tid=9688
+            return;
+        }
+        // 设置参数
+        setParam();
+        int ret = mIat.startListening(mRecognizerListener);
+        if (ret != ErrorCode.SUCCESS) {
+            // RxToast.normal("听写失败");
+            // resetListening();
+        } else {
+            // RxToast.normal(getString(R.string.text_begin));
         }
     }
 
@@ -323,10 +377,10 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
         mIat.setParameter(SpeechConstant.ACCENT, "mandarin");
 
         // 设置语音前端点:静音超时时间，即用户多长时间不说话则当做超时处理
-        mIat.setParameter(SpeechConstant.VAD_BOS, "4000");
+        mIat.setParameter(SpeechConstant.VAD_BOS, "2000");
 
         // 设置语音后端点:后端点静音检测时间，即用户停止说话多长时间内即认为不再输入， 自动停止录音
-        mIat.setParameter(SpeechConstant.VAD_EOS, "3000");
+        mIat.setParameter(SpeechConstant.VAD_EOS, "2000");
 
         // 设置标点符号,设置为"0"返回结果无标点,设置为"1"返回结果有标点
         mIat.setParameter(SpeechConstant.ASR_PTT, "1");
@@ -343,15 +397,15 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
     }
 
     private void resetListening() {
-        mFinishRecord = false;
-        mIvRecord.stopAnimator();
+        // mFinishRecord = false;
+        // mIvRecord.stopAnimator();
     }
 
     private void showUploadDialog() {
         if (mUploadSoundDialog == null) {
             mUploadSoundDialog = new UploadSoundDialog(mContext);
         }
-        mUploadSoundDialog.show();
+        // mUploadSoundDialog.show();
     }
 
     private void dismissUploadDialog() {
@@ -394,6 +448,8 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
                     RxToast.normal(e.getMessage());
                 }
                 dismissUploadDialog();
+
+                startRecord();
             }
 
             @Override
@@ -408,6 +464,8 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
                     }
                 }
                 dismissUploadDialog();
+
+                startRecord();
             }
         });
     }
@@ -429,7 +487,8 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
             if (mTranslateEnable && error.getErrorCode() == 14002) {
                 RxToast.normal(error.getErrorDescription() + "\n请确认是否已开通翻译功能");
             } else {
-                RxToast.normal(error.getErrorDescription());
+                // RxToast.normal(error.getErrorDescription());
+                startRecord();
             }
             resetListening();
         }

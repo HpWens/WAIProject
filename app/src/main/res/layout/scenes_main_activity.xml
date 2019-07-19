@@ -51,7 +51,7 @@
             android:background="@mipmap/scenes_button_bg"
             android:text="智能呼入"
             android:textColor="@color/color_4BC9FC"
-            android:textSize="18sp" />
+            android:textSize="17sp" />
 
         <Button
             android:id="@+id/btn_promise"
@@ -61,7 +61,7 @@
             android:background="@mipmap/scenes_button_bg"
             android:text="智能会见系统"
             android:textColor="@color/color_4BC9FC"
-            android:textSize="18sp" />
+            android:textSize="17sp" />
 
 
     </LinearLayout>

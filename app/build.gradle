@@ -5,18 +5,32 @@ apply plugin: 'com.mob.sdk'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.mei.financial"
+        //applicationId "com.mei.financial"
+        applicationId "com.mei.shebei"
+        //applicationId "com.mei.test"
         minSdkVersion 16
         targetSdkVersion 28
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.1"
         multiDexEnabled true
         // testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders = [
+                "IS_RELEASE": true
+        ]
     }
     buildTypes {
+        debug {
+            minifyEnabled false
+            manifestPlaceholders = [
+                    "IS_RELEASE": false
+            ]
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            manifestPlaceholders = [
+                    "IS_RELEASE": true
+            ]
         }
     }
 }

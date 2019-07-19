@@ -419,10 +419,10 @@ public class SoundVerifyActivity extends BaseActivity implements CustomAdapt {
                                 return;
                             }
 
-                            // mTvHint.setVisibility(View.GONE);
-                            // mIvRecord.setVisibility(View.GONE);
-                            // mTvVerifySuccess.setVisibility(View.VISIBLE);
-                            // mBtnExit.setVisibility(View.VISIBLE);
+                            mTvHint.setVisibility(View.GONE);
+                            mIvRecord.setVisibility(View.GONE);
+                            mTvVerifySuccess.setVisibility(View.VISIBLE);
+                            mBtnExit.setVisibility(View.VISIBLE);
                         } else {
                             againVerify(true);
                         }

@@ -1,6 +1,8 @@
 package com.mei.financial;
 
 import android.app.Application;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 
 import com.iflytek.cloud.SpeechUtility;
 import com.mei.financial.entity.UserInfo;
@@ -20,7 +22,8 @@ import com.zhouyou.http.model.HttpParams;
  */
 public class MyApplication extends Application {
 
-   public static String urlHeader = "http://119.3.70.106:8030";
+    public static String urlHeader = "http://119.3.70.106:8030";
+    public static String testHeader = "http://119.3.38.81:8040";
 
     @Override
     public void onCreate() {
@@ -39,6 +42,17 @@ public class MyApplication extends Application {
         if (null != userInfo && !StringUtils.isEmpty(userInfo.token)) {
             headers.put("Authorization", "Bearer " + userInfo.token);
         }
+
+        // 获取debug release环境
+        ApplicationInfo appInfo = null;
+        boolean isRelease = true;
+        try {
+            appInfo = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
+            isRelease = appInfo.metaData.getBoolean("is_release");
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
         //设置请求参数
         HttpParams params = new HttpParams();
         // params.put("appId", "10010");
@@ -50,7 +64,7 @@ public class MyApplication extends Application {
                 .setRetryCount(3) // 默认网络不好自动重试3次
                 .setRetryDelay(500) // 每次延时500ms重试
                 .setRetryIncreaseDelay(500) // 每次延时叠加500ms
-                .setBaseUrl(urlHeader)
+                .setBaseUrl(isRelease ? urlHeader : testHeader)
                 .setCacheDiskConverter(new SerializableDiskConverter()) // 默认缓存使用序列化转化
                 .setCacheMaxSize(50 * 1024 * 1024) // 设置缓存大小为50M
                 .setCacheVersion(1) // 缓存版本为1

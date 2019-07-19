@@ -9,7 +9,7 @@
     <FrameLayout
         android:id="@+id/fl_content"
         android:layout_width="0dp"
-        android:layout_height="269dp"
+        android:layout_height="380dp"
         android:layout_marginLeft="12dp"
         android:layout_marginTop="12dp"
         android:layout_marginRight="12dp"
@@ -21,8 +21,9 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_content"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
+            android:layout_height="match_parent"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="6dp">
 
         </android.support.v7.widget.RecyclerView>
 
@@ -32,9 +33,9 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="17dp"
-            android:text="您的语音将转化成文字在此显示\n(仅限普通话)"
+            android:text="您的语音将转化成文字在此显示"
             android:textColor="@color/color_1686b3"
-            android:textSize="17sp" />
+            android:textSize="14sp" />
 
     </FrameLayout>
 
@@ -57,22 +58,9 @@
         android:text="复制"
         android:textColor="@color/color_4BC9FC"
         android:textSize="18sp"
+        android:visibility="gone"
         app:layout_constraintRight_toLeftOf="@+id/space_view"
         app:layout_constraintTop_toBottomOf="@+id/fl_content" />
-
-    <Button
-        android:id="@+id/btn_clear"
-        android:layout_width="133dp"
-        android:layout_height="41dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginTop="39dp"
-        android:background="@mipmap/sound_register_cancel_ic"
-        android:text="清空"
-        android:textColor="@color/color_4BC9FC"
-        android:textSize="18sp"
-        app:layout_constraintLeft_toRightOf="@+id/space_view"
-        app:layout_constraintTop_toBottomOf="@+id/fl_content" />
-
 
     <com.mei.financial.view.RecordWaveView
         android:id="@+id/iv_record"
@@ -82,6 +70,7 @@
         android:clipChildren="false"
         android:scaleType="centerInside"
         android:src="@mipmap/sound_register_record_ic"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/tv_record_hint"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
@@ -95,6 +84,74 @@
         android:text="点击开始录音，读完后再点击"
         android:textColor="@color/color_1e82aa"
         android:textSize="14sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <Button
+        android:id="@+id/btn_switch"
+        android:layout_width="172dp"
+        android:layout_height="41dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="35dp"
+        android:background="@mipmap/sound_register_cancel_ic"
+        android:text="开始会议"
+        android:textColor="@color/color_4BC9FC"
+        android:textSize="18sp"
+        android:visibility="visible"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fl_content" />
+
+    <Button
+        android:id="@+id/btn_clear"
+        android:layout_width="133dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginRight="6dp"
+        android:background="@mipmap/sound_register_confirm_ic"
+        android:text="清空记录"
+        android:textColor="@color/color_4BC9FC"
+        android:textSize="18sp"
+        android:visibility="gone"
+        app:layout_constraintRight_toLeftOf="@+id/space_view"
+        app:layout_constraintTop_toBottomOf="@+id/fl_content" />
+
+    <Button
+        android:id="@+id/btn_keep_on"
+        android:layout_width="133dp"
+        android:layout_height="41dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginTop="35dp"
+        android:background="@mipmap/sound_register_cancel_ic"
+        android:text="继续会议"
+        android:textColor="@color/color_4BC9FC"
+        android:textSize="18sp"
+        android:visibility="gone"
+        app:layout_constraintLeft_toRightOf="@+id/space_view"
+        app:layout_constraintTop_toBottomOf="@+id/fl_content" />
+
+
+    <ImageView
+        android:id="@+id/iv_start_meet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="26dp"
+        android:scaleType="centerInside"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_end_meet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="26dp"
+        android:scaleType="centerInside"
+        android:src="@mipmap/sound_stop_ic"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />

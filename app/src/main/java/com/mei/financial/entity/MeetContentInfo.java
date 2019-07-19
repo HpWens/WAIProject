@@ -12,6 +12,8 @@ public class MeetContentInfo {
     public String context = "";
     public long create_time = 0;
     public int userId = 0;
+    public String task_id = "";
+    public boolean pass = false;
 
     public MeetContentInfo() {
     }

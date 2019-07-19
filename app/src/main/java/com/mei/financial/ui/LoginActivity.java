@@ -324,7 +324,8 @@ public class LoginActivity extends BaseActivity implements CancelAdapt {
                                             RxSPTool.putString(mContext, Constant.LOGIN_SAVE_PASSWORD,
                                                     mCbPassword.isChecked() ? passwordEncode : "");
 
-                                            startActivity(new Intent(mContext, HomeActivity.class));
+                                            // HomeActivity
+                                            startActivity(new Intent(mContext, DemoMediaActivity.class));
                                             finish();
                                         } else {
                                             // RxToast.error(userInfoResult.getMsg());

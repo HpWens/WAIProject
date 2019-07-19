@@ -55,4 +55,9 @@ public class UrlApi {
 
     // 会见系统
     public final static String MEET_UPLOAD_VOICE = "/api/v1/app/voice/meeting/identify";
+
+
+    public final static String VOICE_MEETING_STREAM = "/api/v1/app/voice/meeting/stream";
+
+
 }

@@ -14,7 +14,7 @@
         android:layout_marginTop="62dp"
         android:background="@null"
         android:scaleType="centerCrop"
-        android:src="@mipmap/login_header_ic" />
+        android:src="@mipmap/login_header_ic2" />
 
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/scrollView"

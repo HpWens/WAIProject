@@ -21,6 +21,7 @@ public class MeetResultInfo {
     public String context = "";
     public long create_time = 0;
     public String task_id = "";
+    public boolean pass;
 
     public MeetResultInfo() {
     }
