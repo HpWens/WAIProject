@@ -10,7 +10,6 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -41,6 +40,7 @@ import com.mei.financial.ui.adapter.MeetContentAdapter;
 import com.mei.financial.ui.dialog.UploadSoundDialog;
 import com.mei.financial.utils.JsonParser;
 import com.mei.financial.utils.StringUtils;
+import com.mei.financial.utils.WavUtils;
 import com.mei.financial.view.RecordWaveView;
 import com.meis.base.mei.base.BaseActivity;
 import com.meis.base.mei.entity.Result;
@@ -121,6 +121,8 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
 
     private boolean mFinishRecord = false;
     private UploadSoundDialog mUploadSoundDialog;
+
+    private WavUtils mWavUtils;
 
     @Override
     protected void initView() {
@@ -334,7 +336,38 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
                 mIsStartMeet = !mIsStartMeet;
                 mBtnSwitch.setText("结束会议");
                 mIvStartMeet.setVisibility(View.VISIBLE);
-                startRecord();
+
+                // startRecord();
+                mWavUtils = new WavUtils(new WavUtils.OnRecordListener() {
+                    @Override
+                    public void onGenerateWav(int fileNameIndex) {
+                        // 上传文件
+                        String target = Environment.getExternalStorageDirectory() + "/msc/mei" + fileNameIndex + ".wav";
+                        File file = new File(target);
+                        if (file == null || !file.exists()) return;
+                        EasyHttp.post(UrlApi.VOICE_MEETING_STREAM)
+                                .params("wave_file", file, file.getName(), new ProgressResponseCallBack() {
+                                    @Override
+                                    public void onResponseProgress(long bytesWritten, long contentLength, boolean done) {
+                                        int progress = (int) (bytesWritten * 100 / contentLength);
+                                        if (done) {
+                                        }
+                                    }
+                                }).execute(new SimpleCallBack<String>() {
+                            @Override
+                            public void onError(ApiException e) {
+                                //mWavUtils.startRecord();
+                            }
+
+                            @Override
+                            public void onSuccess(String s) {
+                                //mWavUtils.startRecord();
+                            }
+                        });
+                    }
+                });
+                mWavUtils.startRecord();
+
                 Glide.with(this).load(R.mipmap.meet_sound_start_ic).diskCacheStrategy(DiskCacheStrategy.ALL).into(mIvStartMeet);
                 break;
             case R.id.btn_keep_on:
@@ -520,6 +553,9 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
 
     @Override
     protected void onDestroy() {
+        if (mWavUtils != null) {
+            mWavUtils.stopRecord();
+        }
         if (mSocketClient != null) {
             mSocketClient.close();
         }
