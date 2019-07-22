@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">声盾</string>
+    <!--<string name="app_name" translatable="false">声盾</string>-->
     <!-- 5d23f362 5ce634a4-->
     <string name="app_name2" translatable="false">强控设备</string>
 
@@ -36,12 +36,12 @@
 (4) 本人知悉并同意贵司有权保存本人的声音信息的验证记录，并有权用于与本人相关的声纹识别业务及贵司内部算法测试。</string>
 
 
-    <!--<string name="financial_structure" translatable="false">金融机构</string>-->
+    <string name="financial_structure" translatable="false">金融机构</string>
     <!--<string name="financial_voice_verify_system" translatable="false">金融声纹认证系统</string>-->
-    <!--<string name="financial_voice_review" translatable="false">金融信用审核</string>-->
+    <string name="financial_voice_review" translatable="false">金融信用审核</string>
 
-    <string name="financial_structure" translatable="false">会议机构</string>
-    <string name="financial_voice_verify_system" translatable="false">会议声纹认证系统</string>
-    <string name="financial_voice_review" translatable="false">会议信用审核</string>
+    <string name="financial_structure2" translatable="false">会议机构</string>
+    <string name="financial_voice_verify_system2" translatable="false">会议声纹认证系统</string>
+    <string name="financial_voice_review2" translatable="false">会议信用审核</string>
 
 </resources>

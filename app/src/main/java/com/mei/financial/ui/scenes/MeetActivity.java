@@ -7,9 +7,12 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -61,6 +64,7 @@ import org.java_websocket.handshake.ServerHandshake;
 import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -124,6 +128,27 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
 
     private WavUtils mWavUtils;
 
+    private HashMap<Integer, List<MeetResultInfo>> mVoiceMap = new HashMap<>();
+    private int mCurrentPosition = 0;
+
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (!mVoiceMap.isEmpty()) {
+                // if (msg.what == 1 && msg.obj instanceof MeetResultInfo) {
+                //     MeetResultInfo result = (MeetResultInfo) msg.obj;
+                //     addData(result);
+                //     mVoiceMap.clear();
+                // }
+
+                if (msg.what == 1) {
+                    mCurrentPosition = mAdapter.getData().size() >= 1 ? mAdapter.getData().size() - 1 : 0;
+                }
+            }
+        }
+    };
+
     @Override
     protected void initView() {
         ButterKnife.bind(this);
@@ -148,6 +173,7 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
                 }
             }
         });
+
 
         new RxPermissions(mContext).request(new String[]
                 {Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -183,7 +209,8 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
 
         // 创建长连接
         try {
-            mSocketClient = new WebSocketClient(new URI(MyApplication.urlHeader + "/api/v1/app_ws")) {
+            mSocketClient = new WebSocketClient(new URI(((MyApplication) getApplication()).isRelease() ?
+                    MyApplication.urlHeader : MyApplication.testHeader + "/api/v1/app_ws")) {
                 @Override
                 public void onOpen(ServerHandshake handshakedata) {
                 }
@@ -193,6 +220,7 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
                     Observable.just(message).map(new Function<String, Result<MeetResultInfo>>() {
                         @Override
                         public Result<MeetResultInfo> apply(String s) throws Exception {
+                            Log.e("MeetActivity", " Meet Data = " + s);
                             return new Gson().fromJson(s, new ParameterizedTypeImpl(Result.class, new Class[]{MeetResultInfo.class}));
                         }
                     }).subscribeOn(AndroidSchedulers.mainThread())
@@ -205,7 +233,50 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
                                             addData(resultInfo.chat_record);
                                         }
                                     } else if (meetResultInfoResult.getCode() == 1 && meetResultInfoResult.getData() != null) {
-                                        addData(meetResultInfoResult.getData());
+                                        // 处理实时语音转换规则
+                                        MeetResultInfo resultInfo = meetResultInfoResult.getData();
+
+                                        mHandler.removeCallbacksAndMessages(null);
+                                        //Message msg = new Message();
+                                        //msg.what = 1;
+                                        //msg.obj = resultInfo;
+                                        //mHandler.sendMessageDelayed(msg, 2000);
+                                        mHandler.sendEmptyMessageDelayed(1, 2000);
+
+                                        if (mAdapter.getData().isEmpty()) {
+                                            addData(resultInfo);
+                                            return;
+                                        }
+
+                                        for (int i = mCurrentPosition; i < mAdapter.getData().size(); i++) {
+                                            MeetContentInfo meetData = mAdapter.getData().get(i);
+                                            if (meetData.speaker_id == resultInfo.speaker_id) {
+                                                if (meetData.index == resultInfo.index) {
+                                                    meetData.context = resultInfo.context;
+                                                    mAdapter.notifyItemChanged(i);
+                                                    return;
+                                                }
+                                            }
+                                        }
+
+                                        addData(resultInfo);
+
+                                        // if (mVoiceMap.containsKey((Integer) resultInfo.speaker_id)) {
+                                        //     List<MeetResultInfo> meetDatas = mVoiceMap.get(resultInfo.speaker_id);
+                                        //     meetDatas.add(resultInfo);
+                                        //     if (meetDatas.size() > 1) {
+                                        //         // pre index
+                                        //         if (meetDatas.get(meetDatas.size() - 1).index != meetDatas.get(meetDatas.size() - 2).index) {
+                                        //             addData(meetDatas.get(meetDatas.size() - 2));
+                                        //         }
+                                        //     }
+                                        // } else {
+                                        //     List<MeetResultInfo> addDatas = new ArrayList<>();
+                                        //     addDatas.add(resultInfo);
+                                        //     mVoiceMap.put(resultInfo.speaker_id, addDatas);
+                                        // }
+
+
                                     }
                                 }
                             });
@@ -218,12 +289,40 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
 
                 @Override
                 public void onError(Exception ex) {
-
                 }
             };
             mSocketClient.connect();
         } catch (Exception e) {
         }
+
+        mWavUtils = new WavUtils(new WavUtils.OnRecordListener() {
+            @Override
+            public void onGenerateWav(int fileNameIndex) {
+                // 上传文件
+                String target = Environment.getExternalStorageDirectory() + "/msc/mei" + fileNameIndex + ".wav";
+                File file = new File(target);
+                if (file == null || !file.exists()) return;
+                EasyHttp.post(UrlApi.VOICE_MEETING_STREAM)
+                        .params("wave_file", file, file.getName(), new ProgressResponseCallBack() {
+                            @Override
+                            public void onResponseProgress(long bytesWritten, long contentLength, boolean done) {
+                                int progress = (int) (bytesWritten * 100 / contentLength);
+                                if (done) {
+                                }
+                            }
+                        }).execute(new SimpleCallBack<String>() {
+                    @Override
+                    public void onError(ApiException e) {
+                        //mWavUtils.startRecord();
+                    }
+
+                    @Override
+                    public void onSuccess(String s) {
+                        //mWavUtils.startRecord();
+                    }
+                });
+            }
+        });
     }
 
     private void addData(MeetResultInfo resultInfo) {
@@ -236,6 +335,8 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
         contentInfo.create_time = resultInfo.create_time;
         contentInfo.task_id = resultInfo.task_id;
         contentInfo.pass = resultInfo.pass;
+        contentInfo.index = resultInfo.index;
+        contentInfo.speaker_id = resultInfo.speaker_id;
 
         array.add(contentInfo);
         addData(array);
@@ -282,6 +383,7 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
                 RxToast.normal("复制成功");
                 break;
             case R.id.btn_clear:
+                mCurrentPosition = 0;
                 mAdapter.setNewData(new ArrayList<MeetContentInfo>());
                 mTvHint.setVisibility(View.VISIBLE);
                 mRecyclerView.setVisibility(View.GONE);
@@ -323,61 +425,85 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
                 mFinishRecord = !mFinishRecord;
                 break;
             case R.id.btn_switch:
-                if (mIsStartMeet) {
-                    mIsRecordStop = true;
-                    mBtnSwitch.setVisibility(View.GONE);
-                    mIvStartMeet.setVisibility(View.GONE);
-                    mIvEndMeet.setVisibility(View.VISIBLE);
-                    mBtnClear.setVisibility(View.VISIBLE);
-                    mBtnKeepOn.setVisibility(View.VISIBLE);
-                    Glide.with(this).load(R.mipmap.sound_stop_ic).into(mIvEndMeet);
-                    break;
-                }
-                mIsStartMeet = !mIsStartMeet;
-                mBtnSwitch.setText("结束会议");
-                mIvStartMeet.setVisibility(View.VISIBLE);
-
-                // startRecord();
-                mWavUtils = new WavUtils(new WavUtils.OnRecordListener() {
-                    @Override
-                    public void onGenerateWav(int fileNameIndex) {
-                        // 上传文件
-                        String target = Environment.getExternalStorageDirectory() + "/msc/mei" + fileNameIndex + ".wav";
-                        File file = new File(target);
-                        if (file == null || !file.exists()) return;
-                        EasyHttp.post(UrlApi.VOICE_MEETING_STREAM)
-                                .params("wave_file", file, file.getName(), new ProgressResponseCallBack() {
-                                    @Override
-                                    public void onResponseProgress(long bytesWritten, long contentLength, boolean done) {
-                                        int progress = (int) (bytesWritten * 100 / contentLength);
-                                        if (done) {
-                                        }
-                                    }
-                                }).execute(new SimpleCallBack<String>() {
-                            @Override
-                            public void onError(ApiException e) {
-                                //mWavUtils.startRecord();
-                            }
-
-                            @Override
-                            public void onSuccess(String s) {
-                                //mWavUtils.startRecord();
-                            }
-                        });
-                    }
-                });
-                mWavUtils.startRecord();
-
-                Glide.with(this).load(R.mipmap.meet_sound_start_ic).diskCacheStrategy(DiskCacheStrategy.ALL).into(mIvStartMeet);
+                startMeeting();
                 break;
+//            case R.id.btn_switch:
+//                if (mIsStartMeet) {
+//                    mIsRecordStop = true;
+//                    mBtnSwitch.setVisibility(View.GONE);
+//                    mIvStartMeet.setVisibility(View.GONE);
+//                    mIvEndMeet.setVisibility(View.VISIBLE);
+//                    mBtnClear.setVisibility(View.VISIBLE);
+//                    mBtnKeepOn.setVisibility(View.VISIBLE);
+//                    Glide.with(this).load(R.mipmap.sound_stop_ic).into(mIvEndMeet);
+//                    break;
+//                }
+//                mIsStartMeet = !mIsStartMeet;
+//                mBtnSwitch.setText("结束会议");
+//                mIvStartMeet.setVisibility(View.VISIBLE);
+//
+//                // startRecord();
+//                mWavUtils = new WavUtils(new WavUtils.OnRecordListener() {
+//                    @Override
+//                    public void onGenerateWav(int fileNameIndex) {
+//                        // 上传文件
+//                        String target = Environment.getExternalStorageDirectory() + "/msc/mei" + fileNameIndex + ".wav";
+//                        File file = new File(target);
+//                        if (file == null || !file.exists()) return;
+//                        EasyHttp.post(UrlApi.VOICE_MEETING_STREAM)
+//                                .params("wave_file", file, file.getName(), new ProgressResponseCallBack() {
+//                                    @Override
+//                                    public void onResponseProgress(long bytesWritten, long contentLength, boolean done) {
+//                                        int progress = (int) (bytesWritten * 100 / contentLength);
+//                                        if (done) {
+//                                        }
+//                                    }
+//                                }).execute(new SimpleCallBack<String>() {
+//                            @Override
+//                            public void onError(ApiException e) {
+//                                //mWavUtils.startRecord();
+//                            }
+//
+//                            @Override
+//                            public void onSuccess(String s) {
+//                                //mWavUtils.startRecord();
+//                            }
+//                        });
+//                    }
+//                });
+//                mWavUtils.startRecord();
+//
+//                Glide.with(this).load(R.mipmap.meet_sound_start_ic).diskCacheStrategy(DiskCacheStrategy.ALL).into(mIvStartMeet);
+//                break;
             case R.id.btn_keep_on:
-                mIsRecordStop = false;
+                // mIsRecordStop = false;
                 mBtnClear.setVisibility(View.GONE);
                 mBtnKeepOn.setVisibility(View.GONE);
                 mBtnSwitch.setVisibility(View.VISIBLE);
                 mIvStartMeet.setVisibility(View.VISIBLE);
                 mIvEndMeet.setVisibility(View.GONE);
+                startMeeting();
                 break;
+        }
+    }
+
+    private void startMeeting() {
+        mIsStartMeet = !mIsStartMeet;
+        if (mIsStartMeet) {
+            // 开始会议
+            mBtnSwitch.setText("结束会议");
+            mIvStartMeet.setVisibility(View.VISIBLE);
+            Glide.with(this).load(R.mipmap.meet_sound_start_ic).diskCacheStrategy(DiskCacheStrategy.ALL).into(mIvStartMeet);
+            mWavUtils.startRecord();
+        } else {
+            // 结束会议
+            mWavUtils.stopRecord();
+            mBtnSwitch.setVisibility(View.GONE);
+            mIvStartMeet.setVisibility(View.GONE);
+            mIvEndMeet.setVisibility(View.VISIBLE);
+            mBtnClear.setVisibility(View.VISIBLE);
+            mBtnKeepOn.setVisibility(View.VISIBLE);
+            Glide.with(this).load(R.mipmap.sound_stop_ic).into(mIvEndMeet);
         }
     }
 

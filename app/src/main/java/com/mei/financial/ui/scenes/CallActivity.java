@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.mei.financial.MyApplication;
 import com.mei.financial.R;
 import com.mei.financial.common.UrlApi;
 import com.mei.financial.entity.UserService;
@@ -53,7 +54,18 @@ public class CallActivity extends BaseActivity implements CustomAdapt {
     protected void initData() {
         Eyes.setStatusBarColor(mContext, getResources().getColor(R.color.color_163DC1));
         autoFillToolBarLeftIcon();
-        setToolBarCenterTitle(getString(R.string.financial_voice_review));
+        setToolBarCenterTitle(getFlavorsTitle());
+    }
+
+    public String getFlavorsTitle() {
+        String title = getString(R.string.financial_voice_review);
+        int flavorsCode = ((MyApplication) getApplication()).getFlavorsCode();
+        if (flavorsCode == 1) {
+            title = getString(R.string.financial_voice_review);
+        } else if (flavorsCode == 2) {
+            title = getString(R.string.financial_voice_review2);
+        }
+        return title;
     }
 
     @Override

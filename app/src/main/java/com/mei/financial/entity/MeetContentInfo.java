@@ -14,6 +14,26 @@ public class MeetContentInfo {
     public int userId = 0;
     public String task_id = "";
     public boolean pass = false;
+    public int index;
+    public int speaker_id = 0;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MeetContentInfo that = (MeetContentInfo) o;
+
+        if (index != that.index) return false;
+        return speaker_id == that.speaker_id;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = index;
+        result = 31 * result + speaker_id;
+        return result;
+    }
 
     public MeetContentInfo() {
     }

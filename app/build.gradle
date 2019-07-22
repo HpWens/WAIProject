@@ -5,19 +5,20 @@ apply plugin: 'com.mob.sdk'
 android {
     compileSdkVersion 28
     defaultConfig {
-        //applicationId "com.mei.financial"
-        applicationId "com.mei.shebei"
-        //applicationId "com.mei.test"
+        applicationId "com.mei.financial"
         minSdkVersion 16
         targetSdkVersion 28
         versionCode 1
-        versionName "1.0.1"
+        versionName "1.0.2"
         multiDexEnabled true
-        // testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [
-                "IS_RELEASE": true
+                "IS_RELEASE"  : true,
+                "FLAVORS_CODE": 1
         ]
+
+        flavorDimensions "versionCode"
     }
+
     buildTypes {
         debug {
             minifyEnabled false
@@ -26,12 +27,34 @@ android {
             ]
         }
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             manifestPlaceholders = [
                     "IS_RELEASE": true
             ]
         }
+    }
+
+    productFlavors {
+
+        // 声盾
+        shengdun {
+            applicationId "com.mei.financial"
+            resValue "string", "app_name", "声盾"
+            resValue "string", "financial_voice_verify_system", "金融声纹认证系统"
+            manifestPlaceholders = [app_icon      : "@mipmap/ic_launcher",
+                                    "FLAVORS_CODE": 1]
+        }
+
+        // 强控设备
+        shebei {
+            applicationId "com.mei.shebei"
+            resValue "string", "app_name", "强控设备"
+            resValue "string", "financial_voice_verify_system", "会议声纹认证系统"
+            manifestPlaceholders = [app_icon      : "@mipmap/ic_launcher2",
+                                    "FLAVORS_CODE": 2]
+        }
+
     }
 }
 

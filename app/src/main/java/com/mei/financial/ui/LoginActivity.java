@@ -197,6 +197,19 @@ public class LoginActivity extends BaseActivity implements CancelAdapt {
 
         mRegister.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); // 下划线
         mRegister.getPaint().setAntiAlias(true); // 抗锯齿
+
+        setLogoRes();
+    }
+
+    private void setLogoRes() {
+        int res = R.mipmap.login_header_ic;
+        int flavorsCode = ((MyApplication) getApplication()).getFlavorsCode();
+        if (flavorsCode == 1) {
+            res = R.mipmap.login_header_ic;
+        } else if (flavorsCode == 2) {
+            res = R.mipmap.login_header_ic2;
+        }
+        mLogo.setImageResource(res);
     }
 
     private void fillMobilePasswordData() {

@@ -43,16 +43,6 @@ public class MyApplication extends Application {
             headers.put("Authorization", "Bearer " + userInfo.token);
         }
 
-        // 获取debug release环境
-        ApplicationInfo appInfo = null;
-        boolean isRelease = true;
-        try {
-            appInfo = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
-            isRelease = appInfo.metaData.getBoolean("is_release");
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-
         //设置请求参数
         HttpParams params = new HttpParams();
         // params.put("appId", "10010");
@@ -64,7 +54,7 @@ public class MyApplication extends Application {
                 .setRetryCount(3) // 默认网络不好自动重试3次
                 .setRetryDelay(500) // 每次延时500ms重试
                 .setRetryIncreaseDelay(500) // 每次延时叠加500ms
-                .setBaseUrl(isRelease ? urlHeader : testHeader)
+                .setBaseUrl(isRelease() ? urlHeader : testHeader)
                 .setCacheDiskConverter(new SerializableDiskConverter()) // 默认缓存使用序列化转化
                 .setCacheMaxSize(50 * 1024 * 1024) // 设置缓存大小为50M
                 .setCacheVersion(1) // 缓存版本为1
@@ -84,5 +74,34 @@ public class MyApplication extends Application {
         }
         EasyHttp.getInstance().getCommonHeaders().clear();
         EasyHttp.getInstance().addCommonHeaders(headers);
+    }
+
+    public boolean isRelease() {
+        // 获取debug release环境
+        ApplicationInfo appInfo = null;
+        boolean isRelease = true;
+        try {
+            appInfo = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
+            isRelease = appInfo.metaData.getBoolean("is_release");
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return isRelease;
+    }
+
+    /**
+     * @return 1 声盾
+     * 2 强控
+     */
+    public int getFlavorsCode() {
+        int code = 1;
+        ApplicationInfo appInfo = null;
+        try {
+            appInfo = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
+            code = appInfo.metaData.getInt("flavors_code");
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return code;
     }
 }

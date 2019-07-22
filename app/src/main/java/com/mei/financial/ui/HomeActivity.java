@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.mei.financial.MyApplication;
 import com.mei.financial.R;
 import com.mei.financial.entity.UserService;
 import com.mei.financial.ui.adapter.HomeViewPagerAdapter;
@@ -103,6 +104,19 @@ public class HomeActivity extends BaseActivity implements CancelAdapt {
         setTextViewGradient(mTvSoundVerify, getResources().getColor(R.color.color_AFE6FC), getResources().getColor(R.color.color_29BFFC));
         setTextViewGradient(mTvCredit, getResources().getColor(R.color.color_AFE6FC), getResources().getColor(R.color.color_29BFFC));
         setTextViewGradient(mTvScenes, getResources().getColor(R.color.color_AFE6FC), getResources().getColor(R.color.color_29BFFC));
+
+        setTvAgencyRes();
+    }
+
+    private void setTvAgencyRes() {
+        int res = R.string.financial_structure;
+        int flavorsCode = ((MyApplication) getApplication()).getFlavorsCode();
+        if (flavorsCode == 1) {
+            res = R.string.financial_structure;
+        } else if (flavorsCode == 2) {
+            res = R.string.financial_structure2;
+        }
+        mTvAgency.setText(res);
     }
 
     private void initViewPagerData() {
