@@ -39,6 +39,7 @@ import com.mei.financial.common.UrlApi;
 import com.mei.financial.entity.MeetContentInfo;
 import com.mei.financial.entity.MeetResultInfo;
 import com.mei.financial.entity.ParameterizedTypeImpl;
+import com.mei.financial.entity.UserService;
 import com.mei.financial.ui.adapter.MeetContentAdapter;
 import com.mei.financial.ui.dialog.UploadSoundDialog;
 import com.mei.financial.utils.JsonParser;
@@ -130,6 +131,8 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
 
     private HashMap<Integer, List<MeetResultInfo>> mVoiceMap = new HashMap<>();
     private int mCurrentPosition = 0;
+    // 已经保存数据的索引值
+    private int mSavedPosition = 0;
 
     private Handler mHandler = new Handler() {
         @Override
@@ -230,9 +233,10 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
                                     if (meetResultInfoResult.isOk() && meetResultInfoResult.getData() != null) {
                                         MeetResultInfo resultInfo = meetResultInfoResult.getData();
                                         if (!ListUtils.isEmpty(resultInfo.chat_record)) {
-                                            addData(resultInfo.chat_record);
+                                            // addData(resultInfo.chat_record);
                                         }
-                                    } else if (meetResultInfoResult.getCode() == 1 && meetResultInfoResult.getData() != null) {
+                                    } else if (meetResultInfoResult.getCode() == 1 && meetResultInfoResult.getData() != null
+                                            && mIsStartMeet) {
                                         // 处理实时语音转换规则
                                         MeetResultInfo resultInfo = meetResultInfoResult.getData();
 
@@ -253,6 +257,8 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
                                             if (meetData.speaker_id == resultInfo.speaker_id) {
                                                 if (meetData.index == resultInfo.index) {
                                                     meetData.context = resultInfo.context;
+                                                    meetData.speaker_name = resultInfo.speaker_name;
+                                                    meetData.pass = resultInfo.pass;
                                                     mAdapter.notifyItemChanged(i);
                                                     return;
                                                 }
@@ -275,8 +281,6 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
                                         //     addDatas.add(resultInfo);
                                         //     mVoiceMap.put(resultInfo.speaker_id, addDatas);
                                         // }
-
-
                                     }
                                 }
                             });
@@ -323,6 +327,14 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
                 });
             }
         });
+
+        notifyMeetRecordData();
+    }
+
+    private void notifyMeetRecordData() {
+        List<MeetContentInfo> saveData = UserService.getInstance().getMeetData();
+        mSavedPosition = mCurrentPosition = saveData.isEmpty() ? 0 : saveData.size() - 1;
+        addData(saveData);
     }
 
     private void addData(MeetResultInfo resultInfo) {
@@ -387,6 +399,11 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
                 mAdapter.setNewData(new ArrayList<MeetContentInfo>());
                 mTvHint.setVisibility(View.VISIBLE);
                 mRecyclerView.setVisibility(View.GONE);
+
+                // 清理会议记录数据
+                mSavedPosition = 0;
+                UserService.getInstance().clearMeetData();
+
                 break;
             case R.id.iv_record:
                 if (null == mIat) {
@@ -679,6 +696,12 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
 
     @Override
     protected void onDestroy() {
+        // 保存记录数据
+        List<MeetContentInfo> meetData = mAdapter.getData();
+        if (mSavedPosition != (meetData.size() - 1) && mSavedPosition < meetData.size()) {
+            UserService.getInstance().saveMeetRecord(meetData.subList(mSavedPosition, meetData.size()));
+        }
+
         if (mWavUtils != null) {
             mWavUtils.stopRecord();
         }

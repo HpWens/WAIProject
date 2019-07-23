@@ -20,4 +20,7 @@ public class Constant {
     // 保存用户数据
     public static String USER_INFO = "user_info";
 
+    // 保存会议记录数据
+    public static String MEET_RECORD_DATA = "meet_record_data";
+
 }

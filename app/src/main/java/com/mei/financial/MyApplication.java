@@ -39,6 +39,7 @@ public class MyApplication extends Application {
         // headers.put("User-Agent", "mei");
         // String token = RxSPTool.getString(this, Constant.GLOBAL_TOKEN);
         UserInfo userInfo = UserService.getInstance().getUserInfo();
+
         if (null != userInfo && !StringUtils.isEmpty(userInfo.token)) {
             headers.put("Authorization", "Bearer " + userInfo.token);
         }

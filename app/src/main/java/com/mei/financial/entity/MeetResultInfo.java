@@ -29,21 +29,5 @@ public class MeetResultInfo implements Serializable {
     public MeetResultInfo() {
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
 
-        MeetResultInfo that = (MeetResultInfo) o;
-
-        if (speaker_id != that.speaker_id) return false;
-        return index == that.index;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = speaker_id;
-        result = 31 * result + index;
-        return result;
-    }
 }

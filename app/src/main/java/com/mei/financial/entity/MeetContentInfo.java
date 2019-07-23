@@ -25,12 +25,14 @@ public class MeetContentInfo {
         MeetContentInfo that = (MeetContentInfo) o;
 
         if (index != that.index) return false;
-        return speaker_id == that.speaker_id;
+        if (speaker_id != that.speaker_id) return false;
+        return speaker_name != null ? speaker_name.equals(that.speaker_name) : that.speaker_name == null;
     }
 
     @Override
     public int hashCode() {
-        int result = index;
+        int result = speaker_name != null ? speaker_name.hashCode() : 0;
+        result = 31 * result + index;
         result = 31 * result + speaker_id;
         return result;
     }

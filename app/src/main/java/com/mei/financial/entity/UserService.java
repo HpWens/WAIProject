@@ -2,8 +2,13 @@ package com.mei.financial.entity;
 
 import android.app.Application;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.mei.financial.common.Constant;
 import com.mei.financial.utils.ACache;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author wenshi
@@ -107,6 +112,40 @@ public class UserService {
         UserInfo userInfo = getUserInfo();
         userInfo.is_enroll = isEnroll;
         saveUser(userInfo);
+    }
+
+    // 保存会议记录
+    public void saveMeetRecord(List<MeetContentInfo> meetData) {
+        if (null == meetData || meetData.isEmpty()) return;
+
+        List<MeetContentInfo> saveMeetData = getMeetData();
+        if (null == saveMeetData) {
+            saveMeetData = new ArrayList<>();
+        }
+
+        // 添加数据
+        saveMeetData.addAll(meetData);
+
+        // 保存数据
+        int userId = getUserInfo().id;
+        String json = new Gson().toJson(saveMeetData);
+
+        ACache.get(mContext).put(Constant.MEET_RECORD_DATA + userId, json);
+    }
+
+    // 获取会议记录
+    public List<MeetContentInfo> getMeetData() {
+        int userId = getUserInfo().id;
+        String meetJson = ACache.get(mContext).getAsString(Constant.MEET_RECORD_DATA + userId);
+        List<MeetContentInfo> meetData = new Gson().fromJson(meetJson, new TypeToken<List<MeetContentInfo>>() {
+        }.getType());
+        return null == meetData ? new ArrayList<MeetContentInfo>() : meetData;
+    }
+
+    // 清理会议记录
+    public void clearMeetData() {
+        int userId = getUserInfo().id;
+        ACache.get(mContext).put(Constant.MEET_RECORD_DATA + userId, "[]");
     }
 
 }
