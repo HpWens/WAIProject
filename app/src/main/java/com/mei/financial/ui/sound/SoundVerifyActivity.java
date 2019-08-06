@@ -22,10 +22,13 @@ import com.iflytek.cloud.SpeechRecognizer;
 import com.iflytek.cloud.SpeechSynthesizer;
 import com.iflytek.cloud.SynthesizerListener;
 import com.iflytek.cloud.ui.RecognizerDialog;
+import com.mei.financial.MyApplication;
 import com.mei.financial.R;
 import com.mei.financial.common.UrlApi;
 import com.mei.financial.entity.ParameterizedTypeImpl;
 import com.mei.financial.entity.SoundInfo;
+import com.mei.financial.entity.UserInfo;
+import com.mei.financial.entity.UserService;
 import com.mei.financial.entity.VerifyResultInfo;
 import com.mei.financial.ui.dialog.UploadSoundDialog;
 import com.mei.financial.utils.JsonParser;
@@ -128,7 +131,8 @@ public class SoundVerifyActivity extends BaseActivity implements CustomAdapt {
     protected void initData() {
         Eyes.setStatusBarColor(mContext, getResources().getColor(R.color.color_163DC1));
         autoFillToolBarLeftIcon();
-        setToolBarCenterTitle("声纹验证");
+        int flavorsCode = ((MyApplication) getApplication()).getFlavorsCode();
+        setToolBarCenterTitle(flavorsCode == 3 ? "自主检测" : "声纹验证");
 
         new RxPermissions(mContext).request(new String[]
                 {Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -172,6 +176,44 @@ public class SoundVerifyActivity extends BaseActivity implements CustomAdapt {
         });
 
         requestDynamicNum();
+
+        mIvPlay.setVisibility(flavorsCode == 3 ? View.VISIBLE : View.GONE);
+        mTvTitle.setText(flavorsCode == 3 ? "信用值 0" : "声纹验证");
+        if (flavorsCode == 3) {
+            getCreditValue();
+        }
+    }
+
+    public void getCreditValue() {
+        // 发起网络请求
+        EasyHttp.get(UrlApi.GET_CREDIT_VALUE)
+                .execute(new SimpleCallBack<String>() {
+                    @Override
+                    public void onError(ApiException e) {
+                        RxToast.error(e.getMessage());
+                    }
+
+                    @Override
+                    public void onSuccess(String s) {
+                        Observable.just(s).map(new Function<String, Result<UserInfo>>() {
+                            @Override
+                            public Result<UserInfo> apply(String s) throws Exception {
+                                return new Gson().fromJson(s, new ParameterizedTypeImpl(Result.class, new Class[]{UserInfo.class}));
+                            }
+                        }).subscribe(new Consumer<Result<UserInfo>>() {
+                            @Override
+                            public void accept(Result<UserInfo> userInfoResult) throws Exception {
+                                if (userInfoResult.isOk() && null != userInfoResult.getData()) {
+                                    int creditValue = userInfoResult.getData().credit_value;
+                                    mTvTitle.setText("信用值 " + creditValue);
+                                    UserService.getInstance().changeCreditValue(creditValue);
+                                } else {
+                                    RxToast.error(userInfoResult.getMsg());
+                                }
+                            }
+                        });
+                    }
+                });
     }
 
     // 请求随机数字
@@ -380,7 +422,8 @@ public class SoundVerifyActivity extends BaseActivity implements CustomAdapt {
         String soundPath = Environment.getExternalStorageDirectory() + "/msc/iat.wav";
         File file = new File(soundPath);
 
-        EasyHttp.post(UrlApi.SOUND_VERIFY)
+        int flavorsCode = ((MyApplication) getApplication()).getFlavorsCode();
+        EasyHttp.post(flavorsCode == 3 ? UrlApi.AUTO_VERIFY : UrlApi.SOUND_VERIFY)
                 .params("session_id", mSessionId)
                 .params("text", mSoundContent)
                 .params("type", "rd")

@@ -49,10 +49,20 @@ public class HomeActivity extends BaseActivity implements CancelAdapt {
     TextView mTvSoundRegister;
     @BindView(R.id.tv_sound_verify)
     TextView mTvSoundVerify;
+    @BindView(R.id.tv_sound_verify_desc)
+    TextView mTvSoundVerifyDesc;
     @BindView(R.id.tv_credit)
     TextView mTvCredit;
     @BindView(R.id.tv_scenes)
     TextView mTvScenes;
+    @BindView(R.id.layout_name)
+    LinearLayout mTitleLayout;
+    @BindView(R.id.cv_sound_verify)
+    LinearLayout mSoundVerifyLayout;
+    @BindView(R.id.cv_credit)
+    LinearLayout mCreditLayout;
+    @BindView(R.id.iv_sound_verify)
+    ImageView mIvSoundVerify;
 
     private String[] mVpContents1 = {"以声识人", "迅速、快捷", "如闻其声"};
     private String[] mVpContents2 = {"如闻其声", "安全可靠", "如见其人"};
@@ -105,16 +115,24 @@ public class HomeActivity extends BaseActivity implements CancelAdapt {
         setTextViewGradient(mTvCredit, getResources().getColor(R.color.color_AFE6FC), getResources().getColor(R.color.color_29BFFC));
         setTextViewGradient(mTvScenes, getResources().getColor(R.color.color_AFE6FC), getResources().getColor(R.color.color_29BFFC));
 
-        setTvAgencyRes();
+        int flavorsCode = ((MyApplication) getApplication()).getFlavorsCode();
+
+        setTvAgencyRes(flavorsCode);
+
+        mCreditLayout.setVisibility(flavorsCode == 3 ? View.GONE : View.VISIBLE);
+        mTvSoundVerify.setText(flavorsCode == 3 ? "自主检验" : "声纹验证");
+        mTvSoundVerifyDesc.setText(flavorsCode == 3 ? "通过声音确认是否为本人并发生警报" : "通过声音确认是否为本人");
+        mIvSoundVerify.setImageResource(flavorsCode == 3 ? R.mipmap.ic_self_test : R.mipmap.home_sound_verify_ic);
     }
 
-    private void setTvAgencyRes() {
+    private void setTvAgencyRes(int code) {
         int res = R.string.financial_structure;
-        int flavorsCode = ((MyApplication) getApplication()).getFlavorsCode();
-        if (flavorsCode == 1) {
+        if (code == 1) {
             res = R.string.financial_structure;
-        } else if (flavorsCode == 2) {
+        } else if (code == 2) {
             res = R.string.financial_structure2;
+        } else if (code == 3) {
+            res = R.string.financial_structure3;
         }
         mTvAgency.setText(res);
     }

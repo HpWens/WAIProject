@@ -41,6 +41,7 @@
     <string name="financial_voice_review" translatable="false">金融信用审核</string>
 
     <string name="financial_structure2" translatable="false">会议机构</string>
+    <string name="financial_structure3" translatable="false">工商银行机构</string>
     <string name="financial_voice_verify_system2" translatable="false">会议声纹认证系统</string>
     <string name="financial_voice_review2" translatable="false">会议信用审核</string>
 

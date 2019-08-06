@@ -19,6 +19,7 @@ public class VerifyResultInfo {
     public int upload_count;
 
     public boolean verify_result;
+    public int credit_value;
 
     public String getAsr_text() {
         return asr_text;
