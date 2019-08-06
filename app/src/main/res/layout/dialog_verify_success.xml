@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@mipmap/ic_verify_dialog_bg"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_success"
+                android:layout_width="94dp"
+                android:layout_height="94dp"
+                android:src="@mipmap/ic_credit_add_25" />
+
+        </FrameLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:text="验证成功"
+            android:textColor="@color/color_4BC9FC"
+            android:textSize="15sp" />
+
+
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_width="118dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="24dp"
+            android:background="@mipmap/sound_register_confirm_ic"
+            android:text="确定"
+            android:textColor="@color/color_4BC9FC"
+            android:textSize="16sp" />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>
