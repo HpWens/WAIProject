@@ -208,6 +208,8 @@ public class LoginActivity extends BaseActivity implements CancelAdapt {
             res = R.mipmap.login_header_ic;
         } else if (flavorsCode == 2) {
             res = R.mipmap.login_header_ic2;
+        } else if (flavorsCode == 3) {
+            res = R.mipmap.login_header_ic3;
         }
         mLogo.setImageResource(res);
     }

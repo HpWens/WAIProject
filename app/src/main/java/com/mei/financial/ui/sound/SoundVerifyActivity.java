@@ -31,6 +31,8 @@ import com.mei.financial.entity.UserInfo;
 import com.mei.financial.entity.UserService;
 import com.mei.financial.entity.VerifyResultInfo;
 import com.mei.financial.ui.dialog.UploadSoundDialog;
+import com.mei.financial.ui.dialog.WSVerifyFailureDialog;
+import com.mei.financial.ui.dialog.WSVerifySuccessDialog;
 import com.mei.financial.utils.JsonParser;
 import com.mei.financial.utils.StringUtils;
 import com.mei.financial.view.RecordWaveView;
@@ -416,6 +418,10 @@ public class SoundVerifyActivity extends BaseActivity implements CustomAdapt {
         // RxToast.normal(text);
     }
 
+    private void saveCreditValue(int value) {
+        UserService.getInstance().changeCreditValue(value);
+        mTvTitle.setText("信用值 " + value);
+    }
 
     private void uploadSoundFile() {
         if (StringUtils.isEmpty(mSoundContent)) return;
@@ -454,20 +460,48 @@ public class SoundVerifyActivity extends BaseActivity implements CustomAdapt {
                     }
                 }).subscribe(new Consumer<Result<VerifyResultInfo>>() {
                     @Override
-                    public void accept(Result<VerifyResultInfo> verifyResultInfoResult) throws Exception {
-                        if (verifyResultInfoResult.isOk() && verifyResultInfoResult.getData() != null) {
-                            if (!verifyResultInfoResult.getData().verify_result || !verifyResultInfoResult.getData().asr_result) {
+                    public void accept(final Result<VerifyResultInfo> verifyResultInfoResult) throws Exception {
+                        // 针对渠道
+                        int flavorsCode = ((MyApplication) getApplication()).getFlavorsCode();
+                        if (flavorsCode == 3) {
+                            if (verifyResultInfoResult.isOk()) {
                                 requestDynamicNum();
-                                RxToast.normal(getString(R.string.repeat_verify_hint));
-                                return;
+                                if (verifyResultInfoResult.getData().verify_result) {
+                                    // 验证成功
+                                    new WSVerifySuccessDialog(mContext, new WSVerifySuccessDialog.OnPositiveListener() {
+                                        @Override
+                                        public void onClick(WSVerifySuccessDialog dialog) {
+                                            dialog.dismiss();
+                                            saveCreditValue(verifyResultInfoResult.getData().credit_value);
+                                        }
+                                    }).show();
+                                } else {
+                                    new WSVerifyFailureDialog(mContext, new WSVerifyFailureDialog.OnPositiveListener() {
+                                        @Override
+                                        public void onClick(WSVerifyFailureDialog dialog) {
+                                            dialog.dismiss();
+                                            saveCreditValue(verifyResultInfoResult.getData().credit_value);
+                                        }
+                                    }).show();
+                                }
+                            } else {
+                                RxToast.normal("上传失败");
                             }
-
-                            mTvHint.setVisibility(View.GONE);
-                            mIvRecord.setVisibility(View.GONE);
-                            mTvVerifySuccess.setVisibility(View.VISIBLE);
-                            mBtnExit.setVisibility(View.VISIBLE);
                         } else {
-                            againVerify(true);
+                            if (verifyResultInfoResult.isOk() && verifyResultInfoResult.getData() != null) {
+                                if (!verifyResultInfoResult.getData().verify_result || !verifyResultInfoResult.getData().asr_result) {
+                                    requestDynamicNum();
+                                    RxToast.normal(getString(R.string.repeat_verify_hint));
+                                    return;
+                                }
+
+                                mTvHint.setVisibility(View.GONE);
+                                mIvRecord.setVisibility(View.GONE);
+                                mTvVerifySuccess.setVisibility(View.VISIBLE);
+                                mBtnExit.setVisibility(View.VISIBLE);
+                            } else {
+                                againVerify(true);
+                            }
                         }
                     }
                 });

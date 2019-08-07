@@ -60,7 +60,7 @@ android {
             applicationId "com.mei.wensheng"
             resValue "string", "app_name", "闻声识人"
             resValue "string", "financial_voice_verify_system", "工商银行声纹认证系统"
-            manifestPlaceholders = [app_icon      : "@mipmap/ic_launcher2",
+            manifestPlaceholders = [app_icon      : "@mipmap/ic_launcher3",
                                     "FLAVORS_CODE": 3]
         }
 

@@ -47,6 +47,12 @@ public class MyApplication extends Application {
         //设置请求参数
         HttpParams params = new HttpParams();
         // params.put("appId", "10010");
+        String baseUrl = urlHeader;
+        if (getFlavorsCode() == 3) {
+            baseUrl = !isRelease() ? urlHeader : testHeader;
+        } else {
+            baseUrl = isRelease() ? urlHeader : testHeader;
+        }
         EasyHttp.getInstance()
                 .debug("RxEasyHttp", BuildConfig.DEBUG)
                 .setReadTimeOut(10 * 60 * 1000)
@@ -55,7 +61,7 @@ public class MyApplication extends Application {
                 .setRetryCount(3) // 默认网络不好自动重试3次
                 .setRetryDelay(500) // 每次延时500ms重试
                 .setRetryIncreaseDelay(500) // 每次延时叠加500ms
-                .setBaseUrl(isRelease() ? urlHeader : testHeader)
+                .setBaseUrl(baseUrl)
                 .setCacheDiskConverter(new SerializableDiskConverter()) // 默认缓存使用序列化转化
                 .setCacheMaxSize(50 * 1024 * 1024) // 设置缓存大小为50M
                 .setCacheVersion(1) // 缓存版本为1

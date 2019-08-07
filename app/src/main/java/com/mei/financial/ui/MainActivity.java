@@ -1,7 +1,9 @@
 package com.mei.financial.ui;
 
-import com.mei.financial.ui.dialog.WSVerifySuccessDialog;
+import android.content.Intent;
+
 import com.meis.base.mei.base.BaseActivity;
+import com.meis.base.mei.utils.Eyes;
 
 public class MainActivity extends BaseActivity {
 
@@ -13,19 +15,11 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void initData() {
 
-//        Eyes.translucentStatusBar(mContext, true);
-//
-//        startActivity(new Intent(this, LoginActivity.class));
-//
-//        finish();
+        Eyes.translucentStatusBar(mContext, true);
 
-        new WSVerifySuccessDialog(this, new WSVerifySuccessDialog.OnPositiveListener() {
-            @Override
-            public void onClick(WSVerifySuccessDialog dialog) {
+        startActivity(new Intent(this, LoginActivity.class));
 
-            }
-        }).show();
-
+        finish();
     }
 
     @Override
