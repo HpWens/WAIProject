@@ -25,6 +25,7 @@ public class WSVerifyFailureDialog extends RxDialog {
 
     private OnPositiveListener mListener;
     private ImageView mIvSuccess;
+    private ImageView mIvSuccessDigital;
 
     public WSVerifyFailureDialog(Context context, int themeResId) {
         super(context, themeResId);
@@ -40,6 +41,7 @@ public class WSVerifyFailureDialog extends RxDialog {
             }
         });
         mIvSuccess = view.findViewById(R.id.iv_success);
+        mIvSuccessDigital = view.findViewById(R.id.iv_success_digital);
         setContentView(view);
     }
 
@@ -47,7 +49,7 @@ public class WSVerifyFailureDialog extends RxDialog {
     public void show() {
         super.show();
         if (mIvSuccess != null) {
-            Glide.with(getContext()).load(R.mipmap.ic_credit_sub_25)
+            Glide.with(getContext()).load(R.mipmap.ic_credit_sub_digital)
                     .diskCacheStrategy(DiskCacheStrategy.ALL).listener(new RequestListener() {
                 @Override
                 public boolean onLoadFailed(@Nullable GlideException e, Object model, Target target, boolean isFirstResource) {
@@ -62,7 +64,9 @@ public class WSVerifyFailureDialog extends RxDialog {
                     }
                     return false;
                 }
-            }).into(mIvSuccess);
+            }).into(mIvSuccessDigital);
+
+            Glide.with(getContext()).load(R.mipmap.ic_credit_sub_25).into(mIvSuccess);
         }
     }
 

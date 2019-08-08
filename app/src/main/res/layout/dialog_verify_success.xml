@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:gravity="center"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -22,6 +22,13 @@
                 android:layout_width="94dp"
                 android:layout_height="94dp"
                 android:src="@mipmap/ic_credit_add_25" />
+
+            <ImageView
+                android:id="@+id/iv_success_digital"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_gravity="center"
+                android:src="@mipmap/ic_credit_add_digital" />
 
         </FrameLayout>
 
