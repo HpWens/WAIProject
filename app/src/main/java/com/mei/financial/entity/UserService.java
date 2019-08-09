@@ -114,6 +114,14 @@ public class UserService {
         saveUser(userInfo);
     }
 
+    public void saveMeetRecordData(List<MeetContentInfo> meetData) {
+        if (meetData != null) {
+            String json = new Gson().toJson(meetData);
+            int userId = getUserInfo().id;
+            ACache.get(mContext).put(Constant.MEET_RECORD_DATA + userId, json);
+        }
+    }
+
     // 保存会议记录
     public void saveMeetRecord(List<MeetContentInfo> meetData) {
         if (null == meetData || meetData.isEmpty()) return;

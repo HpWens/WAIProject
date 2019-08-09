@@ -36,6 +36,10 @@
 (4) 本人知悉并同意贵司有权保存本人的声音信息的验证记录，并有权用于与本人相关的声纹识别业务及贵司内部算法测试。</string>
 
 
+    <string name="sound_verify_text" translatable="false">信用风险是指合同的一方不履行义务的可能性，包括贷款、掉期、期权及在结算过程中的交易对手违约带来损失的风险。</string>
+    <string name="sound_verify_text1" translatable="false">工银智慧大脑是工商银行基于物联网、大数据、人工智能等新技术打造的金融同业首创、自主可控、分布式架构的全栈智能新一代开放式智能生态系统。</string>
+    <string name="sound_verify_text2" translatable="false">本次工行展厅以“智享金融 智见未来”为创意主线，全面展现我行在人工智能技术体系、应用场景、5G智慧网点等方面的规划思路与建设成果。</string>
+
     <string name="financial_structure" translatable="false">金融机构</string>
     <!--<string name="financial_voice_verify_system" translatable="false">金融声纹认证系统</string>-->
     <string name="financial_voice_review" translatable="false">金融信用审核</string>

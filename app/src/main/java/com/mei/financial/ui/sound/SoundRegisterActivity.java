@@ -28,6 +28,7 @@ import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.SpeechRecognizer;
 import com.iflytek.cloud.SpeechSynthesizer;
 import com.iflytek.cloud.SynthesizerListener;
+import com.mei.financial.MyApplication;
 import com.mei.financial.R;
 import com.mei.financial.common.UrlApi;
 import com.mei.financial.entity.ParameterizedTypeImpl;
@@ -110,7 +111,6 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
     private int mIndexVerify = 0;
     private String mSessionId = "";
     private List<String> mTextsVerify = new ArrayList<>();
-    private String mVerifyText = "信用风险是指合同的一方不履行义务的可能性，包括贷款、掉期、期权及在结算过程中的交易对手违约带来损失的风险。";
 
     private boolean mIsPlaySound = false;
     private boolean mSoundCompleted = true;
@@ -198,9 +198,17 @@ public class SoundRegisterActivity extends BaseActivity implements CustomAdapt {
                                     if (null != soundInfoResult.getData() && soundInfoResult.getData().text != null) {
                                         mSoundCompleted = true;
                                         mSessionId = soundInfoResult.getData().session_id;
-                                        // 添加2次文本
-                                        soundInfoResult.getData().text.add(mVerifyText);
-                                        soundInfoResult.getData().text.add(mVerifyText);
+
+                                        int code = ((MyApplication) getApplication()).getFlavorsCode();
+                                        if (code == 3) {
+                                            // 添加2次文本
+                                            soundInfoResult.getData().text.add(getResources().getString(R.string.sound_verify_text1));
+                                            soundInfoResult.getData().text.add(getResources().getString(R.string.sound_verify_text2));
+                                        } else {
+                                            // 添加2次文本
+                                            soundInfoResult.getData().text.add(getResources().getString(R.string.sound_verify_text));
+                                            soundInfoResult.getData().text.add(getResources().getString(R.string.sound_verify_text));
+                                        }
 
                                         mTextsVerify = soundInfoResult.getData().text;
                                         updateViews();

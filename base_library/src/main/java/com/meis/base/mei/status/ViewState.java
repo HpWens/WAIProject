@@ -2,6 +2,10 @@ package com.meis.base.mei.status;
 
 import android.support.annotation.IntDef;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+
 public interface ViewState {
 
     int REST = 0x01;
@@ -11,6 +15,7 @@ public interface ViewState {
     int ERROR = 0x05;
     int EMPTY = 0x06;
 
+    @Retention(RetentionPolicy.SOURCE)
     @IntDef({REST, LOADING, REFRESH, COMPLETED, ERROR, EMPTY})
     @interface Val {
 

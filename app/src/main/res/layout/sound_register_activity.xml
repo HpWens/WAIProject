@@ -123,20 +123,20 @@
             android:layout_below="@+id/tv_sound_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="68dp"
-            android:visibility="gone"
             android:layout_marginBottom="14dp"
-            android:src="@mipmap/sound_register_pause_ic" />
+            android:src="@mipmap/sound_register_pause_ic"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_sound_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="68dp"
-            android:layout_below="@+id/tv_sound_content"
+            android:layout_marginBottom="16dp"
             android:gravity="center_vertical"
             android:text="(第1次)"
-            android:layout_marginBottom="16dp"
             android:textColor="@color/color_1E82AA"
             android:textSize="14dp" />
 
@@ -151,7 +151,7 @@
             android:layout_marginRight="26dp"
             android:text="久未放晴的天空，依旧留着你的笑容哭过却无法掩埋歉疚。风筝在阴天搁浅想念还在"
             android:textColor="@color/color_83DBFF"
-            android:textSize="17dp"
+            android:textSize="16sp"
             android:visibility="gone" />
 
     </RelativeLayout>

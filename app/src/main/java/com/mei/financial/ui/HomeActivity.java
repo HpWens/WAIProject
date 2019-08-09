@@ -120,7 +120,7 @@ public class HomeActivity extends BaseActivity implements CancelAdapt {
         setTvAgencyRes(flavorsCode);
 
         mCreditLayout.setVisibility(flavorsCode == 3 ? View.GONE : View.VISIBLE);
-        mTvSoundVerify.setText(flavorsCode == 3 ? "自主检验" : "声纹验证");
+        mTvSoundVerify.setText(flavorsCode == 3 ? "自主检测" : "声纹验证");
         mTvSoundVerifyDesc.setText(flavorsCode == 3 ? "通过声音确认是否为本人并发生警报" : "通过声音确认是否为本人");
         mIvSoundVerify.setImageResource(flavorsCode == 3 ? R.mipmap.ic_self_test : R.mipmap.home_sound_verify_ic);
     }

@@ -131,8 +131,6 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
 
     private HashMap<Integer, List<MeetResultInfo>> mVoiceMap = new HashMap<>();
     private int mCurrentPosition = 0;
-    // 已经保存数据的索引值
-    private int mSavedPosition = 0;
 
     private Handler mHandler = new Handler() {
         @Override
@@ -212,8 +210,7 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
 
         // 创建长连接
         try {
-            mSocketClient = new WebSocketClient(new URI(((MyApplication) getApplication()).isRelease() ?
-                    MyApplication.urlHeader : MyApplication.testHeader + "/api/v1/app_ws")) {
+            mSocketClient = new WebSocketClient(new URI(((MyApplication) getApplication()).getBaseUrl() + "/api/v1/app_ws")) {
                 @Override
                 public void onOpen(ServerHandshake handshakedata) {
                 }
@@ -333,7 +330,6 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
 
     private void notifyMeetRecordData() {
         List<MeetContentInfo> saveData = UserService.getInstance().getMeetData();
-        mSavedPosition = mCurrentPosition = saveData.isEmpty() ? 0 : saveData.size() - 1;
         addData(saveData);
     }
 
@@ -401,9 +397,7 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
                 mRecyclerView.setVisibility(View.GONE);
 
                 // 清理会议记录数据
-                mSavedPosition = 0;
                 UserService.getInstance().clearMeetData();
-
                 break;
             case R.id.iv_record:
                 if (null == mIat) {
@@ -698,9 +692,7 @@ public class MeetActivity extends BaseActivity implements CustomAdapt {
     protected void onDestroy() {
         // 保存记录数据
         List<MeetContentInfo> meetData = mAdapter.getData();
-        if (mSavedPosition != (meetData.size() - 1) && mSavedPosition < meetData.size()) {
-            UserService.getInstance().saveMeetRecord(meetData.subList(mSavedPosition, meetData.size()));
-        }
+        UserService.getInstance().saveMeetRecordData(meetData);
 
         if (mWavUtils != null) {
             mWavUtils.stopRecord();

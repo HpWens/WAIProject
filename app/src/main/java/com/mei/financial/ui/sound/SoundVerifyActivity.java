@@ -207,8 +207,7 @@ public class SoundVerifyActivity extends BaseActivity implements CustomAdapt {
                             public void accept(Result<UserInfo> userInfoResult) throws Exception {
                                 if (userInfoResult.isOk() && null != userInfoResult.getData()) {
                                     int creditValue = userInfoResult.getData().credit_value;
-                                    mTvTitle.setText("信用值 " + creditValue);
-                                    UserService.getInstance().changeCreditValue(creditValue);
+                                    saveCreditValue(creditValue);
                                 } else {
                                     RxToast.error(userInfoResult.getMsg());
                                 }
@@ -421,6 +420,8 @@ public class SoundVerifyActivity extends BaseActivity implements CustomAdapt {
     private void saveCreditValue(int value) {
         UserService.getInstance().changeCreditValue(value);
         mTvTitle.setText("信用值 " + value);
+        mTvTitle.setTextColor(value < 60 ? getResources().getColor(R.color.color_FF3333) :
+                getResources().getColor(R.color.color_83DBFF));
     }
 
     private void uploadSoundFile() {

@@ -25,6 +25,8 @@ public class MyApplication extends Application {
     public static String urlHeader = "http://119.3.70.106:8030";
     public static String testHeader = "http://119.3.38.81:8040";
 
+    public static String releaseWSBaseUrl = "http://119.3.38.81:8060";
+
     @Override
     public void onCreate() {
         SpeechUtility.createUtility(MyApplication.this, "appid=" + getString(R.string.app_id));
@@ -47,12 +49,6 @@ public class MyApplication extends Application {
         //设置请求参数
         HttpParams params = new HttpParams();
         // params.put("appId", "10010");
-        String baseUrl = urlHeader;
-        if (getFlavorsCode() == 3) {
-            baseUrl = !isRelease() ? urlHeader : testHeader;
-        } else {
-            baseUrl = isRelease() ? urlHeader : testHeader;
-        }
         EasyHttp.getInstance()
                 .debug("RxEasyHttp", BuildConfig.DEBUG)
                 .setReadTimeOut(10 * 60 * 1000)
@@ -61,7 +57,7 @@ public class MyApplication extends Application {
                 .setRetryCount(3) // 默认网络不好自动重试3次
                 .setRetryDelay(500) // 每次延时500ms重试
                 .setRetryIncreaseDelay(500) // 每次延时叠加500ms
-                .setBaseUrl(baseUrl)
+                .setBaseUrl(getBaseUrl())
                 .setCacheDiskConverter(new SerializableDiskConverter()) // 默认缓存使用序列化转化
                 .setCacheMaxSize(50 * 1024 * 1024) // 设置缓存大小为50M
                 .setCacheVersion(1) // 缓存版本为1
@@ -110,5 +106,15 @@ public class MyApplication extends Application {
             e.printStackTrace();
         }
         return code;
+    }
+
+    public String getBaseUrl() {
+        String baseUrl = urlHeader;
+        if (getFlavorsCode() == 3) {
+            baseUrl = !isRelease() ? urlHeader : releaseWSBaseUrl;
+        } else {
+            baseUrl = isRelease() ? urlHeader : testHeader;
+        }
+        return baseUrl;
     }
 }

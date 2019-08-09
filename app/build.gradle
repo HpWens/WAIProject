@@ -19,6 +19,15 @@ android {
         flavorDimensions "versionCode"
     }
 
+    signingConfigs {
+        release {
+            keyAlias 'key0'
+            keyPassword '123456'
+            storeFile file('mei.jks')
+            storePassword '123456'
+        }
+    }
+
     buildTypes {
         debug {
             minifyEnabled false
@@ -27,7 +36,8 @@ android {
             ]
         }
         release {
-            minifyEnabled true
+            minifyEnabled false
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             manifestPlaceholders = [
                     "IS_RELEASE": true
