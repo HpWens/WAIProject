@@ -129,7 +129,7 @@ public class RegisterActivity extends BaseActivity implements CancelAdapt {
                     return;
                 }
 
-                if (name.length() < 2 || password.length() > 10) {
+                if (name.length() < 2 || name.length() > 10) {
                     RxToast.error(getString(R.string.name_limit_hint));
                     return;
                 }

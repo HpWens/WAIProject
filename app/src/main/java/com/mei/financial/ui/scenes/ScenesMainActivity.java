@@ -1,11 +1,15 @@
 package com.mei.financial.ui.scenes;
 
 import android.content.Intent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mei.financial.MyApplication;
 import com.mei.financial.R;
 import com.meis.base.mei.base.BaseActivity;
 import com.meis.base.mei.utils.Eyes;
@@ -41,6 +45,8 @@ public class ScenesMainActivity extends BaseActivity implements CustomAdapt {
         autoFillToolBarLeftIcon();
         setToolBarCenterTitle("场景体验");
 
+        int code = ((MyApplication) getApplication()).getFlavorsCode();
+        mBtnCall.setVisibility(code == 3 ? View.GONE : View.VISIBLE);
     }
 
     @Override
