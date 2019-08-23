@@ -68,6 +68,13 @@
         app:layout_constraintTop_toBottomOf="@+id/fl_view_pager">
 
         <ImageView
+            android:id="@+id/iv_icbc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerInside"
+            android:src="@mipmap/home_icbc_ic" />
+
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleType="centerInside"
@@ -90,6 +97,7 @@
             android:src="@mipmap/home_name_right_ic" />
 
     </LinearLayout>
+
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"

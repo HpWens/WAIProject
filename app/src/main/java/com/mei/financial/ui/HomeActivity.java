@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -63,6 +64,10 @@ public class HomeActivity extends BaseActivity implements CancelAdapt {
     LinearLayout mCreditLayout;
     @BindView(R.id.iv_sound_verify)
     ImageView mIvSoundVerify;
+    @BindView(R.id.iv_icbc)
+    ImageView mIvICBC;
+    @BindView(R.id.fl_view_pager)
+    FrameLayout mFlVpLayout;
 
     private String[] mVpContents1 = {"以声识人", "迅速、快捷", "如闻其声"};
     private String[] mVpContents2 = {"如闻其声", "安全可靠", "如见其人"};
@@ -80,9 +85,11 @@ public class HomeActivity extends BaseActivity implements CancelAdapt {
         setTextViewGradient(mTvAgency, getResources().getColor(R.color.color_AFE6FC),
                 getResources().getColor(R.color.color_29BFFC));
 
+        int flavorsCode = ((MyApplication) getApplication()).getFlavorsCode();
+
         // 处理viewpager
         indicatorSpacing = DensityUtil.dp2px(3.5F);
-        initViewPagerData();
+        initViewPagerData(flavorsCode);
         mViewPager.setAdapter(new HomeViewPagerAdapter(mViewPagerLayouts));
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -115,14 +122,14 @@ public class HomeActivity extends BaseActivity implements CancelAdapt {
         setTextViewGradient(mTvCredit, getResources().getColor(R.color.color_AFE6FC), getResources().getColor(R.color.color_29BFFC));
         setTextViewGradient(mTvScenes, getResources().getColor(R.color.color_AFE6FC), getResources().getColor(R.color.color_29BFFC));
 
-        int flavorsCode = ((MyApplication) getApplication()).getFlavorsCode();
-
         setTvAgencyRes(flavorsCode);
 
         mCreditLayout.setVisibility(flavorsCode == 3 ? View.GONE : View.VISIBLE);
         mTvSoundVerify.setText(flavorsCode == 3 ? "自主检测" : "声纹验证");
         mTvSoundVerifyDesc.setText(flavorsCode == 3 ? "通过声音确认是否为本人并发生警报" : "通过声音确认是否为本人");
         mIvSoundVerify.setImageResource(flavorsCode == 3 ? R.mipmap.ic_self_test : R.mipmap.home_sound_verify_ic);
+        mIvICBC.setVisibility(flavorsCode == 3 ? View.VISIBLE : View.GONE);
+        mFlVpLayout.setBackgroundResource(flavorsCode == 3 ? R.mipmap.home_ws_vp_bg : R.mipmap.home_vp_bg);
     }
 
     private void setTvAgencyRes(int code) {
@@ -137,11 +144,13 @@ public class HomeActivity extends BaseActivity implements CancelAdapt {
         mTvAgency.setText(res);
     }
 
-    private void initViewPagerData() {
+    private void initViewPagerData(int code) {
         mViewPagerLayouts.clear();
         mLayoutIndicator.removeAllViews();
         for (int i = 0; i < mVpContents1.length; i++) {
             LinearLayout itemLayout = (LinearLayout) View.inflate(mContext, R.layout.item_home_vp, null);
+            ImageView ivLogo = itemLayout.findViewById(R.id.iv_ws_logo);
+            ivLogo.setVisibility(code == 3 && i == 0 ? View.VISIBLE : View.GONE);
             TextView topTv = itemLayout.findViewById(R.id.tv_top);
             TextView bottomTv = itemLayout.findViewById(R.id.tv_bottom);
             topTv.setText(mVpContents1[i]);
